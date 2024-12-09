@@ -75,7 +75,7 @@ export const useTypeQuery = ({ slug, language }: GetParams) => {
 };
 
 export const useTypesQuery = (options?: Partial<TypeQueryOptions>) => {
-  const { data, isLoading, error } = useQuery<Type[], Error>(
+  const { data, isLoading, error } = useQuery<any, Error>(
     [API_ENDPOINTS.TYPES, options],
     ({ queryKey, pageParam }) =>
       typeClient.all(Object.assign({}, queryKey[1], pageParam)),
@@ -85,7 +85,7 @@ export const useTypesQuery = (options?: Partial<TypeQueryOptions>) => {
   );
 
   return {
-    types: data ?? [],
+    types: data?.data ?? [],
     loading: isLoading,
     error,
   };

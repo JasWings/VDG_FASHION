@@ -1,22 +1,20 @@
-import s3Client from "../../Config/bucket.js"
+import s3Client from "../../../Config/bucket.js";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import * as Helpers from "../../utils/helpers.js";
-import Upload from "../../Models/uploads/index.js";
+import * as Helpers from "../../../utils/helpers.js";
+import Upload from "../../../Models/uploads/index.js";
 
-export const fileUplaodController = async (req, res) => {
+export const CommercefileUplaodController = async (req, res) => {
   try {
     const file = req.file;
-    console.log(file,"file")
     const uuid = await Helpers.generateUUID();
     const file_name = uuid + "." + file.originalname.split(".").slice(-1)[0];
     const params = {
       Bucket: process.env.bucket_name,
-      Key: "admin-images/" + file_name,
+      Key: "commerce/" + file_name,
       Body: file.buffer,
       ContentType: "Mimetype",
     };
     const data = await s3Client.send(new PutObjectCommand(params));
-    console.log(data,"data")
     const uuid1 = await Helpers.generateUUID();
     const save_file_name = new Upload({ file: params.Key, uuid: uuid1 });
     await save_file_name.save();

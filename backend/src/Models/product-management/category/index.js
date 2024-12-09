@@ -37,6 +37,11 @@ const categorySchema = new mongoose.Schema({
         ref: "category",
         default : null
     },
+    type_id : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Group",
+        required: true
+    },
     tags : {
         type : Array,
         default : []

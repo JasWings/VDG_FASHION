@@ -35,7 +35,7 @@ export default function TypesPage() {
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
   }
-
+ console.log(types,"data")
   return (
     <>
       <Card className="mb-8 flex flex-col items-center xl:flex-row">

@@ -112,9 +112,9 @@ type FormValues = {
   name: string;
   slug?: string | null;
   icon?: any;
-  promotional_sliders: AttachmentInput[];
-  banners: BannerInput[];
-  settings: TypeSettingsInput;
+  // promotional_sliders: AttachmentInput[];
+  // banners: BannerInput[];
+  // settings: TypeSettingsInput;
 };
 
 type IProps = {
@@ -139,15 +139,15 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     defaultValues: {
       ...initialValues,
       // @ts-ignore
-      settings: {
-        ...initialValues?.settings,
-        layoutType: initialValues?.settings?.layoutType
-          ? initialValues?.settings?.layoutType
-          : layoutTypes[0].value,
-        productCard: initialValues?.settings?.productCard
-          ? initialValues?.settings?.productCard
-          : productCards[0].value,
-      },
+      // settings: {
+      //   ...initialValues?.settings,
+      //   layoutType: initialValues?.settings?.layoutType
+      //     ? initialValues?.settings?.layoutType
+      //     : layoutTypes[0].value,
+      //   productCard: initialValues?.settings?.productCard
+      //     ? initialValues?.settings?.productCard
+      //     : productCards[0].value,
+      // },
       icon: initialValues?.icon
         ? typeIconList.find(
             (singleIcon) => singleIcon.value === initialValues?.icon
@@ -159,7 +159,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     control,
     name: 'banners',
   });
-  const layoutType = watch('settings.layoutType');
+  // const layoutType = watch('settings.layoutType');
 
   const { mutate: createType, isLoading: creating } = useCreateTypeMutation();
   const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation();
@@ -168,33 +168,34 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     const input = {
       language: router.locale,
       name: values.name!,
-      slug: values.slug!,
+      slug: values.slug? values?.slug : values?.name?.toLocaleLowerCase(),
       icon: values.icon?.value,
-      settings: {
-        isHome: values?.settings?.isHome,
-        productCard: values?.settings?.productCard,
-        layoutType: values?.settings?.layoutType,
-      },
-      promotional_sliders: values.promotional_sliders?.map(
-        ({ thumbnail, original, id }: any) => ({
-          thumbnail,
-          original,
-          id,
-        })
-      ),
-      banners: values?.banners?.map((banner) => ({
-        ...banner,
-        image: {
-          id: banner?.image?.id,
-          thumbnail: banner?.image?.thumbnail,
-          original: banner?.image?.original,
-        },
-      })),
+      // settings: {
+      //   isHome: values?.settings?.isHome,
+      //   productCard: values?.settings?.productCard,
+      //   layoutType: values?.settings?.layoutType,
+      // },
+      // promotional_sliders: values.promotional_sliders?.map(
+      //   ({ thumbnail, original, id }: any) => ({
+      //     thumbnail,
+      //     original,
+      //     id,
+      //   })
+      // ),
+      // banners: values?.banners?.map((banner) => ({
+      //   ...banner,
+      //   image: {
+      //     id: banner?.image?.id,
+      //     thumbnail: banner?.image?.thumbnail,
+      //     original: banner?.image?.original,
+      //   },
+      // })),
     };
-
+   console.log(input,"input",values)
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
+      !initialValues 
+      // ||
+      // !initialValues.translated_languages.includes(router.locale!)
     ) {
       createType({
         ...input,
@@ -207,6 +208,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       });
     }
   };
+  console.log(errors,"errors",initialValues)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap sm:my-8">
@@ -271,7 +273,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
         </Card>
       </div>
 
-      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title={t('form:group-settings')}
           details={t('form:group-settings-help-text')}
@@ -323,9 +325,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
             </div>
           </div>
         </Card>
-      </div>
+      </div> */}
 
-      {layoutType === 'classic' ? (
+      {/* {layoutType === 'classic' ? (
         <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
           <Description
             title={t('form:promotional-slider')}
@@ -336,9 +338,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
             <FileInput name="promotional_sliders" control={control} />
           </Card>
         </div>
-      ) : null}
+      ) : null} */}
 
-      <div className="my-5 flex flex-wrap sm:my-8">
+      {/* <div className="my-5 flex flex-wrap sm:my-8">
         <Description
           title={t('common:text-banner')}
           details={t('form:banner-slider-help-text')}
@@ -403,9 +405,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
           >
             {t('form:button-label-add-banner')}
           </Button>
-
+*/}
           {/* @ts-ignore */}
-          {errors?.banners?.message ? (
+          {/* {errors?.banners?.message ? (
             <Alert
               message={
                 // @ts-ignore
@@ -414,9 +416,9 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
               variant="error"
               className="mt-5"
             />
-          ) : null}
-        </Card>
-      </div>
+          ) : null} */}
+        {/* </Card> */}
+      {/* </div>  */}
 
       <div className="mb-4 text-end">
         {initialValues && (

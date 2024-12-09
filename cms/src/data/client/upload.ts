@@ -6,7 +6,7 @@ export const uploadClient = {
   upload: async (variables: any) => {
     let formData = new FormData();
     variables.forEach((attachment: any) => {
-      formData.append('attachment[]', attachment);
+      formData.append('file', attachment);
     });
     const options = {
       headers: {

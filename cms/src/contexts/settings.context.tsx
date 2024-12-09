@@ -13,8 +13,8 @@ const initialState = {
   },
   logo: {
     id: 1,
-    thumbnail: '/logo.svg',
-    original: '/logo.svg',
+    thumbnail: '/logo.png',
+    original: '/logo.png',
   },
 };
 

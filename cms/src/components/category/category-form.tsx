@@ -259,19 +259,16 @@ export default function CreateOrUpdateCategoriesForm({
     useUpdateCategoryMutation();
 
   const onSubmit = async (values: FormValues) => {
+    console.log(values,"values",control)
     const input = {
       language: router.locale,
       name: values.name,
       slug: values.slug,
       details: values.details,
-      image: {
-        thumbnail: values?.image?.thumbnail,
-        original: values?.image?.original,
-        id: values?.image?.id,
-      },
+      image: values?.image?.file,
       icon: values.icon?.value || '',
       parent: values.parent?.id ?? null,
-      type_id: values.type?.id,
+      type_id: values.type?._id,
     };
     if (
       !initialValues ||
@@ -353,12 +350,12 @@ export default function CreateOrUpdateCategoriesForm({
           )}
 
           <div className="relative">
-            {options?.useAi && (
+            {/* {options?.useAi && (
               <OpenAIButton
                 title="Generate Description With AI"
                 onClick={handleGenerateDescription}
               />
-            )}
+            )} */}
             <TextArea
               label={t('form:input-label-details')}
               {...register('details')}

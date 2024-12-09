@@ -2,11 +2,11 @@ import { adminAndOwnerOnly, adminOwnerAndStaffOnly } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
 export const siteSettings = {
-  name: 'PickBazar',
+  name: 'VDG Fashion',
   description: '',
   logo: {
-    url: '/logo.svg',
-    alt: 'PickBazar',
+    url: '/logo.png',
+    alt: 'VDG Fashion',
     href: '/',
     width: 128,
     height: 40,

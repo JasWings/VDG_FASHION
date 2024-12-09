@@ -15,7 +15,7 @@ export const getSettingsController = async (req,res) => {
     try {
     const find_settings = await Settings.find()
     const settings_data = find_settings?.[0]
-    res.status(200).json(settings_data)
+  res.status(200).json({id: 1, options: settings_data})
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message })   
     }

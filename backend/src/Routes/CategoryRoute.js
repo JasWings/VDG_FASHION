@@ -1,11 +1,11 @@
 import express from 'express';
-import multer from 'multer';
+// import multer from 'multer';
 import { categoryController, createCategoryController, deleteCategoryController, singleCategoryController, updateCategoryController } from '../Controllers/CategoryController.js';
 import { isAdmin, requireSignIn } from '../Middleware/AuthMiddleware.js';
 
 
 const router = express.Router();
-const upload = multer({ storage: multer.memoryStorage() }); 
+// const upload = multer({ storage: multer.memoryStorage() }); 
 
 
 router.post('/', requireSignIn, isAdmin, upload.single('image'), createCategoryController);

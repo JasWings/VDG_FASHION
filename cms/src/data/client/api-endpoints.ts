@@ -1,5 +1,5 @@
 export const API_ENDPOINTS = {
-  ATTACHMENTS: 'attachments',
+  ATTACHMENTS: '/commerce/upload-file/',
   ANALYTICS: 'analytics',
   ATTRIBUTES: 'attributes',
   ATTRIBUTE_VALUES: 'attribute-values',
@@ -15,9 +15,9 @@ export const API_ENDPOINTS = {
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',
   SETTINGS: 'settings',
-  CATEGORIES: 'categories',
+  CATEGORIES: '/commerce/category/',
   TAGS: 'tags',
-  TYPES: 'types',
+  TYPES: '/commerce/group',
   PROFILE_UPDATE: 'profile-update',
   LOGOUT: 'logout',
   ME: 'me',

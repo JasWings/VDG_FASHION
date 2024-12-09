@@ -9,10 +9,12 @@ import { useUploadMutation } from '@/data/upload';
 import Image from 'next/image';
 import { zipPlaceholder } from '@/utils/placeholders';
 import { ACCEPTED_FILE_TYPES } from '@/utils/constants';
-// import { processFileWithName } from '../product/form-utils';
+// import { processFileWithName } from '../product/form-utils'
+import { getImageURL } from '@/utils/image';
 
 const getPreviewImage = (value: any) => {
   let images: any[] = [];
+  
   if (value) {
     images = Array.isArray(value) ? value : [{ ...value }];
   }
@@ -46,7 +48,7 @@ export default function Uploader({
           {
             onSuccess: (data: any) => {
               // Process Digital File Name section
-              data &&
+              data && Array.isArray(data.data) &&
                 data?.map((file: any, idx: any) => {
                   const splitArray = file?.original?.split('/');
                   let fileSplitName =
@@ -55,15 +57,19 @@ export default function Uploader({
                   const filename = fileSplitName?.join('.'); // it will join the array with dot, which restore the original filename
                   data[idx]['file_name'] = filename + '.' + fileType;
                 });
-
-              let mergedData;
-              if (multiple) {
-                mergedData = files.concat(data);
-                setFiles(files.concat(data));
-              } else {
-                mergedData = data[0];
-                setFiles(data);
+              if(data.data.file){
+                const file = data.data
+                // files.push(file)
+                setFiles((prev) => [...prev,file])
               }
+              let mergedData = data?.data
+              // if (multiple) {
+              //   mergedData = files.concat(data);
+              //   setFiles(files.concat(data));
+              // } else {
+              //   mergedData = data[0];
+              //   setFiles(data);
+              // }
               if (onChange) {
                 onChange(mergedData);
               }
@@ -94,6 +100,7 @@ export default function Uploader({
       onChange(images);
     }
   };
+  console.log(files,"files",value)
   const thumbs = files?.map((file: any, idx) => {
     const imgTypes = [
       'tif',
@@ -107,6 +114,7 @@ export default function Uploader({
       'eps',
       'raw',
     ];
+    console.log(file,"map_file")
     // let filename, fileType, isImage;
     if (file && file.id) {
       // const processedFile = processFileWithName(file);
@@ -115,8 +123,9 @@ export default function Uploader({
         : file?.thumbnail?.split('.');
       const fileType = splitArray?.pop(); // it will pop the last item from the fileSplitName arr which is the file ext
       const filename = splitArray?.join('.'); // it will join the array with dot, which restore the original filename
-      const isImage = file?.thumbnail && imgTypes.includes(fileType); // check if the original filename has the img ext
+      // const isImage = file?.thumbnail && imgTypes.includes(fileType); // check if the original filename has the img ext
 
+      const isImage = file?.file && file
       // Old Code *******
 
       // const splitArray = file?.original?.split('/');
@@ -144,7 +153,7 @@ export default function Uploader({
             // </div>
             <figure className="relative h-16 w-28">
               <Image
-                src={file.thumbnail}
+                src={getImageURL(file.file)}
                 alt={filename}
                 fill
                 sizes="(max-width: 768px) 100vw"

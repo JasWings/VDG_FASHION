@@ -1,0 +1,45 @@
+export const textStyle={
+    fs1:{
+        fontSize:"36px",
+        fontWeight:"700",
+        lineHeight:"40px",
+        letterSpacing:"-0.5px"
+    },
+    fs2:{
+        fontWeight:"400",
+        fontSize:"16px",
+        lineHeight:"24px",
+        letterSpacing:"-0.5px"
+    },
+    fs3:{
+        fontWeight:"500",
+        fontSize:"14px",
+        lineHeight:"20px",
+        letterSpacing:"-0.5px",
+        fontFamily:"DM Sans"
+    },
+    fs4:{
+        fontWeight:"400",
+        fontSize:"14px",
+        lineHeight:"18px"
+    },
+    fs5:{
+        fontWeight:"500",
+        fontSize:"16px",
+        lineHeight:"24px",
+        letterSpacing:"-0.5px",
+        textAlign:"center"
+    },
+    fs6:{
+        fontWeight:"400",
+        fontSize:"14px",
+        lineHeight:"49px"
+    },
+    fs7:{
+        fontSize:"14px",
+        fontWeight:"700",
+        lineHeight:"49.5px",
+        letterSpacing:"-0.5px",
+        color:"white"
+    },
+}

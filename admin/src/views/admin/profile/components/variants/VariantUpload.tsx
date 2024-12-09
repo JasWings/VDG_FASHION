@@ -1,0 +1,102 @@
+import React, { useEffect, useState } from 'react';
+import { Box, Button, Flex, Text, useColorModeValue ,Grid} from '@chakra-ui/react';
+import Card from "@/components/card/Card"
+import { RiUploadCloud2Line } from 'react-icons/ri';
+import VariantDropzone from './variantDropzone';
+import VariantUploadedImages from './variantUploadImage';
+import { UploadFileEndPoint } from '@/utils/url/url';
+import { UploadFiles } from '@/utils/url/api';
+import { useCustomToast } from '@/components/toast/Toast';
+
+
+export default function VariantUpload(props: { used?: number; total?: number; [x: string]: any,productDetails:any,setProductDetails:any }) {
+	const { used, total,productDetails,setProductDetails, ...rest } = props;
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [uploadedImages, setUploadedImages] = useState([]);
+  const brandColor = useColorModeValue('black', 'white');
+  const useToast=useCustomToast()
+
+  useEffect(()=>{
+    const updateProductImages = (newImages: any[]) => {
+      setProductDetails((prevProductDetails) => ({
+        ...prevProductDetails,
+        productImages: newImages,
+      }));
+    };
+    updateProductImages(uploadedImages)
+  })
+
+
+  const handleFilesSelected =async(files) => {
+    setSelectedFiles(files)
+   try {
+     const formData = new FormData();
+     files.forEach((file, index) => {
+     formData.append(`file`, file);
+     });
+     const header={
+       'Content-Type': 'multipart/form-data', 
+     }
+     const response:any = await UploadFiles(UploadFileEndPoint,  formData,header );
+     if (response.status==="success") {
+      useToast({title:`Image Upload successfully!`,position:"top",status:response.status})
+     setUploadedImages([...uploadedImages,response.data])
+     const updateProductImages = (newImages: any[]) => {
+      setProductDetails((prevProductDetails) => ({
+        ...prevProductDetails,
+        productImages: newImages,
+      }));
+    };
+    updateProductImages(response.data)
+     updateProductImages(uploadedImages)
+     } else {
+     console.error('Upload failed:', response.status, response.statusText);
+     useToast({title:"Failed Try Again",status:response.status,position:"top"})
+     }
+   } catch (error) {
+     console.error('Error:', error);
+     useToast({title:"Failed Try Again",status:"error",position:"top"})
+
+   }
+  };
+
+  const handleDelete=(data)=>{
+        
+        //setProductDetails((prevProductDetails) => ({
+        //  ...prevProductDetails,
+        //  productImages: prevProductDetails.productImages.filter((item, index) => item.id !== data.id),
+        //}));
+  }
+  
+
+  return (
+	<>
+    <Card {...rest} mb='20px' p='5px' alignItems='center'>
+      <Flex h='100%' w='100%' direction={{ base: 'column', '2xl': 'row' }}>
+        <Box  w={{ base: '100%', '2xl': '100%' }} maxH={{ base: '60%', lg: '50%', '2xl': '100%' }} minH={{ base: '60%', lg: '50%', '2xl': '100%' }}>
+          <VariantDropzone
+            content={
+              <Box display={'flex'} flexDirection={"column"} alignItems={"center"}>
+                <RiUploadCloud2Line size={46}   w='46px' h='46px' color={brandColor} />
+                <Flex justify='center' mx='auto' mb='12px'>
+                  <Text fontSize='xl' fontWeight='700' color='#747171'>
+                    Drag your images here
+                  </Text>
+                </Flex>
+                <Text fontSize='sm' fontWeight='500' color='#BDBDBD'>
+                  PNG, JPG and GIF files are allowed
+                </Text>
+              </Box>
+            }
+            onFilesSelected={handleFilesSelected}
+          />
+        </Box>
+      </Flex>
+    </Card>
+	<Flex>
+	  <VariantUploadedImages images={selectedFiles} selectedImages={uploadedImages} onSelectImage={(image) => {}} onDelete={handleDelete} />
+	</Flex>
+	</>
+  );
+}
+

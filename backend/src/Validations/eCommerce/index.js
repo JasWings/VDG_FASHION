@@ -3,7 +3,9 @@ import Joi from "joi";
 const tagSchema = Joi.object({
     identity: Joi.string().min(2).max(50).required(),
     description: Joi.string().max(255).optional(),
-    slug: Joi.string().required()
+    slug: Joi.string().required(),
+    icon : Joi.string().optional(),
+    group : Joi.string().optional()
   });
   
 
@@ -15,14 +17,27 @@ export  const validateTag = (tagData) => {
     return value;
 };
 
-const attributeValidationSchema = Joi.object({
-  identity : Joi.string().min(2).max(50).required(),
-  value: Joi.string().min(1).max(100).required(),
+
+
+
+const valueValidationSchema = Joi.object({
+  id: Joi.number().optional(), 
+  slug: Joi.string().trim().min(1).max(50).required(),
+  attribute_id: Joi.number().optional(),
+  value: Joi.string().trim().min(1).max(100).required(),
   meta: Joi.string().max(255).optional(),
 });
 
-export const validateAttribute = (attributeData) => {
+const attributeValidationSchema = Joi.object({
+  identity: Joi.string().trim().min(2).max(50).required(),
+  values: Joi.array().items(valueValidationSchema).min(1).optional(),
+  meta: Joi.string().max(255).optional(),
+  createdAt: Joi.date().optional(),
+  updatedAt: Joi.date().optional(),
+});
 
+
+export const validateAttribute = (attributeData) => {
   const { error, value } = attributeValidationSchema.validate(attributeData, { abortEarly: false });
 
   if (error) {
@@ -30,19 +45,19 @@ export const validateAttribute = (attributeData) => {
   }
 
   return value;
-
 };
 
+
 const categoryValidationSchema = Joi.object({
-  identity: Joi.string().min(2).max(50).required().label("Name"),
-  slug: Joi.string().required().label("Slug"),
-  details: Joi.string().optional().label("Details"),
-  type_id : Joi.string().required().label("Group"),
-  icon: Joi.string().optional().label("Icon"),
-  image: Joi.string().optional().label("Image"),
-  is_child: Joi.boolean().optional().label("Is Child"),
-  parent: Joi.string().optional().label("Parent"),
-  tags: Joi.array().items(Joi.string()).optional().label("Tags"),
+  identity: Joi.string().min(2).max(50).required(),
+  slug: Joi.string().required(),
+  details: Joi.string().optional(),
+  type_id : Joi.string().required(),
+  icon: Joi.string().optional(),
+  image: Joi.string().optional(),
+  is_child: Joi.boolean().optional(),
+  parent: Joi.any().optional(),
+  tags: Joi.array().items(Joi.string()).optional(),
 });
 
 export const validateCategory = (categoryData) => {

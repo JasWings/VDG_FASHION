@@ -1,4 +1,5 @@
-import { createFeature, loginValidations, RoleValidation, updateFeature, validateUser } from "./administration/index.js";
+import { ChangePasswordValidation, createFeature, loginValidations, OtpValidation, RoleValidation, updateFeature, validateUser } from "./administration/index.js";
+import { ValidateCustomerAddress } from "./eCommerce/address.js";
 import { validateAttribute, validateCategory, validateGroup, validateTag } from "./eCommerce/index.js";
 
 
@@ -12,7 +13,10 @@ const Validations = {
     validateTag,
     validateAttribute,
     validateCategory,
-    validateGroup
+    validateGroup,
+    OtpValidation,
+    ChangePasswordValidation,
+    ValidateCustomerAddress
 }
 
 export default Validations

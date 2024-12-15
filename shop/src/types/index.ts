@@ -580,7 +580,6 @@ export interface RegisterUserInput {
   phone_number:string;
   password: string;
   confirm_password:string,
-  country:string
 }
 
 // export interface RegisterUserInput {

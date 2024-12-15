@@ -18,6 +18,7 @@ import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { getImageURL } from '@/utils/image';
 
 export type IProps = {
   products: Product[] | undefined;
@@ -74,7 +75,7 @@ const ProductList = ({
       render: (image: any, { name }: { name: string }) => (
         <div className="relative flex h-[42px] w-[42px] items-center">
           <Image
-            src={image?.thumbnail ?? siteSettings.product.placeholder}
+            src={ getImageURL(image?.file) ?? siteSettings.product.placeholder}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw"
@@ -112,17 +113,17 @@ const ProductList = ({
         <span className="truncate whitespace-nowrap">{type?.name}</span>
       ),
     },
-    {
-      title: t('table:table-item-shop'),
-      dataIndex: 'shop',
-      key: 'shop',
-      width: 120,
-      align: 'center',
-      ellipsis: true,
-      render: (shop: Shop) => (
-        <span className="truncate whitespace-nowrap">{shop?.name}</span>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-shop'),
+    //   dataIndex: 'shop',
+    //   key: 'shop',
+    //   width: 120,
+    //   align: 'center',
+    //   ellipsis: true,
+    //   render: (shop: Shop) => (
+    //     <span className="truncate whitespace-nowrap">{shop?.name}</span>
+    //   ),
+    // },
     {
       title: 'Product Type',
       dataIndex: 'product_type',
@@ -242,7 +243,7 @@ const ProductList = ({
       width: 120,
       render: (slug: string, record: Product) => (
         <LanguageSwitcher
-          slug={slug}
+          slug={record?.uuid}
           record={record}
           deleteModalView="DELETE_PRODUCT"
           routes={Routes?.product}

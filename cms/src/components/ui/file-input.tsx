@@ -14,12 +14,13 @@ interface FileInputProps {
 const FileInput = ({
   control,
   name,
-  multiple = true,
+  multiple = false,
   acceptFile = false,
   helperText,
   defaultValue = [],
   maxSize,
 }: FileInputProps) => {
+  
   return (
     <Controller
       control={control}

@@ -52,9 +52,10 @@ export function useProducts(pageSize:number) {
     fetchNextPage();
     setNewPageSize(pageSize+newPageSize)
   }
+  console.log(data,"data")
   const load=data?.pages[0]?.count>30&&newPageSize<data?.pages[0]?.count
   return {
-    products: data?.pages[0]?.results?.flatMap((page) => page) ?? [],
+    products: data?.pages[0]?.data ?? [],
     paginatorInfo: Array.isArray(data?.pages)
       ? mapPaginatorData(data?.pages[data.pages.length - 1])
       : null,

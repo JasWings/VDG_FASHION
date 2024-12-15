@@ -20,6 +20,7 @@ export default function Dashboard({
 }: {
   userPermissions: string[];
 }) {
+  console.log(userPermissions,userPermissions.includes(SUPER_ADMIN))
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminDashboard />;
   }

@@ -115,14 +115,14 @@ export const AddressForm: React.FC<any> = ({
             variant="outline"
             className="col-span-2"
             />
-            <Input
+            {/* <Input
               label={t('text-country')}
               // {...register(me?.country?.id)}
               error={t(errors.address?.country?.message!)}
               variant="outline"
               value={me.country.identity==="US"?"United States":me?.country?.identity}
               readOnly
-            />
+            /> */}
 
             <Input
               label={t('text-city')}
@@ -210,7 +210,6 @@ export default function CreateOrUpdateAddressForm() {
        last_name:me.last_name,
        phone_number:me.phone_number,
        landmark:"landmark",
-       country:me.country.id,
        address_type: values.type,
         address_line_1: values?.address?.address_line_1,
         address_line_2: values?.address?.address_line_2,

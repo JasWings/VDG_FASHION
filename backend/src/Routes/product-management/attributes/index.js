@@ -5,7 +5,7 @@ import { createAttribute, deleteAttribute, getAllAttributes, getAttributeById, u
 const AttributeRouter  = express.Router()
 
 AttributeRouter.post("/",createAttribute)
-AttributeRouter.get("/all",getAllAttributes)
+AttributeRouter.get("/",getAllAttributes)
 AttributeRouter.get("/:id",getAttributeById)
 AttributeRouter.put("/:id",updateAttribute)
 AttributeRouter.delete("/:id",deleteAttribute)

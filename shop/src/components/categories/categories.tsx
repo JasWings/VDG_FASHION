@@ -42,6 +42,7 @@ export default function Categories({
   const { categories, isLoading, error } = useCategories(variables);
   if (error) return <ErrorMessage message={error.message} />;
   const Component = MAP_CATEGORY_TO_GROUP[layout];
+  
   return (
     <Component
       notFound={!Boolean(categories.length)}

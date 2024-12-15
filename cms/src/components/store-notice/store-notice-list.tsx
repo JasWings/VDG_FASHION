@@ -2,7 +2,7 @@ import ActionButtons from '@/components/common/action-buttons';
 import { NoShop } from '@/components/icons/no-shop';
 import PriorityColor from '@/components/store-notice/priority-color';
 import Badge from '@/components/ui/badge/badge';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
 import TitleWithSort from '@/components/ui/title-with-sort';
@@ -193,34 +193,34 @@ const StoreNoticeList = ({
         />
       ),
     },
-    {
-      title: t('table:table-item-actions'),
-      key: 'actions',
-      align: alignRight,
-      width: 150,
-      render: (data: StoreNotice) => {
-        if (router?.asPath !== '/') {
-          return (
-            <>
-              <LanguageSwitcher
-                slug={data?.id}
-                record={data}
-                deleteModalView="DELETE_STORE_NOTICE"
-                routes={Routes?.storeNotice}
-              />
-            </>
-          );
-        } else {
-          return (
-            <ActionButtons
-              id={data?.id}
-              detailsUrl={Routes?.storeNotice?.details(data?.id)}
-              customLocale={router?.locale}
-            />
-          );
-        }
-      },
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   key: 'actions',
+    //   align: alignRight,
+    //   width: 150,
+    //   render: (data: StoreNotice) => {
+    //     if (router?.asPath !== '/') {
+    //       return (
+    //         <>
+    //           <LanguageSwitcher
+    //             slug={data?.id}
+    //             record={data}
+    //             deleteModalView="DELETE_STORE_NOTICE"
+    //             routes={Routes?.storeNotice}
+    //           />
+    //         </>
+    //       );
+    //     } else {
+    //       return (
+    //         <ActionButtons
+    //           id={data?.id}
+    //           detailsUrl={Routes?.storeNotice?.details(data?.id)}
+    //           customLocale={router?.locale}
+    //         />
+    //       );
+    //     }
+    //   },
+    // },
   ];
   return (
     <>

@@ -53,7 +53,7 @@ const CartCounterButton = () => {
       <span className="mt-3 w-full rounded bg-light px-2 py-2 text-accent">
         {/* {isAuthorize?currency_symbol+total_current_price:totalPrice} */}
         {/* {totalPrice} */}
-        {Cart.country.currency_symbol+Cart.price_details.total_current_price}
+        &#8377;   {Cart.price_details.total_current_price}
       </span>
     </button>
   );

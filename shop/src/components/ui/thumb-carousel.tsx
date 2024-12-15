@@ -14,6 +14,7 @@ import { productPlaceholder } from '@/lib/placeholders';
 import { useIsRTL } from '@/lib/locals';
 import classNames from 'classnames';
 import { PlayIcon } from '../icons/play-icon';
+import { getImageURL } from '@/lib/image';
 
 interface Props {
   gallery: any[];
@@ -52,7 +53,7 @@ export const ThumbsCarousel: React.FC<Props> = ({
   const { isRTL } = useIsRTL();
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
-  
+  console.log(gallery,"gallery")
   return (
     <div>
       <div className="relative">
@@ -69,13 +70,13 @@ export const ThumbsCarousel: React.FC<Props> = ({
           }}
           {...swiperParams}
         > 
-          {gallery[0].map((item: any) => (
+          {gallery?.map((item: any) => (
             <SwiperSlide
               key={`product-gallery-${item.id}`}
               className="!flex items-center justify-center selection:bg-transparent"
             >
               <Image
-                src={"https://api.slrexports.com"+item?.image.file ?? productPlaceholder}
+                src={getImageURL(item?.file) ?? productPlaceholder}
                 alt={`Product gallery ${item.id}`}
                 width={aspectRatio === 'square' ? 450 : 420}
                 height={aspectRatio === 'square' ? 450 : 560}
@@ -138,14 +139,14 @@ export const ThumbsCarousel: React.FC<Props> = ({
           observeParents={true}
           breakpoints={galleryCarouselBreakpoints}
         >
-          {gallery[0]?.map((item: any) => (
+          {gallery?.map((item: any) => (
             <SwiperSlide
               key={`product-thumb-gallery-${item.id}`}
               className="!flex cursor-pointer items-center justify-center overflow-hidden rounded border border-border-200 border-opacity-75 hover:opacity-75"
             >
               <div className="relative h-20 w-20">
                 <Image
-                  src={"https://api.slrexports.com"+item?.image.file ?? productPlaceholder}
+                  src={getImageURL(item?.file) ?? productPlaceholder}
                   alt={`Product thumb gallery ${item.id}`}
                   fill
                   className="object-contain"

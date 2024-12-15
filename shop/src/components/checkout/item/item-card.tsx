@@ -9,7 +9,7 @@ interface Props {
 const ItemCard = ({ item, notAvailable }: Props) => {
   const { t } = useTranslation('common');
   const { price } = usePrice({
-    amount: item.quantity*item.product.product_prices[0].current_price ,
+    amount: item.quantity*item.sale_price ,
   });
   
   return (
@@ -27,7 +27,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
             {item.quantity}
           </span>
           <span className="mx-2">x</span>
-          <span>{item.product.identity}</span> | <span>{item.product.weight_in_grams}gm</span>
+          <span>{item.product.name}</span> 
         </span>
       </div>
       <span

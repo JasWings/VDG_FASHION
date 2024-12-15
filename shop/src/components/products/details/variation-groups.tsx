@@ -5,7 +5,7 @@ interface Props {
   variations: any;
   variant?: 'normal' | 'outline';
 }
-const VariationGroups: React.FC<Props> = ({ variations, variant }) => {
+const VariationGroups: React.FC<Props> = ({ variations, variant,name }) => {
   const { attributes, setAttributes } = useAttributes();
   const replaceHyphens = (str: string) => {
     return str.replace(/-/g, ' ');
@@ -13,13 +13,13 @@ const VariationGroups: React.FC<Props> = ({ variations, variant }) => {
 
   return (
     <>
-      {Object.keys(variations).map((variationName, index) => (
+      {/* {Object.keys(variations).map((name, index) => ( */}
         <div
           className="flex items-center border-b  border-border-200 border-opacity-70 py-4 first:pt-0 last:border-b-0 last:pb-0"
-          key={index}
+          // key={index}
         >
           <span className="inline-block min-w-[60px] whitespace-nowrap text-sm font-semibold capitalize leading-none text-heading ltr:mr-5 rtl:ml-5">
-            {replaceHyphens(variationName)} :
+            {replaceHyphens(name)} :
           </span>
           <div className="-mb-5 w-full overflow-hidden">
             <Scrollbar
@@ -31,19 +31,19 @@ const VariationGroups: React.FC<Props> = ({ variations, variant }) => {
               }}
             >
               <div className="-mb-1.5 flex w-full space-x-4 rtl:space-x-reverse">
-                {variations[variationName].map((attribute: any) => (
+                {variations.map((attribute: any) => (
                   <Attribute
-                    // className={variationName}
-                    type={variationName}
+                    // className={name}
+                    type={name}
                     color={attribute.meta ? attribute.meta : attribute?.value}
-                    isActive={attributes[variationName] === attribute.value}
+                    isActive={attributes[name] === attribute.value}
                     value={attribute.value}
                     key={attribute.id}
                     variant={variant}
                     onClick={() =>
                       setAttributes((prev: any) => ({
                         ...prev,
-                        [variationName]: attribute.value,
+                        [name]: attribute.value,
                       }))
                     }
                   />
@@ -52,7 +52,7 @@ const VariationGroups: React.FC<Props> = ({ variations, variant }) => {
             </Scrollbar>
           </div>
         </div>
-      ))}
+      {/* ))} */}
     </>
   );
 };

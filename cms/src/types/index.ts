@@ -680,6 +680,7 @@ export interface Tag {
   products?: Product[];
   created_at?: string;
   updated_at?: string;
+  uuid : string
 }
 
 export interface CreateTagInput {

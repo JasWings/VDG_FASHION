@@ -47,7 +47,7 @@ function CustomApp({
       <div dir={dir}>
         {/* <SessionProvider session={session}> */}
           <QueryProvider pageProps={pageProps}>
-            <CountryProvider>
+            {/* <CountryProvider> */}
             <SearchProvider>
               <ModalProvider>
                 <CartProvider>
@@ -68,7 +68,7 @@ function CustomApp({
                 </CartProvider>
               </ModalProvider>
             </SearchProvider>
-            </CountryProvider>
+            {/* </CountryProvider> */}
           </QueryProvider>
         {/* </SessionProvider> */}
       </div>

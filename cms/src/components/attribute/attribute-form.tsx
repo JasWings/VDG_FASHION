@@ -63,18 +63,27 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
       !initialValues ||
       !initialValues.translated_languages.includes(router.locale!)
     ) {
+      const data = {
+        identity : values?.name,
+        values: values?.values.map(({ id, value, meta }: any) => ({
+          value,
+          meta,
+          slug : value?.toLowerCase()
+        })),
+      }
       createAttribute(
-        {
-          language: router.locale,
-          name: values.name!,
-          shop_id: shopId ? Number(shopId) : Number(initialValues?.shop_id),
-          values: values?.values.map(({ id, value, meta }: any) => ({
-            language: router.locale,
-            value,
-            meta,
-          })),
-          ...(initialValues?.slug && { slug: initialValues.slug }),
-        },
+        // {
+        //   language: router.locale,
+        //   name: values.name!,
+        //   shop_id: shopId ? Number(shopId) : Number(initialValues?.shop_id),
+        //   values: values?.values.map(({ id, value, meta }: any) => ({
+        //     language: router.locale,
+        //     value,
+        //     meta,
+        //   })),
+        //   ...(initialValues?.slug && { slug: initialValues.slug }),
+        // },
+        data,
         {
           onError: (error: any) => {
             setErrorMessage(error?.response?.data?.message);

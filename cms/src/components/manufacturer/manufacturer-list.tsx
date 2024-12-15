@@ -16,7 +16,7 @@ import {
 import { Routes } from '@/config/routes';
 import { useIsRTL } from '@/utils/locals';
 import { useUpdateManufacturerMutation } from '@/data/manufacturer';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 type IProps = {
   manufacturers: Manufacturer[] | null | undefined;
@@ -146,20 +146,20 @@ const ManufacturerList = ({
         );
       },
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
-      align: 'right' as AlignType,
-      render: (slug: string, record: Manufacturer) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_MANUFACTURER"
-          routes={Routes?.manufacturer}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'slug',
+    //   key: 'actions',
+    //   align: 'right' as AlignType,
+    //   render: (slug: string, record: Manufacturer) => (
+    //     <LanguageSwitcher
+    //       slug={slug}
+    //       record={record}
+    //       deleteModalView="DELETE_MANUFACTURER"
+    //       routes={Routes?.manufacturer}
+    //     />
+    //   ),
+    // },
   ];
 
   if (router?.query?.shop) {

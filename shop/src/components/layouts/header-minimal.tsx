@@ -10,7 +10,7 @@ import { authorizationAtom } from '@/store/authorization-atom';
 import SearchWithSuggestion from '@/components/ui/search/search-with-suggestion';
 import Link from '@/components/ui/link';
 import GroupsDropdownMenu from './menu/groups-menu';
-import LanguageSwitcher from '@/components/ui/language-switcher';
+// import LanguageSwitcher from '@/components/ui/language-switcher';
 
 const CartCounterIconButton = dynamic(
   () => import('@/components/cart/cart-counter-icon-button'),
@@ -44,13 +44,13 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
           {/* <Logo className="mx-auto lg:mx-0" /> */}
           <Logo className={`${!isMultilangEnable ? 'mx-auto lg:mx-0' : 'ltr:ml-0 rtl:mr-0'}`} />
 
-          {isMultilangEnable ? (
+          {/* {isMultilangEnable ? (
             <div className="lg:hidden ltr:ml-auto rtl:mr-auto">
               <LanguageSwitcher />
             </div>
           ) : (
             ''
-          )}
+          )} */}
 
           <ul className="hidden shrink-0 items-center space-x-7 ltr:ml-10 ltr:mr-auto rtl:mr-10 rtl:ml-auto rtl:space-x-reverse lg:flex 2xl:space-x-10">
             <StaticMenu />
@@ -89,7 +89,7 @@ const HeaderMinimal = ({ layout }: { layout: string }) => {
           <GroupsDropdownMenu variant="minimal" />
           {isMultilangEnable ? (
             <div className="ms-auto lg:me-5 xl:me-8 2xl:me-10 flex-shrink-0">
-              <LanguageSwitcher />
+              {/* <LanguageSwitcher /> */}
             </div>
           ) : (
             ''

@@ -20,7 +20,7 @@ export default function UpdateTagPage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-
+  
   return (
     <>
       <div className="flex border-b border-dashed border-gray-300 py-5 sm:py-8">
@@ -29,7 +29,7 @@ export default function UpdateTagPage() {
         </h1>
       </div>
 
-      <CreateOrUpdateTagForm initialValues={tag} />
+      <CreateOrUpdateTagForm initialValues={tag?.data} />
     </>
   );
 }

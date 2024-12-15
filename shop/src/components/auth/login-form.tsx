@@ -37,7 +37,7 @@ function LoginForm() {
 
   function onSubmit({ username, password }: LoginUserInput) {
     login({
-      username,
+      email : username,
       password,
     });
   }

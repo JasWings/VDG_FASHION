@@ -9,7 +9,7 @@ import { MappedPaginatorInfo, Tag } from '@/types';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   tags: any | undefined | null;
@@ -73,7 +73,7 @@ const TagList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
+      dataIndex: 'identity',
       key: 'name',
       align: alignLeft,
       onHeaderCell: () => onHeaderClick('name'),
@@ -99,20 +99,20 @@ const TagList = ({
         </div>
       ),
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
-      align: alignRight,
-      render: (slug: string, record: Tag) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_TAG"
-          routes={Routes?.tag}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'slug',
+    //   key: 'actions',
+    //   align: alignRight,
+    //   render: (slug: string, record: Tag) => (
+    //     <LanguageSwitcher
+    //       slug={record?.uuid}
+    //       record={record}
+    //       deleteModalView="DELETE_TAG"
+    //       routes={Routes?.tag}
+    //     />
+    //   ),
+    // },
   ];
 
   return (

@@ -39,10 +39,11 @@ export default function ProductVariableForm({
   });
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
 
-  const { attributes, loading } = useAttributesQuery({
+  const {  attributes, loading } = useAttributesQuery({
     shop_id: initialValues ? initialValues.shop_id : shopId,
     language: locale,
   });
+  const { data } = attributes
   const {
     register,
     control,
@@ -59,6 +60,7 @@ export default function ProductVariableForm({
   });
   const variations = watch('variations');
   const cartesianProduct = getCartesianProduct(getValues('variations'));
+  
   return (
     <div className="my-5 flex flex-wrap sm:my-8">
       <Description
@@ -102,9 +104,9 @@ export default function ProductVariableForm({
                         name={`variations.${index}.attribute`}
                         control={control}
                         defaultValue={field.attribute}
-                        getOptionLabel={(option: any) => option.name}
-                        getOptionValue={(option: any) => option.id}
-                        options={filterAttributes(attributes, variations)!}
+                        getOptionLabel={(option: any) => option.identity}
+                        getOptionValue={(option: any) => option._id}
+                        options={filterAttributes(data, variations)!}
                         isLoading={loading}
                       />
                     </div>
@@ -129,7 +131,7 @@ export default function ProductVariableForm({
 
           <div className="px-5 md:px-8">
             <Button
-              disabled={fields.length === attributes?.length}
+              disabled={fields.length === attributes?.data?.length}
               onClick={(e: any) => {
                 e.preventDefault();
                 append({ attribute: '', value: [] });

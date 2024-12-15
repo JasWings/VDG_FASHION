@@ -6,7 +6,7 @@ import { LangSwitcherIcon } from '@/components/icons/lang-switcher-icon';
 import { languageMenu } from '@/lib/locals';
 import Cookies from 'js-cookie';
 import CountryFlag from "react-country-flag"
-import { useCountry } from '@/store/country/country.context';
+// import { useCountry } from '@/store/country/country.context';
 import Icons from "rendered-country-flags"
 import Image from 'next/image';
 import client from '@/framework/client';
@@ -20,7 +20,7 @@ export default function LanguageSwitcher() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { asPath, locale, locales } = router;
-  const {CountryList,selectedCountry,setSelectedCountry,updateCountry}=useCountry()
+  // const {CountryList,selectedCountry,setSelectedCountry,updateCountry}=useCountry()
   const [isAuthorize]=useAtom(authorizationAtom)
   const {openModal}=useModalAction()
 
@@ -64,15 +64,15 @@ export default function LanguageSwitcher() {
             <span className="hidden items-center truncate xl:flex">
               <span className="text-xl ltr:mr-3 rtl:ml-3">
                 {/* {selectedItem.icon} */}
-               {Icons[selectedCountry?.country_code]&&<Image 
+               {/* {Icons[selectedCountry?.country_code]&&<Image 
                 width={28}
                 height={20}
                 src={`${Icons[selectedCountry?.country_code]}`}
                 alt={selectedCountry?.identity}
                 />
-               }
+               } */}
               </span>{' '}
-              {selectedCountry?.identity}
+              
             </span>
             <span className="pointer-events-none absolute inset-y-0 hidden items-center ltr:right-0 ltr:pr-2 rtl:left-0 rtl:pl-2 xl:flex">
               <LangSwitcherIcon className="text-gray-400" aria-hidden="true" />
@@ -104,7 +104,7 @@ export default function LanguageSwitcher() {
                       <span className="text-xl">{option.icon}</span>
                       <span
                         className={`${
-                          option?.identity===selectedCountry?.identity? 'font-medium' : 'font-normal'
+                          option?.identity===""? 'font-medium' : 'font-normal'
                         } block truncate ltr:ml-1.5 rtl:mr-1.5`}
                       >
                         {option?.identity}

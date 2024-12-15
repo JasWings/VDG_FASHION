@@ -12,7 +12,8 @@ import { Category, MappedPaginatorInfo } from '@/types';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { getImageURL } from '@/utils/image';
 
 export type IProps = {
   categories: Category[] | undefined;
@@ -74,8 +75,8 @@ const CategoryList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'identity',
+      key: 'identity',
       align: alignLeft,
       width: 150,
       onHeaderCell: () => onHeaderClick('name'),
@@ -96,12 +97,12 @@ const CategoryList = ({
       width: 180,
 
       render: (image: any, { name }: { name: string }) => {
-        if (!image?.thumbnail) return null;
+        if (!image) return null;
 
         return (
           <div className="relative mx-auto h-10 w-10">
             <Image
-              src={image?.thumbnail ?? '/'}
+              src={ getImageURL(image) ?? '/'}
               alt={name}
               fill
               sizes="(max-width: 768px) 100vw"
@@ -141,7 +142,7 @@ const CategoryList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
+      dataIndex: 'slug',
       key: 'slug',
       align: alignLeft,
       width: 150,
@@ -149,34 +150,34 @@ const CategoryList = ({
     },
     {
       title: t('table:table-item-group'),
-      dataIndex: 'type',
+      dataIndex: 'type_id',
       key: 'type',
       align: 'center',
       width: 120,
-      render: (type: any) => (
+      render: (type_id: any) => (
         <div
           className="overflow-hidden truncate whitespace-nowrap"
-          title={type?.name}
+          title={type_id?.name}
         >
-          {type?.name}
+          {type_id?.name}
         </div>
       ),
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
-      align: alignRight,
-      width: 290,
-      render: (slug: string, record: Category) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_CATEGORY"
-          routes={Routes?.category}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'slug',
+    //   key: 'actions',
+    //   align: alignRight,
+    //   width: 290,
+    //   render: (slug: string, record: Category) => (
+    //     <LanguageSwitcher
+    //       slug={slug}
+    //       record={record}
+    //       deleteModalView="DELETE_CATEGORY"
+    //       routes={Routes?.category}
+    //     />
+    //   ),
+    // },
   ];
 
   return (

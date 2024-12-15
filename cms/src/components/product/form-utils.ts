@@ -182,8 +182,9 @@ export function getProductDefaultValues(
 export function filterAttributes(attributes: any, variations: any) {
   let res = [];
   res = attributes?.filter((el: any) => {
+    console.log(attributes)
     return !variations?.find((element: any) => {
-      return element?.attribute?.slug === el?.slug;
+      return element?.attribute?.slug === el?.identity.toLowerCase();
     });
   });
   return res;
@@ -236,17 +237,17 @@ export function getProductInputValues(
   // const { locale } = useRouter();
   // const router = useRouter();
   const processedFile = processFileWithName(digital_file_input);
-
+  
   return {
     ...simpleValues,
     is_digital,
     // language: router.locale,
     author_id: author?.id,
     manufacturer_id: manufacturer?.id,
-    type_id: type?.id,
+    type_id: type?._id,
     product_type: product_type?.value,
-    categories: categories.map((category) => category?.id),
-    tags: tags.map((tag) => tag?.id),
+    categories: categories.map((category) => category?._id),
+    tags: tags.map((tag) => tag?._id),
     image: omitTypename<any>(image),
     gallery: values.gallery?.map((gi: any) => omitTypename(gi)),
 
@@ -271,8 +272,8 @@ export function getProductInputValues(
     },
     ...(product_type?.value === ProductType?.Variable && {
       quantity: calculateQuantity(variation_options),
-      variations: variations?.flatMap(({ value }: any) =>
-        value?.map(({ id }: any) => ({ attribute_value_id: id }))
+      variations: variations?.flatMap(({ value,attribute }: any) =>
+        value?.map(({ _id }: any) => ({ attribute_id: attribute?._id }))
       ),
       variation_options: {
         // @ts-ignore

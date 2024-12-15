@@ -14,7 +14,7 @@ import { useAtom } from 'jotai';
 import { drawerAtom } from '@/store/drawer-atom';
 import { authorizationAtom } from '@/store/authorization-atom';
 import ProgressBar from '../ui/progressBar';
-import { useCountry } from '@/store/country/country.context';
+// import { useCountry } from '@/store/country/country.context';
 
 
 const CartSidebarView = () => {
@@ -23,7 +23,7 @@ const CartSidebarView = () => {
   const [_, closeSidebar] = useAtom(drawerAtom);
   const router = useRouter();
   const [isAuthorize]=useAtom(authorizationAtom)
-  const {selectedCountry}=useCountry()
+  // const {selectedCountry}=useCountry()
 
   // const {total_current_price,currency_symbol ,cartList,cartDetails }=isAuthorize?useCarts():{total_current_price:null,currency_symbol:null}
   function handleCheckout() {
@@ -66,11 +66,11 @@ const CartSidebarView = () => {
         </button>
         </div>
         <div>
-        <ProgressBar totalKg={selectedCountry?.max_weight_kg} valueInGrams={Cart.price_details.total_weight_in_grams} />
+        {/* <ProgressBar totalKg={1} valueInGrams={Cart.price_details.total_weight_in_grams} /> */}
         </div>
       </header>
       {/* End of cart header */}
-      <motion.div layout className="grow pt-[110px] pb-20">
+      <motion.div layout className="grow pt-[80px] pb-20">
         {
         items.length > 0 ? (
           items?.map((item) => <CartItem item={item} key={item.id} />)
@@ -106,7 +106,7 @@ const CartSidebarView = () => {
             <span className="flex h-full shrink-0 items-center rounded-full bg-light px-5 text-accent">
               {/* {isAuthorize?currency_symbol+total_current_price:totalPrice} */}
               {/* {totalPrice} */}
-              {Cart.country.currency_symbol+Cart.price_details.total_current_price}
+              &#8377; {Cart.price_details.total_current_price}
             </span>
           </button>
           )

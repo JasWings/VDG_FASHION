@@ -15,6 +15,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import LinkButton from '@/components/ui/link-button';
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,7 +42,7 @@ export default function ProductsPage() {
     orderBy,
     sortedBy,
   });
-
+  console.log(products,"products")
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
@@ -65,10 +66,23 @@ export default function ProductsPage() {
           </div>
 
           <div className="flex w-full flex-col items-center ms-auto md:w-3/4">
+          <div className="flex w-full items-center">
             <Search
               onSearch={handleSearch}
               placeholderText={t('form:input-placeholder-search-name')}
             />
+                <LinkButton
+                  href={`/products/create`}
+                  className="h-12 ms-4 md:ms-6"
+                >
+                  <span className="hidden md:block">
+                    + {t('form:button-label-add-product')}
+                  </span>
+                  <span className="md:hidden">
+                    + {t('form:button-label-add')}
+                  </span>
+                </LinkButton>
+                </div>
           </div>
 
           <button

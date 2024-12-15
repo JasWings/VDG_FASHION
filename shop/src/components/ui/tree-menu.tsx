@@ -71,7 +71,7 @@ const TreeMenuItem: React.FC<TreeMenuItemProps> = ({
       <ExpandMoreIcon className="h-3 w-3" />
     );
   }
-
+  
   return (
     <>
       <motion.li
@@ -91,7 +91,7 @@ const TreeMenuItem: React.FC<TreeMenuItemProps> = ({
             <span className="flex h-5 w-5 items-center justify-center ltr:mr-4 rtl:ml-4">
               {getIcon({
                 iconList: CategoryIcons,
-                iconName: "Common",
+                iconName: icon,
                 className: 'h-full w-full',
               })}
             </span>
@@ -149,9 +149,6 @@ function TreeMenu({ items, className,filterLoading,setFilterLoading }: TreeMenuP
   return (
     <ul className={cn('text-xs', className)}>
       {items?.map((item: any) => (
-        <TreeMenuItem filterLoading={filterLoading} setFilterLoading={setFilterLoading} key={`${item.identity}${item.slug}`} item={item} />
-      ))}
-      {[{identity:"All",slug:"all"}]?.map((item: any) => (
         <TreeMenuItem filterLoading={filterLoading} setFilterLoading={setFilterLoading} key={`${item.identity}${item.slug}`} item={item} />
       ))}
     </ul>

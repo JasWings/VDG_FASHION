@@ -43,3 +43,31 @@ export const sentOtpEmail=async(receiver,otp) => {
       })
     })
 }
+
+
+
+export const DefaultFilterQuerys = {
+     product : { categories: '', group: ""}
+  };
+  
+
+  export const FilterQuery = (filterName, query) => {
+
+    const defaultQuery = DefaultFilterQuerys[filterName];
+  
+    if (!defaultQuery) {
+      throw new Error(`Invalid filter name: ${filterName}`);
+    }
+  
+
+    const filteredQuery = Object.keys(defaultQuery).reduce((acc, key) => {
+
+      if (query.hasOwnProperty(key)) {
+        acc[key] = query[key];
+      }
+      return acc;
+    }, {});
+  
+    return filteredQuery;
+  };
+  

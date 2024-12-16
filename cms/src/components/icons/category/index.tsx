@@ -39,3 +39,4 @@ export { RelaxChair } from './relax-chair';
 export { Storage } from './storage';
 export { Tools } from './tools';
 export { Table } from './table';
+export { AnimalToys } from "./animal"

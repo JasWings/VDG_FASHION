@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
   PRODUCTS: '/commerce/products/',
+  GROUPS : "/commerce/group/",
   GETALLDETAILS:"/commerce/web/catalog/",
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_REVIEWS: '/reviews',

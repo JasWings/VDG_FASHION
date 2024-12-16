@@ -104,7 +104,7 @@ class Client {
       pageSize,
       ...params
     }: Partial<ProductQueryOptions>) => 
-      HttpClient.getProducts<ProductPaginator>(API_ENDPOINTS.PRODUCTS,{"page-size":pageSize}),
+      HttpClient.getProducts<ProductPaginator>(API_ENDPOINTS.PRODUCTS,{"page-size":pageSize,...params}),
       variantProducts: ({
         id,
         ...params
@@ -200,6 +200,9 @@ class Client {
     // ),
     HttpClient.get<CategoryPaginator>(API_ENDPOINTS.CATEGORIES),
   };
+  groups = {
+    all : () => HttpClient.get(API_ENDPOINTS.GROUPS)
+  }
   tags = {
     all: (params: Partial<TagQueryOptions>) => 
       HttpClient.get<TagPaginator>(API_ENDPOINTS.TAGS, params),

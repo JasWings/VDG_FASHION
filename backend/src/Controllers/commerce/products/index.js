@@ -1,6 +1,6 @@
 import Attribute from "../../../Models/product-management/attributes/index.js";
 import ProductModel from "../../../Models/product-management/product/index.js";
-import { generateUUID } from "../../../utils/helpers.js";
+import { FilterQuery, generateUUID } from "../../../utils/helpers.js";
 
 export const createProduct = async (req, res) => {
     try {
@@ -53,7 +53,8 @@ export const createProduct = async (req, res) => {
                 height,
                 length,
                 is_active: true,
-                is_delete: false
+                is_delete: false,
+                group: type_id
             });
 
             const savedProduct = await simpleProduct.save();
@@ -153,7 +154,9 @@ export const createProduct = async (req, res) => {
 
 export const getProducts = async (req,res) => {
     try {
-    const product_list = await ProductModel.find().populate({ path: "group",model:"Group"})
+    const filterQuerys = FilterQuery("product",req.query)
+    console.log(filterQuerys)
+    const product_list = await ProductModel.find({...filterQuerys}).populate({ path: "group",model:"Group"})
     res.status(200).json({ status: "success", message: "All products retrived successfully",data: product_list})    
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message })  

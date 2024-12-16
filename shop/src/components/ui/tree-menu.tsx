@@ -33,7 +33,7 @@ const TreeMenuItem: React.FC<TreeMenuItemProps> = ({
     setOpen(isActive);
   }, [isActive]);
 
-  const { slug, identity , children: items, icon } = item;
+  const { slug, identity , children: items, icon, _id } = item;
   const [{ display }, setDrawerState] = useAtom(drawerAtom);
   function toggleCollapse() {
     setOpen((prevValue) => !prevValue);
@@ -45,7 +45,7 @@ const TreeMenuItem: React.FC<TreeMenuItemProps> = ({
       router.push(
         {
           pathname,
-          query: {  category: slug },
+          query: {  category: _id },
         },
         undefined,
         {

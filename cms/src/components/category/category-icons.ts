@@ -163,4 +163,8 @@ export const categoryIcons = [
     value: 'Table',
     label: 'Table',
   },
+  {
+    value : "AnimalToys",
+    label : "Animal Toys"
+  }
 ];

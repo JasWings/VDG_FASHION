@@ -8,7 +8,7 @@ import { SearchIcon } from '@/components/icons/search-icon';
 import { displayMobileHeaderSearchAtom } from '@/store/display-mobile-header-search-atom';
 
 import dynamic from 'next/dynamic';
-import Navbar from './nav';
+import Navbar from './sub-nav';
 
 const MobileNavigation = dynamic(() => import('./mobile-navigation'), {
   ssr: false,
@@ -29,7 +29,7 @@ export default function HomeLayout({
       ) : (
         <>
         <Header layout={layout} />
-        {/* <Navbar /> */}
+        <Navbar />
         </>
       )}
       

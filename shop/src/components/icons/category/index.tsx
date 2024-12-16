@@ -40,3 +40,4 @@ export { Storage } from "./storage";
 export { Tools } from "./tools";
 export { Table } from "./table";
 export {Common} from "./common"
+export { AnimalToys } from "./animal"

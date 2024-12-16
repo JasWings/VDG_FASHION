@@ -7,3 +7,9 @@ export { BookIcon } from './book-icon';
 export { MedicineIcon } from './medicine-icon';
 export { Restaurant } from './restaurant-icon';
 export { Bakery } from './bakery-icon';
+export { Toys } from "./toy-icon"
+export { Kids } from "./kids-icon"
+export { Ridder } from "./ridders-icon"
+export { Stationary } from "./stationary-icon"
+export { PlayAreaItems } from "./play-area-icon"
+export { Accessories } from "./accessories-icon"

@@ -1,33 +1,71 @@
 import Attribute from '../../../Models/product-management/attributes/index.js';
 import Validations from '../../../Validations/index.js';
+import { generateUUID } from '../../../utils/helpers.js';
+import { Sequence } from '../../../Models/helpers/sequence.js';
 
 
 const createAttribute = async (req, res) => {
   try {
     const attributeData = req.body;
-    
+
     const validatedAttribute = Validations.validateAttribute(attributeData);
 
-    const attribute = new Attribute(validatedAttribute);
+    const sequence = await Sequence.findByIdAndUpdate(
+      "Attributes",
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+    const attributeId = sequence.seq;
+    const uuid = await generateUUID()
+
+    const updatedValues = await Promise.all(
+      validatedAttribute.values.map(async (value, index) => {
+        const valueId = index + 1
+        const valueUUID = await generateUUID();
+        return {
+          ...value,
+          id: valueId,
+          attribute_id: attributeId,
+          uuid: valueUUID,
+        };
+      })
+    );
+
+    
+    const attribute = new Attribute({
+      ...validatedAttribute,
+      id: attributeId,
+      values: updatedValues,
+      uuid : uuid
+    });
 
     await attribute.save();
 
-    res.status(201).json({ status: "success", message: 'Attribute created successfully', data: attribute });
+    res.status(201).json({
+      status: "success",
+      message: "Attribute created successfully",
+      data: attribute,
+    });
   } catch (error) {
-    res.status(400).json({ status: "failed",  message : error.message });
+    res.status(400).json({
+      status: "failed",
+      message: error.message,
+    });
   }
 };
+
+
 
 
 const getAllAttributes = async (req, res) => {
   try {
     const attributes = await Attribute.find();
 
-    if (attributes.length === 0) {
-      return res.status(404).json({ message: 'No attributes found' });
-    }
+    // if (attributes.length === 0) {
+    //   return res.status(404).json({ message: 'No attributes found' });
+    // }
 
-    res.status(200).json(attributes);
+    res.status(200).json({ status: "success", message: "Attributes retrived successfully",data: attributes});
   } catch (error) {
     console.error('Error fetching attributes:', error);
     res.status(500).json({ error: error.message });

@@ -24,13 +24,17 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export function useProducts(pageSize:number) {
+export function useProducts(pageSize: number, category?: string, group?: string) {
   const { locale } = useRouter();
-  const [newPageSize, setNewPageSize] = useState(pageSize); 
-  // const formattedOptions = {
-  //   ...formatProductsArgs(options),
-  //   language: locale,
-  // };
+  const [newPageSize, setNewPageSize] = useState(pageSize);
+
+  const formattedOptions = {
+    pageSize: newPageSize,
+    language: locale,
+    categories : category,  
+    group,  
+  };
+
   const {
     data,
     isLoading,
@@ -40,21 +44,19 @@ export function useProducts(pageSize:number) {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery<ProductPaginator, Error>(
-    [API_ENDPOINTS.PRODUCTS, {newPageSize}],
-    () =>
-      client.products.all({pageSize:newPageSize})
-    // {
-    //   getNextPageParam: ({ current_page, last_page }) =>
-    //     last_page > current_page && { page: current_page + 1 },
-    // }
+    [API_ENDPOINTS.PRODUCTS, formattedOptions], // Pass options with category and group
+    () => client.products.all(formattedOptions)  // Send category and group to API
   );
+
   function handleLoadMore() {
     fetchNextPage();
-    setNewPageSize(pageSize+newPageSize)
+    setNewPageSize(pageSize + newPageSize);
   }
-  const load=data?.pages[0]?.count>30&&newPageSize<data?.pages[0]?.count
+
+  const load = data?.pages[0]?.count > 30 && newPageSize < data?.pages[0]?.count;
+
   return {
-    products: data?.pages[0]?.results?.flatMap((page) => page) ?? [],
+    products: data?.pages[0]?.data ?? [],
     paginatorInfo: Array.isArray(data?.pages)
       ? mapPaginatorData(data?.pages[data.pages.length - 1])
       : null,

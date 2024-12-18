@@ -159,11 +159,12 @@ export default function CreateOrUpdateProductForm({
     useUpdateProductMutation();
 
   const onSubmit = async (values: ProductFormValues) => {
+    console.log(values,"values")
     const inputValues = {
       language: router.locale,
       ...getProductInputValues(values, initialValues),
     };
-
+  
     try {
       if (
         !initialValues ||
@@ -172,6 +173,7 @@ export default function CreateOrUpdateProductForm({
         //@ts-ignore
         createProduct({
           ...inputValues,
+          slug : slugAutoSuggest,
           ...(initialValues?.slug && { slug: initialValues.slug }),
           shop_id: shopId || initialValues?.shop_id,
         });
@@ -342,11 +344,11 @@ export default function CreateOrUpdateProductForm({
             />
 
             <Card className="w-full sm:w-8/12 md:w-2/3">
-              <FileInput name="gallery" control={control} />
+              <FileInput name="gallery" control={control} multiple={true} />
             </Card>
           </div>
 
-          <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+          {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
             <Description
               title={t('form:video-title')}
               details={t('form:video-help-text')}
@@ -354,7 +356,6 @@ export default function CreateOrUpdateProductForm({
             />
 
             <Card className="w-full sm:w-8/12 md:w-2/3">
-              {/* Video url picker */}
               <div>
                 {fields.map((item: any, index: number) => (
                   <div
@@ -399,7 +400,7 @@ export default function CreateOrUpdateProductForm({
                 {t('form:button-label-add-video')}
               </Button>
             </Card>
-          </div>
+          </div> */}
 
           <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
             <Description
@@ -414,8 +415,8 @@ export default function CreateOrUpdateProductForm({
                 error={t((errors?.type as any)?.message)}
               />
               <ProductCategoryInput control={control} setValue={setValue} />
-              <ProductAuthorInput control={control} />
-              <ProductManufacturerInput control={control} setValue={setValue} />
+              {/* <ProductAuthorInput control={control} /> */}
+              {/* <ProductManufacturerInput control={control} setValue={setValue} /> */}
               <ProductTagInput control={control} setValue={setValue} />
             </Card>
           </div>
@@ -476,12 +477,12 @@ export default function CreateOrUpdateProductForm({
                 className="mb-5"
               />
               <div className="relative">
-                {options?.useAi && (
+                {/* {options?.useAi && (
                   <OpenAIButton
                     title="Generate Description With AI"
                     onClick={handleGenerateDescription}
                   />
-                )}
+                )} */}
                 <TextArea
                   label={t('form:input-label-description')}
                   {...register('description')}

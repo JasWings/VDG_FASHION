@@ -1,5 +1,6 @@
 export const API_ENDPOINTS = {
-  PRODUCTS: '/commerce/product/',
+  PRODUCTS: '/commerce/products/',
+  GROUPS : "/commerce/group/",
   GETALLDETAILS:"/commerce/web/catalog/",
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_REVIEWS: '/reviews',
@@ -51,7 +52,7 @@ export const API_ENDPOINTS = {
   USERS_WISHLIST_TOGGLE: '/wishlists/toggle',
   SOCIAL_LOGIN: '/social-login-token',
   SEND_OTP_CODE: '/send-otp-code',
-  VERIFY_OTP_CODE: '/auth/register/validate-otp/',
+  VERIFY_OTP_CODE: '/auth/validate-otp/',
   OTP_LOGIN: '/otp-login',
   UPDATE_CONTACT: '/update-contact',
   SETTINGS: '/settings',

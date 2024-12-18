@@ -2,23 +2,20 @@ import mongoose from 'mongoose';
 import { generateUUID } from '../../../utils/helpers.js';
 import { Sequence } from '../../helpers/sequence.js';
 
-const attributeSchema = new mongoose.Schema(
+
+const valueSchema = new mongoose.Schema(
   {
-    id : {
-        type: Number,
-        unique : true
+    id: {
+      type: Number,
     },
-    uuid : {
-        type: String,
-        unique : true 
-    },
-    identity: {
+    slug: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
-      minlength: 2,
-      maxlength: 50,
+    },
+    attribute_id: {
+      type: Number,
+      required: true,
     },
     value: {
       type: String,
@@ -29,7 +26,46 @@ const attributeSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 255,
-      default: '', 
+    },
+    created_at: {
+      type: Date,
+      default: Date.now,
+    },
+    updated_at: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    timestamps: false,
+  }
+);
+
+
+const attributeSchema = new mongoose.Schema(
+  {
+    id: {
+      type: Number,
+      unique: true,
+    },
+    uuid: {
+      type: String,
+      unique: true,
+    },
+    identity: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      minlength: 2,
+      maxlength: 50,
+    },
+    values: [valueSchema],
+    meta: {
+      type: String,
+      trim: true,
+      maxlength: 255,
+      default: '',
     },
     createdAt: {
       type: Date,
@@ -45,23 +81,26 @@ const attributeSchema = new mongoose.Schema(
   }
 );
 
+attributeSchema.pre("save", async function (next) {
+  if (!this.id) {
+    try {
+      const uuid = await generateUUID();
+      const sequence = await Sequence.findByIdAndUpdate(
+        "Attributes",
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+      );
+      this.id = sequence.seq;
+      this.uuid = uuid;
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    next();
+  }
+});
 
 const Attribute = mongoose.model('Attribute', attributeSchema);
-
-Attribute.schema.pre("save", async function(next){
-    if(!this.id){
-        try {
-            const uuid = await generateUUID()
-            const sequence = await Sequence.findByIdAndUpdate("Attributes",{ $inc: { seq: 1 }},{ new: true, upsert: true })
-            this.id = sequence.seq
-            this.uuid = uuid 
-            next()   
-        } catch (error) {
-           next(error) 
-        }
-    }else{
-        next()
-    }
-})
 
 export default Attribute;

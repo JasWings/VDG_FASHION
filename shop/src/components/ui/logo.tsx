@@ -18,7 +18,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
           // src={logo?.original ?? logoPlaceholder}
           src={"/icons/apple-icon-180.png"}
           
-          alt={siteTitle || 'SLR Logo'}
+          alt={siteTitle || 'VDG Logo'}
           fill
           sizes="(max-width: 768px) 100vw"
           loading="eager"

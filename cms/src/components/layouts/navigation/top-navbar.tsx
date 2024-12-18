@@ -11,7 +11,7 @@ import {
   getAuthCredentials,
   hasAccess,
 } from '@/utils/auth-utils';
-import LanguageSwitcher from './language-switer';
+// import LanguageSwitcher from './language-switer';
 import { Config } from '@/config';
 
 const Navbar = () => {
@@ -38,8 +38,8 @@ const Navbar = () => {
           <Logo />
         </div>
 
-        <div className="space-s-8 flex items-center">
-          {hasAccess(adminAndOwnerOnly, permissions) && (
+        <div className="space-s-8 flex  items-center">
+          {/* {hasAccess(adminAndOwnerOnly, permissions) && (
             <LinkButton
               href={Routes.shop.create}
               className="ms-4 md:ms-6"
@@ -47,8 +47,8 @@ const Navbar = () => {
             >
               {t('common:text-create-shop')}
             </LinkButton>
-          )}
-          {enableMultiLang ? <LanguageSwitcher /> : null}
+          )} */}
+          {/* {enableMultiLang ? <LanguageSwitcher /> : null} */}
           <AuthorizedMenu />
         </div>
       </nav>

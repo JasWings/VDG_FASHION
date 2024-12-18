@@ -17,7 +17,7 @@ import Link from '@/components/ui/link';
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 import { useRouter } from 'next/router';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -199,20 +199,20 @@ const CouponList = ({
         </span>
       ),
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'code',
-      key: 'actions',
-      align: 'right',
-      render: (slug: string, record: Coupon) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_COUPON"
-          routes={Routes?.coupon}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'code',
+    //   key: 'actions',
+    //   align: 'right',
+    //   render: (slug: string, record: Coupon) => (
+    //     <LanguageSwitcher
+    //       slug={slug}
+    //       record={record}
+    //       deleteModalView="DELETE_COUPON"
+    //       routes={Routes?.coupon}
+    //     />
+    //   ),
+    // },
   ];
 
   return (

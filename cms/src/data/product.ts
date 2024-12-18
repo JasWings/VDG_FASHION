@@ -20,9 +20,7 @@ export const useCreateProductMutation = () => {
   const { t } = useTranslation();
   return useMutation(productClient.create, {
     onSuccess: async () => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.product.list}`
-        : Routes.product.list;
+      const generateRedirectUrl =  Routes.product.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });

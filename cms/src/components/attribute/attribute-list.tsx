@@ -7,7 +7,7 @@ import TitleWithSort from '@/components/ui/title-with-sort';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   attributes: Attribute[] | undefined;
@@ -66,23 +66,23 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
+      dataIndex: 'identity',
       key: 'name',
       align: alignLeft,
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
     },
-    {
-      title: t('table:table-item-shop'),
-      dataIndex: 'shop',
-      key: 'shop',
-      width: 180,
-      align: 'center',
-      ellipsis: true,
-      render: (shop: Shop) => (
-        <span className="truncate whitespace-nowrap">{shop?.name}</span>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-shop'),
+    //   dataIndex: 'shop',
+    //   key: 'shop',
+    //   width: 180,
+    //   align: 'center',
+    //   ellipsis: true,
+    //   render: (shop: Shop) => (
+    //     <span className="truncate whitespace-nowrap">{shop?.name}</span>
+    //   ),
+    // },
     {
       title: t('table:table-item-values'),
       dataIndex: 'values',
@@ -100,20 +100,20 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
         );
       },
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
-      align: alignRight,
-      render: (slug: string, record: Attribute) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_ATTRIBUTE"
-          routes={Routes?.attribute}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'slug',
+    //   key: 'actions',
+    //   align: alignRight,
+    //   render: (slug: string, record: Attribute) => (
+    //     <LanguageSwitcher
+    //       slug={slug}
+    //       record={record}
+    //       deleteModalView="DELETE_ATTRIBUTE"
+    //       routes={Routes?.attribute}
+    //     />
+    //   ),
+    // },
   ];
 
   if (router?.query?.shop) {

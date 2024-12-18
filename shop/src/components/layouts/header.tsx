@@ -100,13 +100,13 @@ const Header = ({ layout }: { layout?: string }) => {
               )}
             />
 
-            {isMultilangEnable ? (
+            {/* {isMultilangEnable ? (
               <div className="ltr:ml-auto rtl:mr-auto lg:hidden">
                 <LanguageSwitcher />
               </div>
             ) : (
               ''
-            )}
+            )} */}
 
             {/* <div className="hidden ltr:ml-10 ltr:mr-auto rtl:mr-10 rtl:ml-auto xl:block">
               <GroupsDropdownMenu />
@@ -162,13 +162,13 @@ const Header = ({ layout }: { layout?: string }) => {
 
           {isHomePage ? (
             <>
-            {true? (
+            {/* {true? (
               <div className="ms-auto lg:me-5 xl:me-8 2xl:me-10 hidden flex-shrink-0 lg:block">
                 <LanguageSwitcher />
               </div>
             ) : (
               ''
-            )}
+            )} */}
             {true && (
                 <div className="mx-auto hidden w-80 overflow-hidden px-10 lg:block xl:w-11/12 2xl:w-10/12">
                   <Search label={t('text-search-label')} variant="minimal" />

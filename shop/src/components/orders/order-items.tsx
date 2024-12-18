@@ -8,7 +8,7 @@ import { useModalAction } from '@/components/ui/modal/modal.context';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
 import { getReview } from '@/lib/get-review';
-import { useCountry } from '@/store/country/country.context';
+// import { useCountry } from '@/store/country/country.context';
 
 //FIXME: need to fix this usePrice hooks issue within the table render we may check with nested property
 const OrderItemList = (_: any, record: any) => {
@@ -70,7 +70,7 @@ export const OrderItems = ({
   const { t } = useTranslation('common');
   const { alignLeft, alignRight } = useIsRTL();
   const { openModal } = useModalAction();
-  const {selectedCountry}=useCountry()
+  // const {selectedCountry}=useCountry()
   console.log(products)
   const findPriceIndex=(product:any)=>{
     let countryIndex: number | undefined

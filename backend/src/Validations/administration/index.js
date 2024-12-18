@@ -1,4 +1,4 @@
-import Joi from "joi";
+import Joi from "Joi";
 
  const FeatureSchema = Joi.object({
   identity: Joi.string().required(),
@@ -79,6 +79,36 @@ export const loginValidations = async (data) => {
     const { error , value } = loginValidationSchema.validate(data,{ abortEarly: false })
     if(error){
         throw new Error(error?.details.map((detail) => detail.message).join(", "))
+    }
+    return value
+}
+
+const Otp = Joi.object({
+  token : Joi.string().length(10).required(),
+  otp : Joi.string().length(6).required(),
+  email : Joi.string().optional(),
+  otp_id : Joi.any().optional(),
+phone_number : Joi.any().optional()
+})
+
+export const OtpValidation = ( data ) => {
+  const {error,value} = Otp.validate(data)
+  if(error){
+  throw new Error(error.details.map((detail)=>detail.message).join(", "))
+  }
+  return value
+}
+
+const changePassword = Joi.object({
+  confirm_password : Joi.string().required(),
+  new_password : Joi.string().required(),
+  old_password : Joi.string().required()
+})
+
+export const ChangePasswordValidation = (data) => {
+  const { error,value} = changePassword.validate(data)
+  if(error){
+    throw new Error(error.details.map((detail)=>detail.message).join(", "))
     }
     return value
 }

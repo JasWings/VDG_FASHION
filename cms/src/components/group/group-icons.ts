@@ -35,4 +35,28 @@ export const typeIconList = [
     value: 'Bakery',
     label: 'Bakery',
   },
+  {
+    value : "Toys",
+    label : "Toys"
+  },
+  {
+    value : "Kids",
+    label : "Kids"
+  },
+  {
+    value: "Ridder",
+    label : "Ridders"
+  },
+  {
+    value : "Stationary",
+    label : "Stationary"
+  },
+  {
+    value : "PlayAreaItems",
+    label : "Play Area Items"
+  },
+  {
+    value : "Accessories",
+    lable : "Accessories"
+  }
 ];

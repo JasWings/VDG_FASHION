@@ -34,8 +34,9 @@ export function useCategories(options?: Partial<CategoryQueryOptions>) {
   function handleLoadMore() {
     fetchNextPage();
   }
+  
   return {
-    categories: data?.pages?.flatMap((page) => page) ?? [],
+    categories: data?.pages?.[0]?.data ?? [],
     paginatorInfo: Array.isArray(data?.pages)
       ? mapPaginatorData(data?.pages[data.pages.length - 1])
       : null,

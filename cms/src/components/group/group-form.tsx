@@ -199,6 +199,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
     ) {
       createType({
         ...input,
+        slug: slugAutoSuggest,
         ...(initialValues?.slug && { slug: initialValues.slug }),
       });
     } else {

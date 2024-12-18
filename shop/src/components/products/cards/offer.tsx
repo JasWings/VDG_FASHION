@@ -10,7 +10,7 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { authorizationAtom } from '@/store/authorization-atom';
 import { useAtom } from 'jotai';
-import { useCountry } from '@/store/country/country.context';
+// import { useCountry } from '@/store/country/country.context';
 import { useState } from 'react';
 import ImageLoader from '@/components/ui/loaders/imageLoader';
 
@@ -37,13 +37,11 @@ const Offer: React.FC<NeonProps> = ({ product, className }) => {
   const filteredProducts=searchText ?product?.identity.toLowerCase().includes(searchText.toLowerCase()):filterCategory?product?.category?.slug===filterCategory:product
   const { image, unit, stock, min_price, max_price, main_image ,is_variant ,uuid,identity,thumb_image,product_prices ,weight_in_grams ,slug  } =
     product ?? {};
-  const {selectedCountry}=useCountry()
+  // const {selectedCountry}=useCountry()
   const findPriceIndex=()=>{
     let countryIndex: number | undefined
     const PriceIndex=  product_prices.map((list:any,index:number)=>{
-        if(list.country===selectedCountry?.id ){
-           return countryIndex=index
-        }
+       return 0
     })
   return countryIndex
 }

@@ -39,10 +39,10 @@ export default function CheckoutPage() {
   const {data}=useGetAddress()
   const router =useRouter()
 
-
-  if(Cart.items.length===0){
-     return <Spinner />
-  }
+  console.log(data,"data")
+  // if(Cart.items.length===0){
+  //    return <Spinner />
+  // }
   
   
   
@@ -101,5 +101,5 @@ export default function CheckoutPage() {
     </>
   );
 }
-CheckoutPage.authenticationRequired = true;
+// CheckoutPage.authenticationRequired = true;
 CheckoutPage.getLayout = getLayout;

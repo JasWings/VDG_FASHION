@@ -34,9 +34,10 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import client from '@/framework/client';
 import VariantWeightBadges from './weights';
-import { useCountry } from '@/store/country/country.context';
+// import { useCountry } from '@/store/country/country.context';
 import ImageLoader from '@/components/ui/loaders/imageLoader';
 import { productPlaceholder } from '@/lib/placeholders';
+import { getImageURL } from '@/lib/image';
 
 const FavoriteButton = dynamic(
   () => import('@/components/products/details/favorite-button'),
@@ -61,7 +62,7 @@ const Details: React.FC<Props> = ({
     thumb_image,
     description,
     identity,
-    product_code,
+    sku,
     weight_in_grams,
     nutrition_values,
     unit,
@@ -69,16 +70,21 @@ const Details: React.FC<Props> = ({
     gallery,
     type,
     stock,
+    quantity,
     shop,
     slug,
     ratings,
     video,
     has_variants,
   } = product ?? {};
+  const isVariant = product?.product_type === "variable" ? true : false
+  const variants_list = product?.variation_options
+  const first_variant = variants_list?.[0]
+
 
   const { t } = useTranslation('common');
   const [_, setShowStickyShortDetails] = useAtom(stickyShortDetailsAtom);
-  const {selectedCountry}=useCountry()
+  // const {selectedCountry}=useCountry()
   const router = useRouter();
   const { closeModal } = useModalAction();
   const intersectionRef = useRef(null);
@@ -88,6 +94,7 @@ const Details: React.FC<Props> = ({
     threshold: 1,
   });
   const [isImageLoad,setImageLoad]=useState(true)
+
   useEffect(() => {
     if (intersection && intersection.isIntersecting) {
       setShowStickyShortDetails(false);
@@ -104,17 +111,17 @@ const Details: React.FC<Props> = ({
 
   const findPriceIndex=()=>{
     let countryIndex: number | undefined
-    const PriceIndex=  product?.product_prices.map((list:any,index:number)=>{
-        if(list.country===selectedCountry.id ){
-           return countryIndex=index
-        }
-    })
+    // const PriceIndex=  product?.product_prices.map((list:any,index:number)=>{
+    //     if(list.country===selectedCountry.id ){
+    //        return countryIndex=index
+    //     }
+    // })
   return countryIndex
 }
 
   const { price, basePrice, discount } = usePrice({
-    amount: product?.product_prices&&product.product_prices[findPriceIndex()]? product?.product_prices[findPriceIndex()].current_price: product?.price,
-    baseAmount: product?.product_prices&&product.product_prices[findPriceIndex()]&&product.product_prices.actual_price    ,currencyCode:"USD"
+    amount: isVariant ? first_variant?.price : product?.price,
+    baseAmount: isVariant ? first_variant?.sale_price : product?.sale_price    ,currencyCode:"USD"
   });
 
   const navigate = (path: string) => {
@@ -144,7 +151,7 @@ const Details: React.FC<Props> = ({
     });
   };
   const hasVariations = !isEmpty(images);
-  const previewImages = displayImage(images, images, images);
+  const previewImages = displayImage(images, gallery, images);
   const checkMainProduct=async()=>{
     const response:any=await client.products.MainProducts({id:product?.base_product})
 
@@ -167,7 +174,7 @@ const Details: React.FC<Props> = ({
     checkMainProduct()
     return <Spinner />
   }
-  console.log(product,"product")
+  console.log(product,"product",previewImages,variants_list)
   return (
     <article className="rounded-lg bg-light">
       <div className="flex flex-col border-b border-border-200 border-opacity-70 md:flex-row">
@@ -179,18 +186,18 @@ const Details: React.FC<Props> = ({
               </div>
             )}
           {/* </div> */}
-          { images.length===0&&thumb_image===null&&main_image===null?
+          { gallery?.length===0&& !product?.image ?
            <Image 
            width={448}
            height={759}
            src={productPlaceholder}
            className=' shadow'
-           alt={identity}
+           alt={name}
            onLoad={()=>setImageLoad(false)}
            style={{opacity:isImageLoad?"0":"1"}}
            />
           :
-            images.length===0&&thumb_image!==null?(
+            gallery?.length===0&&!product?.image?(
               <div className=' flex flex-col  justify-center'>
                 {
                   isImageLoad&&(
@@ -201,8 +208,8 @@ const Details: React.FC<Props> = ({
                   <Image 
                   width={448}
                   height={759}
-                  src={"https://api.slrexports.com"+thumb_image.file}
-                  alt={identity}
+                  src={getImageURL(product?.image?.file)}
+                  alt={name}
                   onLoad={()=>setImageLoad(false)}
                   style={{opacity:isImageLoad?"0":"1"}}
                   />
@@ -211,7 +218,7 @@ const Details: React.FC<Props> = ({
           <div className="product-gallery h-full">
           <ThumbsCarousel
             gallery={previewImages}
-            main_image={main_image}
+            main_image={gallery}
             video={video}
             hideThumbs={
               previewImages.length && video?.length
@@ -238,7 +245,7 @@ const Details: React.FC<Props> = ({
                   onClick: () => navigate(Routes.product(slug)),
                 })}
               >
-                {identity}
+                {name}
               </h1>
               {/* <div>
                 <FavoriteButton
@@ -248,7 +255,7 @@ const Details: React.FC<Props> = ({
               </div> */}
             </div>
             <div className=' flex w-full items-start justify-start space-x-8 rtl:space-x-reverse'>
-                <p className=' font-medium text-lg leading-8'>SKU:  {product_code}</p>
+                <p className=' font-medium text-lg leading-8'>SKU:  {sku}</p>
             </div>
             <div className="mt-2 flex items-center justify-between">
               {unit && !hasVariations && (
@@ -279,24 +286,24 @@ const Details: React.FC<Props> = ({
               </div>
             )}
 
-            {false ? (
+            {isVariant ? (
               <>
                 <div className="my-5 flex items-center md:my-10">
-                  <VariationPrice
-                    selectedVariation={selectedVariation}
-                    minPrice={product?.product_prices[findPriceIndex()].actual_price}
-                    maxPrice={product?.product_prices[findPriceIndex()].current_price}
-                  />
+                  {/* <VariationPrice
+                    selectedVariation={first_variant}
+                    minPrice={first_variant.price}
+                    maxPrice={first_variant.sale_price}
+                  /> */}
                 </div>
-                <div>
-                  <VariationGroups variations={variations} />
-                </div>
+                {/* <div>
+                  <VariationGroups variations={variants_list} name={name} />
+                </div> */}
               </>
             ) : (
               <span className="my-5 flex items-center md:my-10">
                 <ins className="text-2xl font-semibold text-accent no-underline md:text-3xl">
                   {/* {price} */}
-                  {product?.product_prices[findPriceIndex()]?.product_country?.currency_symbol}{product?.product_prices[findPriceIndex()]?.current_price}
+                  ₹{product?.sale_price}
                 </ins>
                 {basePrice && (
                   <del className="text-sm font-normal text-muted ltr:ml-2 rtl:mr-2 md:text-base">
@@ -317,7 +324,7 @@ const Details: React.FC<Props> = ({
             <div className="flex flex-col items-center   md:mt-6 lg:flex-row">
               <div className="mb-3 w-full lg:mb-0 lg:max-w-[400px]">
                 <AddToCart
-                  data={product}
+                  data={ isVariant ? first_variant :product}
                   variant="big"
                   variation={selectedVariation}
                   disabled={selectedVariation?.is_disable || !isSelected}
@@ -328,7 +335,7 @@ const Details: React.FC<Props> = ({
                 !product?.is_external ? (
                   !hasVariations && (
                     <>
-                      {Number(stock) > 0 ? (
+                      {Number(quantity) > 0 ? (
                         <span className="whitespace-nowrap text-base text-body ltr:lg:ml-7 rtl:lg:mr-7">
                           {/* {stock} {t('text-pieces-available')} */}
                         </span>

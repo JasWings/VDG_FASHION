@@ -17,8 +17,8 @@ import OtpCodeForm from '../otp/code-verify-form';
 import { useOtpLogin } from '@/framework/user';
 import Image from 'next/image';
 import Select from '../ui/forms/select';
-import { useCountry } from '@/store/country/country.context';
 import { showToast } from '../ui/toast/toast';
+import { useToken } from '@/lib/hooks/use-token';
 
 const registerFormSchema = yup.object().shape({
   first_name: yup.string().required('error first name required'),
@@ -28,7 +28,6 @@ const registerFormSchema = yup.object().shape({
     .email('error-email-format')
     .required('error-email-required'),
   phone_number:yup.string(),
-  country:yup.string(),
   password: yup.string().required('error-password-required'),
   confirm_password: yup
   .string()
@@ -41,13 +40,9 @@ function RegisterForm() {
   const { openModal } = useModalAction();
   const { mutate, isLoading, formError } = useRegister();
   const [phoneNumber, setPhoneNumber] = useState('');
-  const {CountryList}=useCountry()
 
-  function onSubmit({ first_name,last_name, email, password,confirm_password,country}: RegisterUserInput) {
-    if(country.length===0){
-      showToast("country is required","warning")
-      return;
-    }else if(phoneNumber.length===0||phoneNumber.length<8){
+  function onSubmit({ first_name,last_name, email, password,confirm_password}: RegisterUserInput) {
+   if(phoneNumber.length===0||phoneNumber.length<8){
       showToast("phone number is required","warning")
       return;
     }else{
@@ -57,8 +52,7 @@ function RegisterForm() {
         email,
         password,
         phone_number:"+"+phoneNumber,
-        confirm_password,
-        country:country
+        confirm_password
        });
     }
   }
@@ -94,14 +88,6 @@ function RegisterForm() {
               className="mb-5"
               error={t(errors.email?.message!)}
             />
-            <Select 
-            label={"Country"}
-            {...register('country')}
-            variant="outline"
-            className="mb-5"
-            error={t(errors.country?.message!)}
-            options={CountryList}
-            />
             <div>
             <div className='mb-5 w-full'>
             <label
@@ -110,13 +96,15 @@ function RegisterForm() {
             PhoneNumber
           </label>
             <PhoneInput
-            // country={"us"}
+            country={"in"}
             containerStyle={{height:"46px",width:"416px"}}
             inputClass='h-[46px] w-auto sm:w-[416px]'
             inputStyle={{width:"416px"}}
+            showDropdown={false}
             countryCodeEditable={false}
             onChange={(value) => setPhoneNumber(value)}
-            enableSearch={true}
+            enableSearch={false}
+            disableDropdown={true}
             // isValid={(value,country)=>{
             //   console.log(value,country)
             // }}
@@ -173,6 +161,7 @@ export default function RegisterView() {
   const { t } = useTranslation('common');
   const router = useRouter();
   const { closeModal ,openModal} = useModalAction();
+  const { getToken } = useToken()
   const [RegisterState]=useAtom(RegisterAtom)
   const {
     mutate: otpLogin,
@@ -182,8 +171,11 @@ export default function RegisterView() {
 
 
   function onOtpLoginSubmission(values: any) {
+    const token = getToken()
+    console.log(values,"values")
     otpLogin({
       ...values,
+      token
     });
   }
 

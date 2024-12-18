@@ -9,7 +9,6 @@ import ErrorMessage from '@/components/ui/error-message';
 import { useProducts } from '@/framework/product';
 import { PRODUCTS_PER_PAGE } from "@/framework/client/variables";
 import type { Product } from '@/types';
-import { useCountry } from '@/store/country/country.context';
 import { authorizationAtom } from '@/store/authorization-atom';
 import { useAtom } from 'jotai';
 
@@ -46,7 +45,6 @@ export function Grid({
   setFilterLoading
 }: Props) {
   const { t } = useTranslation('common');
-  const {selectedCountry,CountryList}=useCountry()
   const [isAuthorize]=useAtom(authorizationAtom)
 
   if (error) return <ErrorMessage message={error.message} />;
@@ -59,9 +57,9 @@ export function Grid({
     );
   }
   
-  if(CountryList.length!==0&&selectedCountry===undefined&&isAuthorize){
-     window.location.reload()
-  }
+  // if(CountryList.length!==0&&selectedCountry===undefined&&isAuthorize){
+  //    window.location.reload()
+  // }
 
   return (
     <div className={cn('w-full', className)}>
@@ -76,7 +74,7 @@ export function Grid({
           gridClassName
         )}
       >
-        {isLoading && !products?.length || selectedCountry===undefined || filterLoading
+        {isLoading && !products?.length || filterLoading
           ? rangeMap(limit, (i) => (
               <ProductLoader key={i} uniqueKey={`product-${i}`} />
             ))
@@ -118,6 +116,7 @@ export default function ProductsGrid({
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
     useProducts(30);
   const productsItem: any = products;
+  console.log(productsItem,"product")
   return (
     <Grid
       products={productsItem}

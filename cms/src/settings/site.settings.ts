@@ -36,16 +36,16 @@ export const siteSettings = {
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
       },
-      {
-        href: Routes.shop.list,
-        label: 'sidebar-nav-item-shops',
-        icon: 'ShopIcon',
-      },
-      {
-        href: Routes.adminMyShops,
-        label: 'sidebar-nav-item-my-shops',
-        icon: 'MyShopIcon',
-      },
+      // {
+      //   href: Routes.shop.list,
+      //   label: 'sidebar-nav-item-shops',
+      //   icon: 'ShopIcon',
+      // },
+      // {
+      //   href: Routes.adminMyShops,
+      //   label: 'sidebar-nav-item-my-shops',
+      //   icon: 'MyShopIcon',
+      // },
       {
         href: Routes.product.list,
         label: 'sidebar-nav-item-products',
@@ -71,31 +71,31 @@ export const siteSettings = {
         label: 'sidebar-nav-item-tags',
         icon: 'TagIcon',
       },
-      {
-        href: Routes.manufacturer.list,
-        label: 'sidebar-nav-item-manufacturers',
-        icon: 'DiaryIcon',
-      },
-      {
-        href: Routes.author.list,
-        label: 'sidebar-nav-item-authors',
-        icon: 'FountainPenIcon',
-      },
+      // {
+      //   href: Routes.manufacturer.list,
+      //   label: 'sidebar-nav-item-manufacturers',
+      //   icon: 'DiaryIcon',
+      // },
+      // {
+      //   href: Routes.author.list,
+      //   label: 'sidebar-nav-item-authors',
+      //   icon: 'FountainPenIcon',
+      // },
       {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',
         icon: 'OrdersIcon',
       },
-      {
-        href: Routes.order.create,
-        label: 'sidebar-nav-item-create-order',
-        icon: 'CalendarScheduleIcon',
-      },
-      {
-        href: Routes.user.list,
-        label: 'sidebar-nav-item-users',
-        icon: 'UsersIcon',
-      },
+      // {
+      //   href: Routes.order.create,
+      //   label: 'sidebar-nav-item-create-order',
+      //   icon: 'CalendarScheduleIcon',
+      // },
+      // {
+      //   href: Routes.user.list,
+      //   label: 'sidebar-nav-item-users',
+      //   icon: 'UsersIcon',
+      // },
       {
         href: Routes.coupon.list,
         label: 'sidebar-nav-item-coupons',

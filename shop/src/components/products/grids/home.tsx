@@ -2,30 +2,37 @@ import { useProducts } from '@/framework/product';
 import { PRODUCTS_PER_PAGE } from '@/framework/client/variables';
 import { Grid } from '@/components/products/grid';
 import { useRouter } from 'next/router';
+
 interface Props {
   className?: string;
   variables: any;
   column?: any;
   gridClassName?: string;
-  filterLoading:any;
-  setFilterLoading:any
+  filterLoading: any;
+  setFilterLoading: any;
 }
+
 export default function ProductGridHome({
   className,
   variables,
   column,
   gridClassName,
   filterLoading,
-  setFilterLoading
+  setFilterLoading,
 }: Props) {
   const { query } = useRouter();
+  
+  // Extract category and group from query params
+  const category = query.category as string;
+  const group = query.group as string;
+
+  // Pass category and group as parameters to the useProducts hook
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-    useProducts(30);
-  const productsItem:any = products;
+    useProducts(30, category, group);
 
   return (
     <Grid
-      products={productsItem}
+      products={products}
       loadMore={loadMore}
       isLoading={isLoading}
       isLoadingMore={isLoadingMore}

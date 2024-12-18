@@ -40,6 +40,15 @@ const tagSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    group: {
+      type: mongoose.Types.ObjectId,
+      ref : "Group",
+      default: null
+    },
+    icon : {
+      type: String,
+      default: null
+    }
   },
   {
     timestamps: true,

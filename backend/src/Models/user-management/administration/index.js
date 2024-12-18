@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
   password: { type: String, required: true },
   roleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Role', required: true },
   isActive: { type: Boolean, default: true }, 
-  isDeleted: { type: Boolean, default: false }, 
+  isDeleted: { type: Boolean, default: false },
+  is_verified : { type: Boolean, default: false}, 
   is_super_user : { type: Boolean, default: false }
 }, { timestamps: true });
 

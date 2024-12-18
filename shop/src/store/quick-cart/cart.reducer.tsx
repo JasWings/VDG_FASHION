@@ -139,16 +139,16 @@ export function cartReducer(state: State, action: Action): State {
         
          return {
           items:cartData.items,
-          country:{
-             currency_symbol:cartData.country.currency_symbol,
-             max_weight_kg:cartData.country.max_weight_kg,
-             max_weight_per_product_kg:cartData.country.max_weight_per_product_kg
-          },
+          // country:{
+          //    currency_symbol: "$",
+          //    max_weight_kg:cartData.country.max_weight_kg,
+          //    max_weight_per_product_kg:cartData.country.max_weight_per_product_kg
+          // },
           price_details:{
             total_actual_price:cartData?.price_details?.total_actual_price,
             total_current_price:cartData?.price_details?.total_current_price,
             total_quantity:cartData?.price_details?.total_quantity,
-            total_weight_in_grams:cartData?.price_details?.total_weight_in_grams
+            // total_weight_in_grams:cartData?.price_details?.total_weight_in_grams
           },
           shipping_address:{
             id:cartData?.shipping_address?.id,

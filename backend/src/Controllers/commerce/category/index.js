@@ -15,10 +15,8 @@ const createCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
-    if (categories.length === 0) {
-      return res.status(404).json({ message: 'No categories found' });
-    }
+    const categories = await Category.find().populate({ path: "type_id", model: "Group"})
+    
     res.status(200).json({ status: "success", message: "All Categories retrived successfully", data: categories});
   } catch (error) {
     res.status(500).json({ error: error.message });

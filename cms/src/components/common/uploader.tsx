@@ -70,7 +70,9 @@ export default function Uploader({
               //   mergedData = data[0];
               //   setFiles(data);
               // }
-              if (onChange) {
+              if(multiple){
+                 onChange([...files])
+              }else if (onChange) {
                 onChange(mergedData);
               }
             },
@@ -92,7 +94,7 @@ export default function Uploader({
       });
     },
   });
-
+  
   const handleDelete = (image: string) => {
     const images = files.filter((file) => file.thumbnail !== image);
     setFiles(images);
@@ -100,7 +102,7 @@ export default function Uploader({
       onChange(images);
     }
   };
-  console.log(files,"files",value)
+  
   const thumbs = files?.map((file: any, idx) => {
     const imgTypes = [
       'tif',
@@ -114,7 +116,7 @@ export default function Uploader({
       'eps',
       'raw',
     ];
-    console.log(file,"map_file")
+
     // let filename, fileType, isImage;
     if (file && file.id) {
       // const processedFile = processFileWithName(file);

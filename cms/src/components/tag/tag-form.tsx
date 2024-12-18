@@ -127,6 +127,7 @@ type FormValues = {
   details: string;
   image: any;
   icon: any;
+  identity: any
 };
 
 const defaultValues = {
@@ -149,7 +150,7 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
   const isSlugEditable =
     router?.query?.action === 'edit' &&
     router?.locale === Config.defaultLanguage;
-
+  console.log(initialValues)
   const {
     register,
     handleSubmit,
@@ -162,14 +163,16 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
     defaultValues: initialValues
       ? {
           ...initialValues,
-          icon: initialValues?.icon
-            ? tagIcons.find(
-                (singleIcon) => singleIcon.value === initialValues?.icon!
-              )
-            : '',
-          ...(isNewTranslation && {
-            type: null,
-          }),
+          name: initialValues?.identity,
+          icon: initialValues?.icon,
+          type: initialValues?.group
+            // ? tagIcons.find(
+            //     (singleIcon) => singleIcon.value === initialValues?.icon!
+            //   )
+            // : '',
+          // ...(isNewTranslation && {
+          //   type: null,
+          // }),
         }
       : defaultValues,
 
@@ -215,7 +218,7 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
         id: values?.image?.id,
       },
       icon: values.icon?.value ?? '',
-      type_id: values.type?.id,
+      type_id: values.type?._id,
     };
 
     try {
@@ -223,10 +226,19 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
         !initialValues ||
         !initialValues.translated_languages.includes(router.locale)
       ) {
-        createTag({
-          ...input,
-          ...(initialValues?.slug && { slug: initialValues.slug }),
-        });
+        console.log(input,slugAutoSuggest)
+        const data = {
+          identity : input?.name,
+          slug : slugAutoSuggest,
+          description : input?.details,
+          group: input.type_id,
+          icon : input.icon
+        }
+        // createTag({
+        //   ...input,
+        //   ...(initialValues?.slug && { slug: initialValues.slug }),
+        // });
+        createTag(data)
       } else {
         updateTag({
           ...input,
@@ -237,10 +249,10 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
       getErrorMessage(err);
     }
   };
-
+  console.log(defaultValues,"defaultValues")
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
         <Description
           title={t('form:input-label-image')}
           details={t('form:tag-image-helper-text')}
@@ -250,7 +262,7 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <FileInput name="image" control={control} multiple={false} />
         </Card>
-      </div>
+      </div> */}
 
       <div className="my-5 flex flex-wrap sm:my-8">
         <Description
@@ -302,12 +314,12 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
           )}
 
           <div className="relative">
-            {options?.useAi && (
+            {/* {options?.useAi && (
               <OpenAIButton
                 title="Generate Description With AI"
                 onClick={handleGenerateDescription}
               />
-            )}
+            )} */}
 
             <TextArea
               label={t('form:input-label-details')}

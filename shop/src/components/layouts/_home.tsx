@@ -8,6 +8,7 @@ import { SearchIcon } from '@/components/icons/search-icon';
 import { displayMobileHeaderSearchAtom } from '@/store/display-mobile-header-search-atom';
 
 import dynamic from 'next/dynamic';
+import Navbar from './sub-nav';
 
 const MobileNavigation = dynamic(() => import('./mobile-navigation'), {
   ssr: false,
@@ -26,10 +27,16 @@ export default function HomeLayout({
       {['minimal', 'compact'].includes(layout) ? (
         <HeaderMinimal layout={layout} />
       ) : (
+        <>
         <Header layout={layout} />
+        <Navbar />
+        </>
       )}
+      
       <div className="min-h-screen">{children}</div>
       {['compact'].includes(layout) && <Footer />}
+       <Footer />
+
       <MobileNavigation>
         <motion.button
           whileTap={{ scale: 0.88 }}

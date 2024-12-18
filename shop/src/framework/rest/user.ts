@@ -31,6 +31,7 @@ import { useRouter } from 'next/router';
 import { Routes } from '@/config/routes';
 import { showToast } from '@/components/ui/toast/toast';
 import { RegisterAtom } from '@/components/otp/registerAtom';
+import { getErrorMessage } from '@/lib/error';
 
 export function useUser() {
   const [isAuthorized] = useAtom(authorizationAtom);
@@ -97,8 +98,9 @@ export function useGetAddress() {
       },
     }
   );
+  console.log(data)
   //TODO: do some improvement here
-  return { data: data, isLoading, error, isAuthorized };
+  return { data: data?.data ?? [], isLoading, error, isAuthorized };
 }
 
 export const useDeleteAddress = () => {
@@ -160,7 +162,9 @@ export const useUpdateAddress = () => {
       }
     },
     onError: (error) => {
-      toast.error(`${t('error-something-wrong')}`);
+      const error_message = getErrorMessage(error)
+      console.log(error)
+      toast.error(error_message);
     },
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.USERS_ME);

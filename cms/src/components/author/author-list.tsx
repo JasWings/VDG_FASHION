@@ -11,7 +11,7 @@ import { Attachment, AuthorPaginator, SortOrder } from '@/types';
 import { useUpdateAuthorMutation } from '@/data/author';
 import { Author, MappedPaginatorInfo } from '@/types';
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
+// import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 type IProps = {
   authors: Author[] | undefined;
@@ -136,20 +136,20 @@ const AuthorList = ({
         );
       },
     },
-    {
-      title: t('table:table-item-actions'),
-      dataIndex: 'slug',
-      key: 'actions',
-      align: 'right' as AlignType,
-      render: (slug: string, record: Author) => (
-        <LanguageSwitcher
-          slug={slug}
-          record={record}
-          deleteModalView="DELETE_AUTHOR"
-          routes={Routes?.author}
-        />
-      ),
-    },
+    // {
+    //   title: t('table:table-item-actions'),
+    //   dataIndex: 'slug',
+    //   key: 'actions',
+    //   align: 'right' as AlignType,
+    //   render: (slug: string, record: Author) => (
+    //     <LanguageSwitcher
+    //       slug={slug}
+    //       record={record}
+    //       deleteModalView="DELETE_AUTHOR"
+    //       routes={Routes?.author}
+    //     />
+    //   ),
+    // },
   ];
 
   if (router?.query?.shop) {

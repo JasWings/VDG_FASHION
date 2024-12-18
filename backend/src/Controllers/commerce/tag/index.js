@@ -16,6 +16,15 @@ const createTag = async (req, res) => {
   }
 };
 
+export const getAllTags = async (req,res) => {
+  try {
+  const tag_list = await Tag.find()
+  res.status(200).json({ status: "success", message: "All tags retrived successfully", data: tag_list})
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error?.message })
+  }
+}
+
 
 const getTagByUuid = async (req, res) => {
   try {

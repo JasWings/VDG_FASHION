@@ -10,7 +10,8 @@ import { useCart } from '@/store/quick-cart/cart.context';
 import { showToast } from '../ui/toast/toast';
 import { useState ,useEffect} from 'react';
 import { SpinnerLoader } from '../ui/loaders/spinner/spinner';
-import { useCountry } from '@/store/country/country.context';
+import { getImageURL } from '@/lib/image';
+// import { useCountry } from '@/store/country/country.context';
 
 interface CartItemProps {
   item: any;
@@ -29,7 +30,7 @@ const CartItem = ({ item }: CartItemProps) => {
   } = useCart();
   const [isLoading,setIsLoading]=useState(false)
   const [itemLoading,setItemLoading]=useState(false)
-  const {selectedCountry}=useCountry()
+  // const {selectedCountry}=useCountry()
 
   const clearLoading=()=>{
     setIsLoading(false)
@@ -45,15 +46,15 @@ const CartItem = ({ item }: CartItemProps) => {
   const findPriceIndex=()=>{
     let countryIndex: number | undefined
     const PriceIndex=  item?.product?.product_prices.map((list:any,index:number)=>{
-        if(list.country===selectedCountry.id ){
-           return countryIndex=index
-        }
+        // if(list.country===selectedCountry.id ){
+        //    return countryIndex=index
+        // }
     })
   return countryIndex
 }
 
   const { price } = usePrice({
-    amount: item.product.product_prices[findPriceIndex()].actual_price,
+    amount: item.sale_price,
   });
   const { price: itemPrice } = usePrice({
     amount: item.itemTotal,
@@ -110,7 +111,7 @@ const CartItem = ({ item }: CartItemProps) => {
      
       <div className="relative  mr-4 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden  sm:h-16 sm:w-16">
         <Image
-          src={"https://api.slrexports.com"+item?.product.thumb_image.file ?? siteSettings?.product?.placeholderImage}
+          src={ getImageURL(item?.product?.image?.file ) ?? siteSettings?.product?.placeholderImage}
           alt={item.product.identity}
           fill
           sizes="(max-width: 768px) 100vw"
@@ -123,7 +124,7 @@ const CartItem = ({ item }: CartItemProps) => {
         <p className="font-light md:font-bold text-heading ">{item.product.identity} </p>
         {/* <p className="my-2.5 font-semibold text-accent">{price}</p> */}
         <p className=" text-[10px] leading-[10px] md:text-xs text-body w-[132px] md:w-auto">
-          {item?.product.weight_in_grams}gm | {item.product.product_prices[findPriceIndex()].product_country.currency_symbol}{item.product.product_prices[findPriceIndex()].current_price}
+          {item?.product.weight_in_grams}gm | &#8377; {item.product.sale_price}
         </p>
       </div>
       <div className="flex-shrink-0">
@@ -141,7 +142,7 @@ const CartItem = ({ item }: CartItemProps) => {
       <div className='flex w-full h-full flex-row justify-evenly items-center'>
         <div>
         <span className=" my-2.5 font-semibold text-accent  ltr:ml-auto rtl:mr-auto">
-        {item.product.product_prices[findPriceIndex()].product_country.currency_symbol+ (item.quantity*item.product.product_prices[findPriceIndex()].current_price)}
+        &#8377; { (item.quantity* item.sale_price)}
       </span>
         </div>
         <div>

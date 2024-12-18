@@ -147,7 +147,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           <p className="text-base font-semibold text-heading">
             {t('text-total')}
           </p>
-          <span className="text-base font-semibold text-heading">{Cart.country.currency_symbol+Cart.price_details.total_current_price}</span>
+          <span className="text-base font-semibold text-heading">&#8377;{Cart.price_details.total_current_price}</span>
         </div>
       </div>
       {verifiedResponse && (

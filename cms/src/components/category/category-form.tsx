@@ -274,10 +274,20 @@ export default function CreateOrUpdateCategoriesForm({
       !initialValues ||
       !initialValues.translated_languages.includes(router.locale!)
     ) {
-      createCategory({
-        ...input,
-        ...(initialValues?.slug && { slug: initialValues.slug }),
-      });
+      const data = {
+         identity : input?.name,
+         icon : input?.icon,
+         details : input?.details,
+         parent : input?.parent ,
+         image : input?.image,
+         slug: input?.name?.toLocaleLowerCase(),
+         type_id : input.type_id
+      }
+      // createCategory({
+      //   ...input,
+      //   ...(initialValues?.slug && { slug: initialValues.slug }),
+      // });
+      createCategory(data)
     } else {
       updateCategory({
         ...input,

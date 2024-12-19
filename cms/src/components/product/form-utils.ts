@@ -127,6 +127,7 @@ export function getProductDefaultValues(
   } = product;
   return cloneDeep({
     ...product,
+    type: product?.group,
     product_type: productTypeOptions.find(
       (option) => product_type === option.value
     ),

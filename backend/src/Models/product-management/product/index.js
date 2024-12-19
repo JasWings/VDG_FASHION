@@ -60,6 +60,7 @@ const productSchema = new mongoose.Schema(
         variation_options: [variationOptionSchema],
         quantity: { type: Number, required: true },
         min_price: { type: Number },
+        unit : { type: String, required: true },
         max_price: { type: Number },
         width: { type: String },
         height: { type: String },

@@ -5,8 +5,8 @@ import { createOrder, getOrderById, getAllOrders, deleteOrder, updateOrder } fro
 const Ordersrouter = express.Router();
 
 Ordersrouter.post('/order', createOrder);
-Ordersrouter.get('/orders/:id', getOrderById);
-Ordersrouter.get('/orders', getAllOrders);
+Ordersrouter.get('/:id', getOrderById);
+Ordersrouter.get('/', getAllOrders);
 Ordersrouter.put('/orders/:id', updateOrder);
 Ordersrouter.delete('/orders/:id',deleteOrder);
 

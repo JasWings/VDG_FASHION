@@ -12,7 +12,7 @@ type OrderCardProps = {
 
 const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
   const { t } = useTranslation('common');
-  const {  status, created, delivery_time ,items,status_history} = order;
+  const {  status, order_status, created, delivery_time ,items,status_history} = order;
 
   const { price: amount } = usePrice({
     amount: order?.total_price,
@@ -21,7 +21,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
     amount: order?.total_price,
   });
 
-
+  console.log(order,"order")
   
   return (
     <>
@@ -43,15 +43,15 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
           <span
             // className="max-w-full truncate whitespace-nowrap rounded bg-blue-100 px-3 py-2 text-sm text-blue-500"
             className={`max-w-full truncate whitespace-nowrap rounded ${StatusColor(
-              order?.status
+              order?.order_status
             )} px-3 py-2 text-sm`}
-            title={status}
+            title={order_status}
           >
-            {status==="initiated"? "order pending":
-            status==="placed"?"order processing":
-            status==="shipped"?"order shipped":
-            status==="cancelled"?"order cancelled":
-            status==="delivered"&&"order delivered"
+            {order_status==="initiated"? "order pending":
+            order_status==="placed"?"order processing":
+            order_status==="shipped"?"order shipped":
+            order_status==="cancelled"?"order cancelled":
+            order_status==="delivered"&&"order delivered"
             }
           </span>
         </div>
@@ -72,11 +72,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
             </span>
             <span className="ltr:mr-auto rtl:ml-auto">:</span>
             <span className="truncate ltr:ml-1 rtl:mr-1">
-           {status_history[status_history.length-1].status==="initiated"? "order pending":
-            status_history[status_history.length-1].status==="placed"?"order processing":
-            status_history[status_history.length-1].status==="shipped"?"order shipped":
-            status_history[status_history.length-1].status==="cancelled"?"order cancelled":
-            status_history[status_history.length-1].status==="delivered"&&"order delivered"
+           {status_history[status_history?.length-1]?.status==="initiated"? "order pending":
+            status_history[status_history?.length-1]?.status==="placed"?"order processing":
+            status_history[status_history?.length-1]?.status==="shipped"?"order shipped":
+            status_history[status_history?.length-1]?.status==="cancelled"?"order cancelled":
+            status_history[status_history?.length-1]?.status==="delivered"&&"order delivered"
             }
             </span>
           </p>
@@ -85,14 +85,14 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
               {'Amount'}
             </span>
             <span className="ltr:mr-auto rtl:ml-auto">:</span>
-            <span className="ltr:ml-1 rtl:mr-1">{order?.data?.country?.currency_symbol+order?.total_price}</span>
+            <span className="ltr:ml-1 rtl:mr-1">&#8377;{order?.total}</span>
           </p>
           <p className="mb-4 flex w-full items-center justify-between text-sm font-bold text-heading last:mb-0">
             <span className="w-24 flex-shrink-0 overflow-hidden">
               {'Total Price'}
             </span>
             <span className="ltr:mr-auto rtl:ml-auto">:</span>
-            <span className="ltr:ml-1 rtl:mr-1">{order?.data?.country?.currency_symbol+order?.total_price}</span>
+            <span className="ltr:ml-1 rtl:mr-1">&#8377;{order?.total}</span>
           </p>
         </div>
       </div>

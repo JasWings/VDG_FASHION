@@ -28,8 +28,9 @@ export const useOrdersQuery = (
       ...options,
     }
   );
+  console.log(data,"order_list")
   return {
-    orders: data?.data ?? [],
+    orders: data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
@@ -47,7 +48,7 @@ export const useOrderQuery = ({
     [API_ENDPOINTS.ORDERS, { id, language }],
     () => orderClient.get({ id, language })
   );
-
+   console.log(data,"data")
   return {
     order: data,
     error,

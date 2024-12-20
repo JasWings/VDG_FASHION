@@ -2,18 +2,33 @@ import mongoose from "mongoose";
 import { Sequence } from "../../helpers/sequence.js";
 import { generateUUID } from "../../../utils/helpers.js";
 
+
+const StatusHistorySchema = new mongoose.Schema({
+    status: { type: String, required: true },
+    timestamp: { type: Date, default: Date.now },
+    id : { type: Number},
+    uuid : { type: String },
+    is_active :  { type: String, default: true },
+    is_delete : { type: Boolean, default: false}
+  },{ timestamps: true });
+
 const orderSchema = new mongoose.Schema({
-    tracking_number: { type: String, required: true },
+    tracking_number: { type: String, default: null },
     customer_id: 
     { 
         type: mongoose.Types.ObjectId, 
         ref: 'User',
     },
-
+    id : {
+        type: Number,
+    },
+    uuid : {
+        type: String,
+    },
     customer_contact: { type: String, required: true },
     amount: { type: Number, required: true },
-    sales_tax: { type: Number, required: true },
-    paid_total: { type: Number, required: true },
+    sales_tax: { type: Number, required: true , default: 0},
+    paid_total: { type: Number, required: true, default: 0 },
     total: { type: Number, required: true },
     cancelled_amount: { type: String, default: "0.00" },
     language: { type: String, default: "en" },
@@ -21,7 +36,21 @@ const orderSchema = new mongoose.Schema({
     parent_id: { type: mongoose.Schema.Types.Mixed, default: null },
     shop_id: { type: mongoose.Schema.Types.Mixed, default: null },
     discount: { type: Number, default: 0 },
-    payment_gateway: { type: String, required: true },
+    payment_gateway: { type: String, default: null},
+    status_history: { type: [StatusHistorySchema], default: [] },
+    data : {
+    items: [{
+            product: { type: mongoose.Types.ObjectId, ref: "products", required: true },
+            quantity: { type: Number, required: true },
+            price: { type: Number, required: true },
+            sale_price : { type: Number, required: true }
+          }],
+        price_details: {
+            total_actual_price: { type: Number, required: true, default: 0 },
+            total_current_price: { type: Number, required: true, default: 0 },
+            total_quantity: { type: Number, required: true, default: 0 },
+        },
+    },
     shipping_address: {
         type: mongoose.Types.ObjectId,
         ref: 'Address',
@@ -31,13 +60,14 @@ const orderSchema = new mongoose.Schema({
         ref: 'Address',
     },
     logistics_provider: { type: String, default: null },
-    delivery_fee: { type: Number, required: true },
-    delivery_time: { type: String, required: true },
-    order_status: { type: String, default: "order-pending" },
-    payment_status: { type: String, default: "payment-pending" },
+    delivery_fee: { type: Number },
+    delivery_time: { type: String },
+    order_status: { type: String, default: "pending", enum: [ "pending","placed","delivered","cancelled"] },
+    payment_status: { type: String, default: "pending", enum : ['pending',"completed","failed"] },
     created_at: { type: Date, default: Date.now },
     order_date: { type: Date, default: Date.now },
     payment_intent: { type: mongoose.Schema.Types.Mixed, default: null },
+    razorpayOrderId: { type: String },
 })
 orderSchema.pre("save", async function (next) {
     if (!this.id) {

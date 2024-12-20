@@ -279,7 +279,7 @@ function OrderView({ order, language, loadingStatus }: any) {
               </div>
             ) : null}
 
-            {order?.notes.length!==0 ? (
+            {order?.notes?.length!==0 ? (
               <>
                 <h2 className="mt-12 mb-5 text-xl font-bold text-heading">
                   {t('common:text-purchase-note')}

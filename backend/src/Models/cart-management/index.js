@@ -22,6 +22,8 @@ const CartSchema = new Schema(
         sale_price : { type: Number, required: true }
       },
     ],
+    shipping_address: { type: mongoose.Types.ObjectId, ref: "Address" },
+    billing_address : { type: mongoose.Types.ObjectId, ref: "Address"},
     is_active: { type: Boolean, default: true },
     is_deleted: { type: Boolean, default: false },
   },

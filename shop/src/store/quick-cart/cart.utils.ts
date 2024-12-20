@@ -50,7 +50,8 @@ export function addItem(items: Item[], item: Item) {
 }
 
 export function getItem(items: Item[], id: Item["id"]) {
-  return items.find((item) => item.product.uuid === id);
+  console.log(items,id)
+  return items.find((item) => item.product?.uuid === id);
 }
 
 export function updateItem(

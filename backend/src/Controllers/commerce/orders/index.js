@@ -1,12 +1,11 @@
 import Order from '../../../Models/product-management/orders/index.js';
+import Address from '../../../Models/user-management/administration/address.js';
 import { User } from '../../../Models/user-management/administration/index.js';
 import Validations from '../../../Validations/index.js';
 
 const createOrder = async (req, res) => {
     try {
         const value = Validations.orderdetails(req.body);
-        console.log(value)
-            // const user_details = await User.findOne({ identity: "customer_id"})
         
         const order = new Order(value);
         await order.save();
@@ -19,13 +18,14 @@ const createOrder = async (req, res) => {
 
 const getOrderById = async (req, res) => {
     try {
-        const order = await Order.findById(req.params.id).populate('customer_id')
+        const { id } = req.params
+        const order = await Order.findOne({ uuid: id }).populate('customer_id')
             .populate('shipping_address')
             .populate('billing_address');
 
         if (!order) return res.status(404).send({ error: "Order not found" });
 
-        res.send(order);
+        res.status(200).json({ status: "sucess", message: "Order details retrived successfully",data: order})
     } catch (err) {
         res.status(500).send({ error: err.message });
     }
@@ -34,8 +34,8 @@ const getOrderById = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find();
-        res.send(orders);
+        const orders = await Order.find().populate({ path: "shipping_address"}).populate({ path: 'data', populate: { path: "items.product" }, strictPopulate : false })
+        res.status(200).json({ status: "success", message: "All order retrived successfully",data: orders})
     } catch (err) {
         res.status(500).send({ error: err.message });
     }
@@ -74,5 +74,5 @@ export const deleteOrder = async (req, res) => {
     }
 };
 
+export { createOrder, getOrderById, getAllOrders};
 
-    export { createOrder, getOrderById, getAllOrders};

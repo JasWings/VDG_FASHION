@@ -112,7 +112,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   }
 
   const getCurrentLimit=(item:any)=>{
-        const product=state.items.filter((i)=>i.product.uuid===item.uuid)
+        const product=state.items.filter((i)=>i.product?.uuid===item.uuid)
         const limit= 1000
         if(product&&product[0]){
           const weight=product[0].product.weight_in_grams

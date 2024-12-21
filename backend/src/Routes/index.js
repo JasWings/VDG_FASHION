@@ -13,7 +13,4 @@ router.use('/category', categoryRoute);
 router.use('/subcategory', subcategoryRoute);
 router.use('/product', ProductRoute);
 
-
-
-
 export default router;

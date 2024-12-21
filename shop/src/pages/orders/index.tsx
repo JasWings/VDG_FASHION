@@ -48,7 +48,7 @@ export default function OrdersPage() {
   if (!isLoading && isEmpty(ordersItem)) {
     return <NoOrderFound />;
   }
-   console.log(selectedOrder,"orders",orders)
+
   return (
     <>
       <Seo noindex={true} nofollow={true} />

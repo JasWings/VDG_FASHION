@@ -3,6 +3,7 @@ import Payment from "../../../Models/payment/index.js";
 import Order from "../../../Models/product-management/orders/index.js";
 import ProductModel from "../../../Models/product-management/product/index.js";
 import Address from "../../../Models/user-management/administration/address.js";
+import mongoose from "mongoose";
 
 
 export const AddItemsToCart = async (req, res) => {
@@ -115,37 +116,65 @@ export const addAddressToCart = async (req,res) => {
     }
 }
 
-export const placeonorder = async (req,res) =>{
+export const placeonorder = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-try {
-    const user = req.user 
+  try {
+    const user = req.user;
 
-    const cart = await Cart.findOne({ user: user?._id })
+    const cart = await Cart.findOne({ user: user?._id }).session(session);
+    if (!cart || cart.items.length === 0) {
+      throw new Error("Cart is empty");
+    }
 
-
-    const new_order = {
-      tracking_number : null,
-      customer_id : user?._id,
-      customer_contact : user?.phone_number,
-      amount : cart?.price_details?.total_current_price,
-      sales_tax : 0,
-      paid_total : 0,
-      total : cart?.price_details?.total_current_price,
-      shipping_address : cart.shipping_address,
-      billing_address : cart?.billing_address,
-      order_status : "placed",
-      data : {
-        items : cart.items,
-        price_details : cart.price_details
+    const newOrder = {
+      tracking_number: null,
+      customer_id: user?._id,
+      customer_contact: user?.phone_number,
+      amount: cart?.price_details?.total_current_price,
+      sales_tax: 0,
+      paid_total: 0,
+      total: cart?.price_details?.total_current_price,
+      shipping_address: cart?.shipping_address,
+      billing_address: cart?.billing_address,
+      order_status: "initiated", 
+      payment_status: "initiated", 
+      data: {
+        items: cart.items,
+        price_details: cart.price_details,
       },
-    }
+      status_history: [
+        {
+          status: "initiated",
+          timestamp: new Date(),
+          is_active: true,
+        },
+      ],
+    };
 
-    const place_new_order = await Order.create(new_order)
-    res.status(200).json({ status: 'success',message:"Order Created Successfully" ,data: place_new_order})
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ status: "failed", message: error?.message });
-    }
+    const placedOrder = await Order.create([newOrder], { session });
+
+    await Cart.updateOne(
+      { user: user?._id },
+      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null } },
+      { session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({
+      status: "success",
+      message: "Order placed successfully",
+      data: placedOrder[0],
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    console.error(error);
+    res.status(500).json({ status: "failed", message: error?.message });
+  }
 };
 
 

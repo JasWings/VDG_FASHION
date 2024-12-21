@@ -5,7 +5,7 @@ import morgan from "morgan";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
-
+import { razorpayWebhook } from "./src/Controllers/payment/index.js";
 
 import router from "./src/Routes/main/index.js";
 
@@ -88,6 +88,8 @@ app.get("/staticfiles/admin-images/:key", async (req, res) => {
 });
 
 app.use('/api/v1/', router);
+
+app.post("/api/payment/webhook", razorpayWebhook);
 
 app.get('/', (req, res) => {
   res.send("<h1>Welcome to VDG Fashion</h1>");

@@ -3,8 +3,8 @@ import { createPaymentOrder, verifyPayment } from '../../Controllers/payment/ind
 
 const Paymentrouter = express.Router();
 
-Paymentrouter.post('/:id/make-payment/', createPaymentOrder);
+Paymentrouter.get('/:id/make_payment/', createPaymentOrder);
 
-Paymentrouter.post('/verify-payment', verifyPayment);
+Paymentrouter.post('/:payment_id/refresh_order_payments', verifyPayment);
 
 export default Paymentrouter;

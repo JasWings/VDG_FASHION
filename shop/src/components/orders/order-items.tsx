@@ -13,7 +13,6 @@ import { getImageURL } from '@/lib/image';
 
 //FIXME: need to fix this usePrice hooks issue within the table render we may check with nested property
 const OrderItemList = (_: any, record: any) => {
-  console.log(record,"any")
   const { price } = usePrice({
     amount: record?.sale_price,
   });
@@ -25,7 +24,7 @@ const OrderItemList = (_: any, record: any) => {
     )['title'];
     name = `${name} - ${variationTitle}`;
   }
-  console.log(record,"recodrd")
+  
   return (
     <div className="flex items-center">
       <div className="relative flex h-16 w-16 shrink-0 overflow-hidden rounded">
@@ -73,7 +72,7 @@ export const OrderItems = ({
   const { alignLeft, alignRight } = useIsRTL();
   const { openModal } = useModalAction();
   // const {selectedCountry}=useCountry()
-  console.log(products)
+  
   const findPriceIndex=(product:any)=>{
     let countryIndex: number | undefined
     const PriceIndex=  product?.product?.product_prices.map((list,index)=>{
@@ -111,7 +110,6 @@ export const OrderItems = ({
       align: alignRight,
       width: 100,
       render: function RenderPrice(pivot: any) {
-        console.log(pivot,"pivot")
         const { price } = usePrice({
           amount: pivot?.sale_price*pivot.quantity,
         });

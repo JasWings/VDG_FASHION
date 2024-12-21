@@ -29,7 +29,7 @@ function OrderView({ order, language, loadingStatus }: any) {
     resetCheckout();
   }, [resetCart, resetCheckout]);
 
-  const { price: total } = usePrice({ amount: order?.total_price });
+  const { price: total } = usePrice({ amount: order?.total });
   const { price: wallet_total } = usePrice({
     amount: order?.wallet_point?.amount! ?? 0,
   });
@@ -65,7 +65,7 @@ function OrderView({ order, language, loadingStatus }: any) {
             buttonSize="small"
             loading={loadingStatus}
           />
-          { order?.status!=="initiated"&& <div className=' pt-6 flex bg-white justify-center'>
+          { order?.order_status!=="initiated"&& <div className=' pt-6 flex bg-white justify-center'>
             <h1 className=' text-lg font-semibold animate-bounce text-green-600 bg-light'>Payment successfully!</h1>
             </div>
           }
@@ -107,8 +107,8 @@ function OrderView({ order, language, loadingStatus }: any) {
             {/* start of order Status */}
             <div className="mb-8 flex w-full items-center justify-center md:mb-12">
               <OrderStatusProgressBox
-                orderStatus={order?.status as OrderStatus}
-                paymentStatus={order?.status as PaymentStatus}
+                orderStatus={order?.order_status as OrderStatus}
+                paymentStatus={order?.payment_status as PaymentStatus}
               />
             </div>
             {/* end of order Status */}

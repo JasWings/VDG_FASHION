@@ -49,7 +49,6 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   const fetchCart = async () => {
     try {
       const response = await client.cart.all();
-     console.log(response,"all")
       dispatch({ type: 'SET_CART', cartData: response.data }); 
     } catch (error) {
     }

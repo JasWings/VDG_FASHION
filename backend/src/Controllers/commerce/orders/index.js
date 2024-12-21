@@ -34,7 +34,7 @@ const getOrderById = async (req, res) => {
 
 const getAllOrders = async (req, res) => {
     try {
-        const orders = await Order.find().populate({ path: "shipping_address"}).populate({ path: 'data', populate: { path: "items.product" }, strictPopulate : false })
+        const orders = await Order.find().populate({ path: "shipping_address"}).populate({  path: "billing_address" }).populate({ path: 'data', populate: { path: "items.product" }, strictPopulate : false })
         res.status(200).json({ status: "success", message: "All order retrived successfully",data: orders})
     } catch (err) {
         res.status(500).send({ error: err.message });

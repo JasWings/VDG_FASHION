@@ -7,6 +7,8 @@ import { useModalAction } from '@/components/ui/modal/modal.context';
 import { useSettings } from '@/framework/settings';
 import { useOrder, useOrderPayment } from '@/framework/order';
 import Spinner from '@/components/ui/loaders/spinner/spinner';
+import client from '@/framework/client';
+import { useRouter } from 'next/router';
 
 interface Props {
   paymentIntentInfo: PaymentIntentInfo;
@@ -27,6 +29,7 @@ const RazorpayPaymentModal: React.FC<Props> = ({
     tracking_number: trackingNumber,
   });
   const { createOrderPayment } = useOrderPayment();
+  const router = useRouter()
 
   // @ts-ignore
   const { customer_name, customer_contact, customer, billing_address } =
@@ -44,8 +47,13 @@ const RazorpayPaymentModal: React.FC<Props> = ({
       description: `${t('text-order')}#${trackingNumber}`,
       image: settings?.logo?.original!,
       order_id: paymentIntentInfo?.payment_id!,
-      handler: async () => {
+      handler: async (response : any) => {
+        console.log(response,"response")
         closeModal();
+
+       const res= await client.orders.RefreshPayment(response.razorpay_payment_id,response)
+       console.log(res,"res")
+      //  router.push("/orders")
         createOrderPayment({
           tracking_number: trackingNumber!,
           payment_gateway: 'razorpay' as string,

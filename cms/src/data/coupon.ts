@@ -86,6 +86,7 @@ export const useCouponQuery = ({
     [API_ENDPOINTS.COUPONS, { code, language }],
     () => couponClient.get({ code, language })
   );
+ 
 
   return {
     coupon: data,
@@ -104,8 +105,10 @@ export const useCouponsQuery = (options: Partial<CouponQueryOptions>) => {
     }
   );
 
+  console.log(data, "data")
+
   return {
-    coupons: data?.data ?? [],
+    coupons: data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

@@ -23,6 +23,7 @@ export const createProduct = async (req, res) => {
             width,
             height,
             length,
+            unit,
             has_variants,
             type_id,slug
         } = req.body;
@@ -52,6 +53,7 @@ export const createProduct = async (req, res) => {
                 width,
                 height,
                 length,
+                unit,
                 is_active: true,
                 is_delete: false,
                 group: type_id
@@ -135,6 +137,7 @@ export const createProduct = async (req, res) => {
                 tags,
                 image,
                 gallery,
+                unit,
                 variants: variants,
                 variation_options : transformed,
                 group: type_id

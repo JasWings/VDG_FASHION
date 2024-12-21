@@ -7,9 +7,7 @@ import GroupRouter from "./groups/index.js"
 import ProductRouter from "./products/index.js"
 import CartRouter from "../cart-management/cart/index.js"
 import AddressRouter from "./address/index.js"
-import couponrouter from "./coupons/index.js"
-import reportrouter from "../reports/index.js"
-import Faqrouter from "../Faq/index.js"
+
 
 const CommerceRouter = express.Router()
 
@@ -22,8 +20,6 @@ CommerceRouter.use("/products",ProductRouter)
 CommerceRouter.use("/cart",CartRouter)
 CommerceRouter.use("/customer-address",AddressRouter)
 CommerceRouter.use("/upload-file",UploadRouter)
-CommerceRouter.use("/coupons",couponrouter)
-CommerceRouter.use("/reports",reportrouter)
-CommerceRouter.use("/faq", Faqrouter)
+
 
 export default CommerceRouter

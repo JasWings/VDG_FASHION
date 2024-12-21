@@ -1,4 +1,4 @@
-import Faq from "../../Models/Faq";
+import Faq from "../../Models/Faq/index.js";
 
 
 

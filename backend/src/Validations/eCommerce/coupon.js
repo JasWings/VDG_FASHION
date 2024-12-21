@@ -26,7 +26,7 @@ const CouponValidation = Joi.object({
         'number.min': 'Minimum cart amount should be at least 0',
         'any.required': 'Minimum cart amount is required',
     }),
-    image: Joi.string().required().messages({
+    image: Joi.any().optional().messages({
         'string.base': 'Image should be a type of string',
         'any.required': 'Image is required',
     }),

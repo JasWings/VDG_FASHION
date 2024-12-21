@@ -9,7 +9,7 @@ const couponSchema = new mongoose.Schema({
     description:{type:String,required:true},
     amount:{type:Number,required:true},
     minimum_cart_amount:{type:Number,requird:true},
-    image:{type:String,required:true},
+    image:{type:String,default:null},
     active_form:{type:Date,required:true},
     expire_at: { type: Date, required: true }, 
     is_active: { type: Boolean, default: true }

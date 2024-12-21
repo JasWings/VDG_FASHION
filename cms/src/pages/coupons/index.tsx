@@ -42,6 +42,8 @@ export default function Coupons() {
     setPage(current);
   }
 
+  console.log(coupons,"coupons")
+
   return (
     <>
       <Card className="mb-8 flex flex-col items-center xl:flex-row">

@@ -152,18 +152,14 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
 
   const onSubmit = async (values: FormValues) => {
     const input = {
-      language: router.locale,
+      // language: router.locale,
       type: values.type,
       description: values.description,
       amount: values.amount,
       minimum_cart_amount: values.minimum_cart_amount,
       active_from: new Date(values.active_from).toISOString(),
       expire_at: new Date(values.expire_at).toISOString(),
-      image: {
-        thumbnail: values?.image?.thumbnail,
-        original: values?.image?.original,
-        id: values?.image?.id,
-      },
+      image: values?.image?.file,
     };
 
     try {

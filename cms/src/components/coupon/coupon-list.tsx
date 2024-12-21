@@ -78,7 +78,7 @@ const CouponList = ({
       width: 74,
       render: (image: Attachment) => (
         <Image
-          src={image?.thumbnail ?? siteSettings.product.placeholder}
+          src={image?.file ?? siteSettings.product.placeholder}
           alt="coupon banner"
           width={42}
           height={42}

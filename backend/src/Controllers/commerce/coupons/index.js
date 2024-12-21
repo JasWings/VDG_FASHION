@@ -23,6 +23,7 @@ export const  createCoupon = async (req, res) => {
 
         const couponData = {
             ...value,
+            active_form : value?.active_from,
             file: fileUploadData ? fileUploadData.data.file : null,
         };
 

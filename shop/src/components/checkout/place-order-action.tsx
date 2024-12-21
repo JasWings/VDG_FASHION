@@ -119,7 +119,9 @@ export const PlaceOrderAction: React.FC<{
     delete input.shipping_address.__typename;
     //@ts-ignore
     try {
+      console.log(Cart,"cart")
       const response:any=await client.orders.create({uuid:Cart.uuid})
+      console.log(response,"response")
       router.push(`/orders/${response?.data?.uuid}/payment/`)
       // router.push(`/orders/payment/${response?.data?.uuid}/`)      
     } catch (error:any) {

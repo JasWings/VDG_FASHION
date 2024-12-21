@@ -39,7 +39,7 @@ export default function CheckoutPage() {
   const {data}=useGetAddress()
   const router =useRouter()
 
-  console.log(data,"data")
+  console.log(data,"data",Cart)
   // if(Cart.items.length===0){
   //    return <Spinner />
   // }

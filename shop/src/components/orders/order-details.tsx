@@ -99,8 +99,8 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
     refund,
   }: any = order ?? {};
   const {    shipping_address,
-    billing_address,price_details,items}:any=order.data
-  
+    billing_address,price_details,items}:any=order
+  console.log(order,"order_details")
   const { price: amount } = usePrice({
     amount: price_details?.total_actual_price,
   });
@@ -193,7 +193,7 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
         <div className="flex w-full flex-col px-5 py-4 md:w-2/5">
           <div className="mb-3 flex justify-between">
             <span className="text-sm text-body">{t('text-sub-total')}</span>
-            <span className="text-sm text-heading">{order?.data?.country?.currency_symbol+order?.total_price}</span>
+            <span className="text-sm text-heading">&#8377;{order?.total}</span>
           </div>
 
           {/* <div className="mb-3 flex justify-between">
@@ -214,7 +214,7 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
             <span className="text-sm font-bold text-heading">
               {t('text-total')}
             </span>
-            <span className="text-sm font-bold text-heading">{order?.data?.country?.currency_symbol+order?.total_price}</span>
+            <span className="text-sm font-bold text-heading">&#8377;{order?.total}</span>
           </div>
         </div>
       </div>
@@ -224,8 +224,8 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
         <div className="flex w-full items-center justify-center px-6">
           {
            order?.status!=="cancelled"&&<OrderStatusProgressBox
-            orderStatus={order?.status as OrderStatus}
-            paymentStatus={order?.payment_status as PaymentStatus}
+            orderStatus={order?.order_status as OrderStatus}
+            paymentStatus={order?.order_status as PaymentStatus}
             />
           }
         </div>

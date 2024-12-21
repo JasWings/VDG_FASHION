@@ -8,12 +8,13 @@ import { useModalAction } from '@/components/ui/modal/modal.context';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
 import { getReview } from '@/lib/get-review';
+import { getImageURL } from '@/lib/image';
 // import { useCountry } from '@/store/country/country.context';
 
 //FIXME: need to fix this usePrice hooks issue within the table render we may check with nested property
 const OrderItemList = (_: any, record: any) => {
   const { price } = usePrice({
-    amount: record?.product?.product_prices[0].current_price,
+    amount: record?.sale_price,
   });
   let name = record.product.identity;
   
@@ -23,12 +24,12 @@ const OrderItemList = (_: any, record: any) => {
     )['title'];
     name = `${name} - ${variationTitle}`;
   }
-  console.log(record,"recodrd")
+  
   return (
     <div className="flex items-center">
       <div className="relative flex h-16 w-16 shrink-0 overflow-hidden rounded">
         <Image
-          src={"https://api.slrexports.com/"+record.product?.thumb_image.file ?? productPlaceholder}
+          src={ getImageURL(record?.product?.image?.file) ?? productPlaceholder}
           alt={name}
           className="h-full w-full object-cover"
           fill
@@ -71,7 +72,7 @@ export const OrderItems = ({
   const { alignLeft, alignRight } = useIsRTL();
   const { openModal } = useModalAction();
   // const {selectedCountry}=useCountry()
-  console.log(products)
+  
   const findPriceIndex=(product:any)=>{
     let countryIndex: number | undefined
     const PriceIndex=  product?.product?.product_prices.map((list,index)=>{
@@ -110,9 +111,9 @@ export const OrderItems = ({
       width: 100,
       render: function RenderPrice(pivot: any) {
         const { price } = usePrice({
-          amount: pivot?.product?.product_prices?.[findPriceIndex(pivot)]?.current_price*pivot.quantity,
+          amount: pivot?.sale_price*pivot.quantity,
         });
-        return <div>{products?.data.country.currency_symbol+pivot?.product?.product_prices?.[findPriceIndex(pivot)]?.current_price*pivot.quantity}</div>;
+        return <div>&#8377;{pivot?.sale_price*pivot.quantity}</div>;
       },
     },
     // {

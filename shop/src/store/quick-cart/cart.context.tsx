@@ -49,7 +49,6 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   const fetchCart = async () => {
     try {
       const response = await client.cart.all();
-     console.log(response,"all")
       dispatch({ type: 'SET_CART', cartData: response.data }); 
     } catch (error) {
     }
@@ -112,7 +111,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   }
 
   const getCurrentLimit=(item:any)=>{
-        const product=state.items.filter((i)=>i.product.uuid===item.uuid)
+        const product=state.items.filter((i)=>i.product?.uuid===item.uuid)
         const limit= 1000
         if(product&&product[0]){
           const weight=product[0].product.weight_in_grams

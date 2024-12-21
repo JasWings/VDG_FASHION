@@ -56,11 +56,11 @@ export default function OrderViewHeader({
                 <Badge
                   // text={t(order?.status)}
                   text={
-            order?.status==="initiated"? "Order pending":
-            order?.status==="placed"?"Order processing":
-            order?.status==="shipped"?"Order shipped":
-            order?.status==="cancelled"?"Order Cancelled":
-            order?.status==="delivered"&&"Order delivered"
+            order?.order_status==="initiated"? "Order pending":
+            order?.order_status==="placed"?"Order processing":
+            order?.order_status==="shipped"?"Order shipped":
+            order?.order_status==="cancelled"?"Order Cancelled":
+            order?.order_status==="delivered"&&"Order delivered"
                   }
                   color={StatusColor(order?.status)}
                   className="min-h-[2rem] items-center justify-center text-[9px] !leading-none xs:text-sm"
@@ -81,18 +81,18 @@ export default function OrderViewHeader({
                 <Badge
                   // text={t(order?.status)}
                   text={
-                    order?.status==="initiated"? "Payment pending":
-                    order?.status==="placed"?"Payment completed":
-                    order?.status==="shipped"?"Payment completed":
-                    order?.status==="cancelled"?"Order cancelled":
-                    order?.status==="delivered"&&"Payment completed"
+                    order?.payment_status==="initiated"? "Payment pending":
+                    order?.payment_status=== "placed" || "completed" ?"Payment completed":
+                    order?.payment_status==="shipped"?"Payment completed":
+                    order?.payment_status==="cancelled"?"Order cancelled":
+                    order?.payment_status==="delivered"&&"Payment completed"
                     }
                   color={
-                    order?.status==="initiated"? "text-[#C9A116] bg-[#C9A116]":
-                    order?.status==="placed"?"text-[#026E01] bg-[#026E01]":
-                    order?.status==="shipped"?"text[#026E01]  bg-[#026E01]":
-                    order?.status==="cancelled"?"text-[#E36E01]  bg-[#E36E01]":
-                    order?.status==="delivered"&&"text-[#026E01]  bg-[#026E01]"
+                    order?.payment_status==="initiated"? "text-[#C9A116] bg-[#C9A116]":
+                    order?.payment_status==="placed" || "completed" ?"text-[#026E01] bg-[#026E01]":
+                    order?.payment_status==="shipped"?"text[#026E01]  bg-[#026E01]":
+                    order?.payment_status==="cancelled"?"text-[#E36E01]  bg-[#E36E01]":
+                    order?.payment_status==="delivered"&&"text-[#026E01]  bg-[#026E01]"
                     }
                   className="min-h-[2rem] items-center justify-center text-[9px] !leading-none xs:text-sm"
                 />

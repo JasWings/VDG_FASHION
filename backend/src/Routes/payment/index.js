@@ -3,10 +3,8 @@ import { createPaymentOrder, verifyPayment } from '../../Controllers/payment/ind
 
 const Paymentrouter = express.Router();
 
-// Route to create a payment order in Razorpay
-Paymentrouter.post('/create-order', createPaymentOrder);
+Paymentrouter.get('/:id/make_payment/', createPaymentOrder);
 
-// Route to verify and capture payment after Razorpay's response
-Paymentrouter.post('/verify-payment', verifyPayment);
+Paymentrouter.post('/:payment_id/refresh_order_payments', verifyPayment);
 
 export default Paymentrouter;

@@ -54,8 +54,9 @@ export function useOrders(options?: Partial<OrderQueryOptions>) {
   function handleLoadMore() {
     fetchNextPage();
   }
+  console.log(data,"data")
   return {
-    orders: data?.pages[0].flatMap((page:any) => page) ?? [],
+    orders: data?.pages[0].data?.flatMap((page:any) => page) ?? [],
     paginatorInfo: Array.isArray(data?.pages)
       ? mapPaginatorData(data?.pages[data.pages.length - 1])
       : null,
@@ -77,9 +78,9 @@ export function useOrder({ tracking_number }: { tracking_number: string }) {
     () => client.orders.get(tracking_number),
     { refetchOnWindowFocus: false }
   );
-
+  
   return {
-    order: data,
+    order: data?.data,
     isFetching,
     isLoading,
     refetch,

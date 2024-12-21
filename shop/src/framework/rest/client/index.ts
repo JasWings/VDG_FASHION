@@ -304,8 +304,8 @@ class Client {
       HttpClient.post<any>(API_ENDPOINTS.ORDERS_PAYMENT, input),
     savePaymentMethod: (input: any) =>
       HttpClient.post<any>(API_ENDPOINTS.SAVE_PAYMENT_METHOD, input),
-    makePayment:(uuid:string)=>HttpClient.get(`${API_ENDPOINTS.ORDERS}${uuid}${API_ENDPOINTS.ORDERS_PAYMENT}`),
-    RefreshPayment:(id:string)=>HttpClient.get(`${API_ENDPOINTS.ORDERS}${id}${API_ENDPOINTS.REFERESH_PAYMENTS}`),
+    makePayment:(uuid:string)=>HttpClient.get(`${API_ENDPOINTS.PAYMENT}${uuid}${API_ENDPOINTS.ORDERS_PAYMENT}`),
+    RefreshPayment:(id:string,data:any)=>HttpClient.post(`${API_ENDPOINTS.PAYMENT}${id}${API_ENDPOINTS.REFERESH_PAYMENTS}`,data,{}),
     downloadable: (query?: OrderQueryOptions) =>
       HttpClient.get<DownloadableFilePaginator>(
         API_ENDPOINTS.ORDERS_DOWNLOADS,

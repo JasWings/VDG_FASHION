@@ -1,5 +1,10 @@
 import Cart from "../../../Models/cart-management/index.js";
+import Payment from "../../../Models/payment/index.js";
+import Order from "../../../Models/product-management/orders/index.js";
 import ProductModel from "../../../Models/product-management/product/index.js";
+import Address from "../../../Models/user-management/administration/address.js";
+import mongoose from "mongoose";
+
 
 export const AddItemsToCart = async (req, res) => {
     try {
@@ -74,7 +79,7 @@ export const getCartDetails = async (req, res) => {
             path: "product",
             model: "products",
           },
-        });
+        }).populate('billing_address').populate('shipping_address')
   
       if (!cart_details) {
         return res.status(404).json({ status: "failed", message: "Cart not found." });
@@ -85,4 +90,172 @@ export const getCartDetails = async (req, res) => {
       res.status(500).json({ status: "failed", message: error?.message });
     }
   };
-  
+
+
+  const Address_types = {
+    "billing": "billing_address",
+    "shipping" : "shipping_address"
+}
+
+export const addAddressToCart = async (req,res) => {
+    try {
+     const user = req.user 
+     const { address_uuid , type } = req.body 
+     const find_address = await Address.findOne({ uuid: address_uuid })
+     let updated_order ;
+     if(type === "billing"){
+        updated_order = await Cart.findOneAndUpdate({ user: user?._id},{ billing_address: find_address?._id },{ new: true })
+     }else if( type === "shipping"){
+       updated_order = await Cart.findOneAndUpdate({ user: user?._id},{ shipping_address: find_address?._id},{ new: true })
+     }else{
+       throw new Error("Address type is not valid")
+     }
+      res.status(200).json({ status: 'sucess', message: "Aaddress updated successfully",data: updated_order})
+    } catch (error) {
+      res.status(500).json({ status: 'failed', message: error?.message })  
+    }
+}
+
+export const placeonorder = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const user = req.user;
+
+    const cart = await Cart.findOne({ user: user?._id }).session(session);
+    if (!cart || cart.items.length === 0) {
+      throw new Error("Cart is empty");
+    }
+
+    const newOrder = {
+      tracking_number: null,
+      customer_id: user?._id,
+      customer_contact: user?.phone_number,
+      amount: cart?.price_details?.total_current_price,
+      sales_tax: 0,
+      paid_total: 0,
+      total: cart?.price_details?.total_current_price,
+      shipping_address: cart?.shipping_address,
+      billing_address: cart?.billing_address,
+      order_status: "initiated", 
+      payment_status: "initiated", 
+      data: {
+        items: cart.items,
+        price_details: cart.price_details,
+      },
+      status_history: [
+        {
+          status: "initiated",
+          timestamp: new Date(),
+          is_active: true,
+        },
+      ],
+    };
+
+    const placedOrder = await Order.create([newOrder], { session });
+
+    await Cart.updateOne(
+      { user: user?._id },
+      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null } },
+      { session }
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    res.status(200).json({
+      status: "success",
+      message: "Order placed successfully",
+      data: placedOrder[0],
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    console.error(error);
+    res.status(500).json({ status: "failed", message: error?.message });
+  }
+};
+
+
+
+export const verifyPayment = async (req, res) => {
+    try {
+        
+        console.log('Request body:', req.body);
+
+        
+        const {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            order_id,
+            amount,
+            payment_status,
+            payment_id
+        } = req.body;
+
+        // Validate if all required fields are present
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !order_id || !amount || !payment_status || !payment_id) {
+            return res.status(400).json({
+                success: false,
+                message: 'Missing required fields',
+            });
+        }
+
+        // Generate the signature using Razorpay's algorithm
+        const generatedSignature = crypto
+            .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+            .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+            .digest('hex');
+
+        console.log('Generated Signature:', generatedSignature);
+        console.log('Received Signature:', razorpay_signature);
+
+        // Check if the generated signature matches the one sent by Razorpay
+        if (generatedSignature !== razorpay_signature) {
+            return res.status(400).json({
+                success: false,
+                message: 'Payment verification failed',
+            });
+        }
+
+        // Save the payment details in the database
+        const payment = new Payment({
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            payment_status: 'completed',
+            amount,
+            order_id,
+            payment_id
+        });
+
+        await payment.save();
+
+        // Update the associated order status
+        const order = await Order.findById(order_id);
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: 'Order not found',
+            });
+        }
+        order.status = 'paid';
+        await order.save();
+
+        // Respond with success
+        res.json({
+            success: true,
+            message: 'Payment successfully verified and captured.',
+            payment,
+        });
+    } catch (error) {
+        console.error('Error verifying payment:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error',
+            error: error.message,
+        });
+    }
+};

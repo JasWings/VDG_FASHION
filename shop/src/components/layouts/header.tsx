@@ -20,6 +20,7 @@ import { ArrowDownIcon } from '@/components/icons/arrow-down';
 import { drawerAtom } from '@/store/drawer-atom';
 import { useModalAction } from '../ui/modal/modal.context';
 import { showToast } from '../ui/toast/toast';
+import Navbar from './sub-nav';
 
 const Search = dynamic(() => import('@/components/ui/search/search'));
 const AuthorizedMenu = dynamic(() => import('./menu/authorized-menu'), {
@@ -67,6 +68,7 @@ const Header = ({ layout }: { layout?: string }) => {
 }
 
   return (
+    <>
     <header
       className={cn('site-header-with-search bg-white top-0 z-50 w-full lg:h-22', {
         '': isFlattenHeader,
@@ -270,6 +272,8 @@ const Header = ({ layout }: { layout?: string }) => {
         </div>
       </div>
     </header>
+          <Navbar />
+</>
   );
 };
 

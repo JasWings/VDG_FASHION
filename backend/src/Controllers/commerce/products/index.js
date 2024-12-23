@@ -156,7 +156,7 @@ export const getProducts = async (req,res) => {
     try {
     const filterQuerys = FilterQuery("product",req.query)
     console.log(filterQuerys)
-    const product_list = await ProductModel.find({...filterQuerys}).populate({ path: "group",model:"Group"})
+    const product_list = await ProductModel.find({...filterQuerys,is_delete: false}).populate({ path: "group",model:"Group"})
     res.status(200).json({ status: "success", message: "All products retrived successfully",data: product_list})    
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message })  

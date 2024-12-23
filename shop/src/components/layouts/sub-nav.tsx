@@ -25,7 +25,7 @@ const Navbar: React.FC = () => {
     setSelectedCategory(category);
     const slug = category.toLowerCase().replace(/\s+/g, '-');
     const selectedGroup = groups?.filter((group:any) => group.slug === slug)
-
+   console.log(selectedGroup)
     const currentQuery = { ...router.query };
 
   const updatedQuery = {
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="sticky top-22 z-50">
+    <header className="sticky top-22 z-10">
       <div className="flex justify-center items-center gap-8 bg-white border-b-[2px] border-t-[2px] border-gray-200 z-50">
         {categories.map((category, index) => (
           <div
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
           </div>
         ))}
       </div>
-    </div>
+    </header>
   );
 };
 

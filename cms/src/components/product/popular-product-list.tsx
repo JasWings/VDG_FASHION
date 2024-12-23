@@ -44,17 +44,17 @@ const PopularProductList = ({ products, title }: IProps) => {
       ),
     },
 
-    {
-      title: t('table:table-item-shop'),
-      dataIndex: 'shop',
-      key: 'shop',
-      width: 120,
-      align: 'center',
-      ellipsis: true,
-      render: (shop: Shop) => (
-        <span className="truncate whitespace-nowrap">{shop?.name}</span>
-      ),
-    },
+    // {
+    //   title: t('table:table-item-shop'),
+    //   dataIndex: 'shop',
+    //   key: 'shop',
+    //   width: 120,
+    //   align: 'center',
+    //   ellipsis: true,
+    //   render: (shop: Shop) => (
+    //     <span className="truncate whitespace-nowrap">{shop?.name}</span>
+    //   ),
+    // },
 
     {
       title: t('table:table-item-unit'),

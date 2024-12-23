@@ -314,7 +314,7 @@ const Details: React.FC<Props> = ({
             )}
             <div>
             {/* { has_variants ||product?.is_variant?( */}
-                <VariantWeightBadges weight={weight_in_grams} has_variants={product?.has_variants} is_variant={product?.is_variant} products={product?.is_variant?MainProduct:VariantProducts}/>
+                {/* <VariantWeightBadges weight={weight_in_grams} has_variants={product?.has_variants} is_variant={product?.is_variant} products={product?.is_variant?MainProduct:VariantProducts}/> */}
               {/* ) */}
             {/* : */}
             {/* (

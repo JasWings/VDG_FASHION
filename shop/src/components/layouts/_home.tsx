@@ -29,7 +29,7 @@ export default function HomeLayout({
       ) : (
         <>
         <Header layout={layout} />
-        <Navbar />
+        {/* <Navbar /> */}
         </>
       )}
       

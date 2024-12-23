@@ -40,6 +40,7 @@ export default function Dashboard() {
     limit: 10,
     page: 1,
   });
+  console.log(orderData?.data)
   const {
     data: popularProductData,
     isLoading: popularProductLoading,
@@ -128,7 +129,7 @@ export default function Dashboard() {
       <div className="mb-6 flex w-full flex-wrap space-y-6 rtl:space-x-reverse xl:flex-nowrap xl:space-y-0 xl:space-x-5">
         <div className="w-full xl:w-1/2">
           <RecentOrders
-            orders={orderData}
+            orders={orderData?.data ?? []}
             title={t('table:recent-order-table-title')}
           />
         </div>

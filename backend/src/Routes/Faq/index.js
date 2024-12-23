@@ -1,5 +1,5 @@
 import express from 'express'
-import { createFaq, deleteFaq, getAllFaqs, getFaqById, updateFaq } from '../../Controllers/Faq';
+import { createFaq, deleteFaq, getAllFaqs, getFaqById, updateFaq } from '../../Controllers/Faq/index.js';
 
 const Faqrouter = express.Router();
 

@@ -96,6 +96,7 @@ const OrderList = ({
         const delivery_fee = value ? value : 0;
         const { price } = usePrice({
           amount: delivery_fee,
+          currencyCode : "INR"
         });
         return <span>{price}</span>;
       },
@@ -121,6 +122,7 @@ const OrderList = ({
       render: function Render(value: any) {
         const { price } = usePrice({
           amount: value,
+          currencyCode : "INR"
         });
         return <span className="whitespace-nowrap">{price}</span>;
       },
@@ -173,7 +175,7 @@ const OrderList = ({
     },
     {
       title: t('table:table-item-actions'),
-      dataIndex: 'id',
+      dataIndex: 'uuid',
       key: 'actions',
       align: 'center',
       width: 220,

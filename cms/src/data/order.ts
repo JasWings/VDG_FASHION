@@ -50,7 +50,7 @@ export const useOrderQuery = ({
   );
    console.log(data,"data")
   return {
-    order: data,
+    order: data?.data,
     error,
     isLoading,
   };

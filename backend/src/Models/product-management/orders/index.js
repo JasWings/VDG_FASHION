@@ -36,7 +36,8 @@ const orderSchema = new mongoose.Schema({
     parent_id: { type: mongoose.Schema.Types.Mixed, default: null },
     shop_id: { type: mongoose.Schema.Types.Mixed, default: null },
     discount: { type: Number, default: 0 },
-    payment_gateway: { type: String, default: null},
+    payment_gateway: { type: String, default: "RAZORPAY"},
+    payment_id : { type: String },
     status_history: { type: [StatusHistorySchema], default: [] },
     data : {
     items: [{

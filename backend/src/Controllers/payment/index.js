@@ -24,9 +24,9 @@ const generateSignature = (razorpay_order_id, razorpay_payment_id) => {
 export const createPaymentOrder = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id,"id")
+        
         const order = await Order.findOne({ uuid: id });
-        console.log(order,"order")
+        
         if (!order) {
             return res.status(400).json({ message: 'Order not found' });
         }
@@ -68,7 +68,7 @@ export const verifyPayment = async (req, res) => {
                 message: 'Payment ID is required',
             });
         }
-         console.log(req.body)
+        
         const paymentDetails = await razorpayInstance.payments.fetch(payment_id);
 
         if (!paymentDetails) {
@@ -77,7 +77,7 @@ export const verifyPayment = async (req, res) => {
                 message: 'Payment not found',
             });
         }
-        console.log(paymentDetails,payment_id,"details")
+        
         if (paymentDetails.status !== 'captured') {
             return res.status(400).json({
                 success: false,
@@ -86,7 +86,7 @@ export const verifyPayment = async (req, res) => {
         }
 
         const { order_id, amount } = paymentDetails;
-        console.log(order_id,"order_id")
+        
         const order = await Order.findOne({ razorpayOrderId: order_id })
         if (!order) {
             return res.status(404).json({
@@ -96,6 +96,7 @@ export const verifyPayment = async (req, res) => {
         }
 
         order.payment_status = 'completed';
+        order.payment_id = razorpay_payment_id
         await order.save();
 
         const payment = new Payment({
@@ -163,7 +164,7 @@ export const razorpayWebhook = async (req, res) => {
         },
       }
     );
-    console.log(order,"order")
+    
   } else if (event === "payment.failed") {
     const razorpayOrderId = payload.payment.entity.order_id;
 
@@ -173,6 +174,7 @@ export const razorpayWebhook = async (req, res) => {
         $set: {
           payment_status: "failed",
           order_status: "cancelled",
+          
         },
         $push: {
           status_history: {

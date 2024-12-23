@@ -1,4 +1,3 @@
-import { signIn } from 'next-auth/react';
 import Logo from '@/components/ui/logo';
 import Alert from '@/components/ui/alert';
 import Input from '@/components/ui/forms/input';

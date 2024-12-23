@@ -51,7 +51,7 @@
     "little-state-machine": "4.8.0",
     "lodash": "4.17.21",
     "nestjs-stripe": "^1.0.0",
-    "next": "13.4.19",
+    "next": "^15.1.2",
     "next-auth": "4.20.1",
     "next-i18next": "^14.0.3",
     "next-pwa": "^5.6.0",

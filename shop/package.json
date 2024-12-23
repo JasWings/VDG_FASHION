@@ -13,7 +13,8 @@
     "start": "next start",
     "lint": "next lint",
     "postbuild:rest": "next-sitemap",
-    "prepare": "cd ../../ && husky install"
+    "prepare": "cd ../../ && husky install",
+    "export": "next export"
   },
   "dependencies": {
     "@apollo/client": "3.7.10",

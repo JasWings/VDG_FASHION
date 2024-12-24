@@ -73,7 +73,8 @@ const BookDetails: React.FC<Props> = ({ product, isModal = false }) => {
   }, [intersection]);
   const { price, basePrice, discount } = usePrice({
     amount: product?.sale_price ? product?.sale_price : product?.price,
-    baseAmount: product?.price ?? 0,
+    baseAmount: product?.price ?? 0,    currencyCode: "INR"
+
   });
 
   const variations = useMemo(

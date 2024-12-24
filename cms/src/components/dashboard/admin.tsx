@@ -23,11 +23,13 @@ export default function Dashboard() {
   const { price: total_revenue } = usePrice(
     data && {
       amount: data?.totalRevenue!,
+      currencyCode: "INR"
     }
   );
   const { price: todays_revenue } = usePrice(
     data && {
       amount: data?.todaysRevenue!,
+      currencyCode: "INR"
     }
   );
   const {

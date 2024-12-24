@@ -47,18 +47,21 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
   const { price: tax } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.total_tax ?? 0,
+      currencyCode: "INR"
     }
   );
 
   const { price: shipping } = usePrice(
     verifiedResponse && {
       amount: verifiedResponse.shipping_charge ?? 0,
+      currencyCode: "INR"
     }
   );
   const base_amount = calculateTotal(available_items);
   const { price: sub_total } = usePrice(
     verifiedResponse && {
       amount: base_amount,
+      currencyCode: "INR"
     }
   );
   
@@ -79,6 +82,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
     //@ts-ignore
     discount && {
       amount: Number(calculateDiscount),
+      currencyCode: "INR"
     }
   );
   let freeShippings = freeShipping && Number(freeShippingAmount) <= base_amount
@@ -95,6 +99,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
   const { price: total } = usePrice(
     verifiedResponse && {
       amount: totalPrice,
+      currencyCode: "INR"
     }
   );
   return (

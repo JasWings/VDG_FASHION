@@ -53,11 +53,13 @@ export default function ShopPage() {
   const { price: totalEarnings } = usePrice(
     data && {
       amount: data?.balance?.total_earnings!,
+      currencyCode: "INR"
     }
   );
   const { price: currentBalance } = usePrice(
     data && {
       amount: data?.balance?.current_balance!,
+      currencyCode: "INR"
     }
   );
   if (loading) return <Loader text={t('common:text-loading')} />;

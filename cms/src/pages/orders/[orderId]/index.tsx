@@ -81,6 +81,7 @@ export default function OrderDetailsPage() {
   const { price: subtotal } = usePrice(
     order && {
       amount: order?.amount!,
+      currencyCode: "INR"
     }
   );
 
@@ -93,11 +94,13 @@ export default function OrderDetailsPage() {
   const { price: discount } = usePrice(
     order && {
       amount: order?.discount! ?? 0,
+      currencyCode: "INR"
     }
   );
   const { price: delivery_fee } = usePrice(
     order && {
       amount: order?.delivery_fee!,
+      currencyCode: "INR"
     }
   );
   const { price: sales_tax } = usePrice(
@@ -113,6 +116,7 @@ export default function OrderDetailsPage() {
   });
   const { price: wallet_total } = usePrice({
     amount: order?.wallet_point?.amount!,
+    currencyCode: "INR"
   });
 
   const amountPayable: number =
@@ -120,7 +124,8 @@ export default function OrderDetailsPage() {
       ? order?.paid_total! - order?.wallet_point?.amount!
       : 0;
 
-  const { price: amountDue } = usePrice({ amount: amountPayable });
+  const { price: amountDue } = usePrice({ amount: amountPayable,    currencyCode: "INR"
+  });
   console.log(order,"order")
   // const totalItem = order?.products.reduce(
   //   // @ts-ignore

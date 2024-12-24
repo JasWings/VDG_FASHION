@@ -65,13 +65,16 @@ const PopularProductList = ({ products, title }: IProps) => {
       render: function Render(value: number, record: Product) {
         const { price: max_price } = usePrice({
           amount: record?.max_price as number,
+          currencyCode: "INR"
         });
         const { price: min_price } = usePrice({
           amount: record?.min_price as number,
+          currencyCode: "INR"
         });
 
         const { price } = usePrice({
           amount: value,
+          currencyCode: "INR"
         });
 
         const renderPrice =

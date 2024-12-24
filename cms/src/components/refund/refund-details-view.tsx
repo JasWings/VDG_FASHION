@@ -100,26 +100,31 @@ export default function RefundDetailsView({
   const { price: subtotal } = usePrice(
     refund && {
       amount: refund?.amount!,
+      currencyCode: "INR"
     }
   );
   const { price: total } = usePrice(
     refund && {
       amount: refund?.order?.paid_total!,
+      currencyCode: "INR"
     }
   );
   const { price: discount } = usePrice(
     refund && {
       amount: refund?.order?.discount!,
+      currencyCode: "INR"
     }
   );
   const { price: delivery_fee } = usePrice(
     refund && {
       amount: refund?.order?.delivery_fee!,
+      currencyCode: "INR"
     }
   );
   const { price: sales_tax } = usePrice(
     refund && {
       amount: refund?.order?.sales_tax!,
+      currencyCode: "INR"
     }
   );
 
@@ -160,6 +165,7 @@ export default function RefundDetailsView({
       render: function Render(_: any, item: any) {
         const { price } = usePrice({
           amount: item.pivot.subtotal,
+          currencyCode: "INR"
         });
         return <span>{price}</span>;
       },

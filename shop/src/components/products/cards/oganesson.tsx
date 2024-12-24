@@ -16,7 +16,8 @@ const Oganesson: React.FC<OganessonProps> = ({ product, className }) => {
   const { name, image, quantity } = product ?? {};
   const { price, basePrice, discount } = usePrice({
     amount: product.sale_price ? product.sale_price : product.price!,
-    baseAmount: product.price,
+    baseAmount: product.price,    currencyCode: "INR"
+
   });
 
   return (

@@ -41,6 +41,7 @@ export default function CreateOrUpdateWithdrawForm({ initialValues }: IProps) {
   const shopId = shopData?.id!;
   const { price: shopBalance } = usePrice({
     amount: shopData?.balance?.current_balance!,
+    currencyCode: "INR"
   });
   const {
     register,

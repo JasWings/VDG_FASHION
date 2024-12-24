@@ -16,9 +16,11 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
 
   const { price: amount } = usePrice({
     amount: order?.total_price,
+    currencyCode: "INR"
   });
   const { price: total } = usePrice({
     amount: order?.total_price,
+    currencyCode: "INR"
   });
 
   console.log(order,"order")

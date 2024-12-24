@@ -11,6 +11,7 @@ const CartCounterButton = () => {
   const { openCartSidebar } = useUI();
   const { price: totalPrice } = usePrice({
     amount: total,
+    currencyCode: "INR"
   });
   // function handleCartSidebar() {
   //   setDisplayCart({ display: true, view: 'cart' });

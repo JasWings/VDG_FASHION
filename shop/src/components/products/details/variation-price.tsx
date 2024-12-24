@@ -13,14 +13,17 @@ export default function VariationPrice({
           ? selectedVariation.sale_price
           : selectedVariation.price
       ),
+      currencyCode: "INR",
       baseAmount: Number(selectedVariation.price),
     }
   );
   const { price: min_price } = usePrice({
-    amount: Number(minPrice),
+    amount: Number(minPrice),    currencyCode: "INR"
+
   });
   const { price: max_price } = usePrice({
-    amount: Number(maxPrice),
+    amount: Number(maxPrice),    currencyCode: "INR"
+
   });
   return (
     <span className="flex items-center">

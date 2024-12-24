@@ -98,6 +98,7 @@ const RefundList = ({ refunds, onSort, onOrder, onPagination }: IProps) => {
       render: function Render(value: any) {
         const { price } = usePrice({
           amount: value ?? 0,
+          currencyCode: "INR"
         });
         return <span>{price}</span>;
       },

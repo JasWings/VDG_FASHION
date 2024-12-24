@@ -93,26 +93,31 @@ export default function OrderDetailsPage() {
   const { price: subtotal } = usePrice(
     order && {
       amount: order?.amount!,
+      currencyCode: "INR"
     }
   );
   const { price: total } = usePrice(
     order && {
       amount: order?.paid_total!,
+      currencyCode: "INR"
     }
   );
   const { price: discount } = usePrice(
     order && {
       amount: order?.discount!,
+      currencyCode: "INR"
     }
   );
   const { price: delivery_fee } = usePrice(
     order && {
       amount: order?.delivery_fee!,
+      currencyCode: "INR"
     }
   );
   const { price: sales_tax } = usePrice(
     order && {
       amount: order?.sales_tax!,
+      currencyCode: "INR"
     }
   );
   if (loading) return <Loader text={t('common:text-loading')} />;

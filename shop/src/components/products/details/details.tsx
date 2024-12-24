@@ -121,7 +121,8 @@ const Details: React.FC<Props> = ({
 
   const { price, basePrice, discount } = usePrice({
     amount: isVariant ? first_variant?.price : product?.price,
-    baseAmount: isVariant ? first_variant?.sale_price : product?.sale_price    ,currencyCode:"USD"
+    baseAmount: isVariant ? first_variant?.sale_price : product?.sale_price    ,    currencyCode: "INR"
+
   });
 
   const navigate = (path: string) => {

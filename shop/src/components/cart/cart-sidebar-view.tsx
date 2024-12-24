@@ -42,6 +42,7 @@ const CartSidebarView = () => {
   }
   const { price: totalPrice } = usePrice({
     amount: Cart.price_details.total_actual_price,
+    currencyCode: "INR"
   }); 
   
   

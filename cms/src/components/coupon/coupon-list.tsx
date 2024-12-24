@@ -124,6 +124,7 @@ const CouponList = ({
       render: function Render(amount: number, record: any) {
         const { price } = usePrice({
           amount: amount,
+          currencyCode: "INR"
         });
         if (record.type === 'PERCENTAGE_COUPON') {
           return <span>{amount}%</span>;
@@ -151,6 +152,7 @@ const CouponList = ({
       render: function Render(minimum_cart_amount: number) {
         const { price } = usePrice({
           amount: minimum_cart_amount,
+          currencyCode: "INR"
         });
         return <span>{price}</span>;
       },

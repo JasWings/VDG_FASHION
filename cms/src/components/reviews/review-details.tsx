@@ -55,12 +55,15 @@ const ReviewDetailsView = ({ review }: IProps) => {
   const { price: currentPrice, basePrice } = usePrice({
     amount: sale_price ? sale_price : price!,
     baseAmount: price ?? 0,
+    currencyCode: "INR"
   });
   const { price: minPrice } = usePrice({
     amount: min_price ?? 0,
+    currencyCode: "INR"
   });
   const { price: maxPrice } = usePrice({
     amount: max_price ?? 0,
+    currencyCode: "INR"
   });
 
   function handleImageClick() {

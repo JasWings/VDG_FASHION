@@ -92,6 +92,7 @@ const RefundView: React.FC = () => {
         render: function RenderPrice(amount: any) {
           const { price } = usePrice({
             amount: amount,
+            currencyCode: "INR"
           });
           return <p>{price}</p>;
         },

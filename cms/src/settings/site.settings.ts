@@ -111,41 +111,41 @@ export const siteSettings = {
         label: 'sidebar-nav-item-shippings',
         icon: 'ShippingsIcon',
       },
-      {
-        href: Routes.withdraw.list,
-        label: 'sidebar-nav-item-withdraws',
-        icon: 'WithdrawIcon',
-      },
-      {
-        href: Routes.message.list,
-        label: 'sidebar-nav-item-message',
-        icon: 'ChatIcon',
-      },
-      {
-        href: Routes.refund.list,
-        label: 'sidebar-nav-item-refunds',
-        icon: 'RefundsIcon',
-      },
-      {
-        href: Routes.question.list,
-        label: 'sidebar-nav-item-questions',
-        icon: 'QuestionIcon',
-      },
-      {
-        href: Routes.storeNotice.list,
-        label: 'sidebar-nav-item-store-notice',
-        icon: 'StoreNoticeIcon',
-      },
-      {
-        href: Routes.reviews.list,
-        label: 'sidebar-nav-item-reviews',
-        icon: 'ReviewIcon',
-      },
-      {
-        href: Routes.settings,
-        label: 'sidebar-nav-item-settings',
-        icon: 'SettingsIcon',
-      },
+      // {
+      //   href: Routes.withdraw.list,
+      //   label: 'sidebar-nav-item-withdraws',
+      //   icon: 'WithdrawIcon',
+      // },
+      // {
+      //   href: Routes.message.list,
+      //   label: 'sidebar-nav-item-message',
+      //   icon: 'ChatIcon',
+      // },
+      // {
+      //   href: Routes.refund.list,
+      //   label: 'sidebar-nav-item-refunds',
+      //   icon: 'RefundsIcon',
+      // },
+      // {
+      //   href: Routes.question.list,
+      //   label: 'sidebar-nav-item-questions',
+      //   icon: 'QuestionIcon',
+      // },
+      // {
+      //   href: Routes.storeNotice.list,
+      //   label: 'sidebar-nav-item-store-notice',
+      //   icon: 'StoreNoticeIcon',
+      // },
+      // {
+      //   href: Routes.reviews.list,
+      //   label: 'sidebar-nav-item-reviews',
+      //   icon: 'ReviewIcon',
+      // },
+      // {
+      //   href: Routes.settings,
+      //   label: 'sidebar-nav-item-settings',
+      //   icon: 'SettingsIcon',
+      // },
     ],
     shop: [
       {

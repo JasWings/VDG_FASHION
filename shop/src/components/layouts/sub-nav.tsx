@@ -7,7 +7,7 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { name: 'KIDS' },
+  { name: 'FASHION' },
   { name: 'TOYS' },
   { name: 'RIDDERS' },
   { name: 'BOOKS' },

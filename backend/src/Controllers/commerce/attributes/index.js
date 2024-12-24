@@ -59,7 +59,7 @@ const createAttribute = async (req, res) => {
 
 const getAllAttributes = async (req, res) => {
   try {
-    const attributes = await Attribute.find();
+    const attributes = await Attribute.find({ is_deleted: false });
 
     // if (attributes.length === 0) {
     //   return res.status(404).json({ message: 'No attributes found' });
@@ -116,7 +116,7 @@ const updateAttribute = async (req, res) => {
 const deleteAttribute = async (req, res) => {
   try {
     const { id } = req.params;
-    const attribute = await Attribute.findByIdAndDelete(id);
+    const attribute = await Attribute.findOneAndUpdate({ _id: id},{ is_deleted: true})
 
     if (!attribute) {
       return res.status(404).json({ message: 'Attribute not found' });

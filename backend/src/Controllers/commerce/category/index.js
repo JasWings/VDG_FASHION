@@ -9,7 +9,7 @@ const createCategory = async (req, res) => {
     await category.save();
     res.status(201).json({ status: "success", message: 'Category created successfully', data: category });
   } catch (error) {
-    res.status(400).json({ status: "success", message : error.message });
+    res.status(500).json({ status: "failed", message : error.message });
   }
 };
 
@@ -26,7 +26,7 @@ const getAllCategories = async (req, res) => {
 const getCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await Category.findById(id);
+    const category = await Category.findById(id).populate({ path: "type_id"})
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }

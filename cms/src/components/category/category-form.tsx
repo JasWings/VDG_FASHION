@@ -156,8 +156,8 @@ function SelectCategories({
       <SelectInput
         name="parent"
         control={control}
-        getOptionLabel={(option: any) => option.name}
-        getOptionValue={(option: any) => option.id}
+        getOptionLabel={(option: any) => option.identity}
+        getOptionValue={(option: any) => option._id}
         options={categories}
         isClearable={true}
         isLoading={loading}
@@ -215,19 +215,15 @@ export default function CreateOrUpdateCategoriesForm({
     defaultValues: initialValues
       ? {
           ...initialValues,
-          icon: initialValues?.icon
-            ? categoryIcons.find(
-                (singleIcon) => singleIcon.value === initialValues?.icon!
-              )
-            : '',
-          ...(isNewTranslation && {
-            type: null,
-          }),
+          type: initialValues?.type_id,
+          name: initialValues?.identity,
+          parent: initialValues?.parent,
+          image: { file: initialValues?.image }
         }
       : defaultValues,
     resolver: yupResolver(categoryValidationSchema),
   });
-
+  console.log(initialValues)
   const { openModal } = useModalAction();
   const slugAutoSuggest = formatSlug(watch('name'));
   const { locale } = router;
@@ -266,7 +262,7 @@ export default function CreateOrUpdateCategoriesForm({
       slug: values.slug,
       details: values.details,
       image: values?.image?.file,
-      icon: values.icon?.value || '',
+      // icon: values.icon?.value || '',
       parent: values.parent?.id ?? null,
       type_id: values.type?._id,
     };
@@ -374,7 +370,7 @@ export default function CreateOrUpdateCategoriesForm({
             />
           </div>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <Label>{t('form:input-label-select-icon')}</Label>
             <SelectInput
               name="icon"
@@ -382,7 +378,7 @@ export default function CreateOrUpdateCategoriesForm({
               options={updatedIcons}
               isClearable={true}
             />
-          </div>
+          </div> */}
           <SelectTypes control={control} errors={errors} />
           <SelectCategories control={control} setValue={setValue} />
         </Card>

@@ -82,7 +82,7 @@ export const useCategoryQuery = ({ slug, language }: GetParams) => {
   );
 
   return {
-    category: data,
+    category: data?.data,
     error,
     isLoading,
   };

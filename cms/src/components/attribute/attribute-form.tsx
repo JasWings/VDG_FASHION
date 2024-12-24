@@ -50,6 +50,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     defaultValues: initialValues ? initialValues : { name: '', values: [] },
     resolver: yupResolver(attributeValidationSchema),
   });
+  console.log(initialValues,"inita")
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'values',
@@ -60,9 +61,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     useUpdateAttributeMutation();
   const onSubmit = (values: FormValues) => {
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
-    ) {
+      !initialValues    ) {
       const data = {
         identity : values?.name,
         values: values?.values.map(({ id, value, meta }: any) => ({
@@ -93,14 +92,15 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
       );
     } else {
       updateAttribute({
-        id: initialValues.id!,
-        name: values.name!,
-        shop_id: Number(initialValues?.shop_id),
-        values: values.values.map(({ id, value, meta }: any) => ({
-          language: router.locale,
-          id: Number(id),
+        identity: values.name!,
+        meta : values?.meta,
+        _id : values?._id,
+        values: values.values.map(({ id, value, meta,attribute_id }: any,index:any) => ({
+          id: id ? Number(id): index + 1,
+          attribute_id,
           value,
           meta,
+          slug : value?.toLowerCase()
         })),
       });
     }

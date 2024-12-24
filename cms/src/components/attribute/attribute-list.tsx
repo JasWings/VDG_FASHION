@@ -7,7 +7,7 @@ import TitleWithSort from '@/components/ui/title-with-sort';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
-// import LanguageSwitcher from '@/components/ui/lang-action/action';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   attributes: Attribute[] | undefined;
@@ -100,20 +100,20 @@ const AttributeList = ({ attributes, onSort, onOrder }: IProps) => {
         );
       },
     },
-    // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'slug',
-    //   key: 'actions',
-    //   align: alignRight,
-    //   render: (slug: string, record: Attribute) => (
-    //     <LanguageSwitcher
-    //       slug={slug}
-    //       record={record}
-    //       deleteModalView="DELETE_ATTRIBUTE"
-    //       routes={Routes?.attribute}
-    //     />
-    //   ),
-    // },
+    {
+      title: t('table:table-item-actions'),
+      dataIndex: '_id',
+      key: 'actions',
+      align: alignRight,
+      render: (_id: string, record: Attribute) => (
+        <LanguageSwitcher
+          slug={_id}
+          record={record}
+          deleteModalView="DELETE_ATTRIBUTE"
+          routes={Routes?.attribute}
+        />
+      ),
+    },
   ];
 
   if (router?.query?.shop) {

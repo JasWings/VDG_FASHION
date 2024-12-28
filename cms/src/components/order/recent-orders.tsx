@@ -35,6 +35,7 @@ const RecentOrders = ({ orders, title }: IProps) => {
       render: function Render(value: any) {
         const { price } = usePrice({
           amount: value,
+          currencyCode: "INR"
         });
         return <span className="whitespace-nowrap">{price}</span>;
       },

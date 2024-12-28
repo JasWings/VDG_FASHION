@@ -32,13 +32,18 @@ function OrderView({ order, language, loadingStatus }: any) {
   const { price: total } = usePrice({ amount: order?.total });
   const { price: wallet_total } = usePrice({
     amount: order?.wallet_point?.amount! ?? 0,
+    currencyCode: "INR"
   });
-  const { price: sub_total } = usePrice({ amount: order?.amount! });
+  const { price: sub_total } = usePrice({ amount: order?.amount!,    currencyCode: "INR"
+  });
   const { price: shipping_charge } = usePrice({
     amount: order?.delivery_fee ?? 0,
+    currencyCode: "INR"
   });
-  const { price: tax } = usePrice({ amount: order?.sales_tax ?? 0 });
-  const { price: discount } = usePrice({ amount: order?.discount ?? 0 });
+  const { price: tax } = usePrice({ amount: order?.sales_tax ?? 0,    currencyCode: "INR"
+  });
+  const { price: discount } = usePrice({ amount: order?.discount ?? 0 ,    currencyCode: "INR"
+  });
 
   const amountPayable: number =
     order?.payment_status !== PaymentStatus.SUCCESS

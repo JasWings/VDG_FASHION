@@ -58,7 +58,8 @@ const SuborderItems: React.FC<SuborderItemsProps> = ({ items }) => {
       align: alignRight,
       // width: 100,
       render: function TotalPrice(paid_total: any) {
-        const { price } = usePrice({ amount: paid_total });
+        const { price } = usePrice({ amount: paid_total,     currencyCode: "INR"
+        });
         return <p>{price}</p>;
       },
     },

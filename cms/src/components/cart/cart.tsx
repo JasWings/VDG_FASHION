@@ -34,6 +34,7 @@ const Cart = () => {
 
   const { price: totalPrice } = usePrice({
     amount: total,
+    currencyCode: "INR"
   });
   return (
     <section className="relative flex h-full flex-col bg-white">

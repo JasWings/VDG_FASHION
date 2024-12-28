@@ -23,9 +23,9 @@ const BannerWithoutSlider: React.FC<BannerProps> = ({ banners, layout }) => {
         })}
       >
         <Image
-          className="h-full min-h-140 w-full object-cover"
+          className="h-full min-h-140 w-full object-fill"
           // src={banners![0]?.image?.original ?? productPlaceholder}
-          src={"/img/HeroImage.png"}
+          src={"/img/HeroImage.jpg"}
           alt={banners![0]?.title ?? ''}
           fill
           sizes="(max-width: 768px) 100vw"

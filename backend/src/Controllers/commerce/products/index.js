@@ -25,13 +25,13 @@ export const createProduct = async (req, res) => {
             length,
             unit,
             has_variants,
-            type_id,slug
+            type_id,slug,unit
         } = req.body;
 
         if (!name || !product_type) {
             return res.status(400).json({ message: "Name and product type are required." });
         }
-
+      
         if (product_type === "simple") {
             if (!price || !sale_price || !quantity) {
                 return res.status(400).json({ message: "Price, sale price, and quantity are required for simple products." });
@@ -73,19 +73,26 @@ export const createProduct = async (req, res) => {
                 (variations || []).map(async (variant, index) => {
                     try {
                         const attributes = await Attribute.findById(variant?.attribute_id);
-                        console.log(attributes,"attribute",variant?.attribute_id)
+                        const variantfind = variation_options?.upsert?.map((o) => 
+                            o.options.find((i) => i.name === attributes.identity)
+                        );
+                                                
+                        console.log(attributes,"attribute",variant?.attribute_id,variantfind)
                         const uuid = await generateUUID();
+                        
                         return {
                             id: index + 1,
                             uuid: uuid,
-                            value: attributes.identity,
-                            slug: attributes.identity.toLowerCase(),
-                            meta: attributes.meta,
+                            value: variantfind[0]?.value,
+                            slug: variantfind[0]?.value.toLowerCase(),
+                            meta: variantfind[0]?.name.toLowerCase(),
                             attributes: variant?.attribute_id,
                         };
+                        
                     } catch (error) {
                         console.error(`Error processing variant at index ${index}:`, error.message);
-                        return null; // Handle the error gracefully or skip this variant
+                        throw new Error(error)
+                        // return null; // Handle the error gracefully or skip this variant
                     }
                 })
             );
@@ -140,7 +147,8 @@ export const createProduct = async (req, res) => {
                 unit,
                 variants: variants,
                 variation_options : transformed,
-                group: type_id
+                group: type_id,
+                unit: unit
             });
 
             const savedProduct = await variableProduct.save();
@@ -159,7 +167,8 @@ export const getProducts = async (req,res) => {
     try {
     const filterQuerys = FilterQuery("product",req.query)
     console.log(filterQuerys)
-    const product_list = await ProductModel.find({...filterQuerys}).populate({ path: "group",model:"Group"})
+    const product_list = await ProductModel.find({...filterQuerys,is_delete: false})
+    .populate({ path: "group",model:"Group"}).populate({ path: "variants",populate: { path: "attributes"}})
     res.status(200).json({ status: "success", message: "All products retrived successfully",data: product_list})    
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message })  

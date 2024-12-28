@@ -20,6 +20,7 @@ import { siteSettings } from '@/settings/site.settings';
 import { Attachment, OrderStatus, PaymentStatus } from '@/types';
 import { formatAddress } from '@/utils/format-address';
 import { formatString } from '@/utils/format-string';
+import { getImageURL } from '@/utils/image';
 import { useIsRTL } from '@/utils/locals';
 import { ORDER_STATUS } from '@/utils/order-status';
 import usePrice from '@/utils/use-price';
@@ -80,35 +81,42 @@ export default function OrderDetailsPage() {
   const { price: subtotal } = usePrice(
     order && {
       amount: order?.amount!,
+      currencyCode: "INR"
     }
   );
 
   const { price: total } = usePrice(
     order && {
-      amount: order?.paid_total!,
+      amount: order?.total!,
+      currencyCode : "INR"
     }
   );
   const { price: discount } = usePrice(
     order && {
       amount: order?.discount! ?? 0,
+      currencyCode: "INR"
     }
   );
   const { price: delivery_fee } = usePrice(
     order && {
       amount: order?.delivery_fee!,
+      currencyCode: "INR"
     }
   );
   const { price: sales_tax } = usePrice(
     order && {
       amount: order?.sales_tax!,
+      currencyCode : "INR"
     }
   );
-  const { price: sub_total } = usePrice({ amount: order?.amount! });
+  const { price: sub_total } = usePrice({ amount: order?.amount!,currencyCode: "INR" });
   const { price: shipping_charge } = usePrice({
     amount: order?.delivery_fee ?? 0,
+    currencyCode : "INR"
   });
   const { price: wallet_total } = usePrice({
     amount: order?.wallet_point?.amount!,
+    currencyCode: "INR"
   });
 
   const amountPayable: number =
@@ -116,13 +124,14 @@ export default function OrderDetailsPage() {
       ? order?.paid_total! - order?.wallet_point?.amount!
       : 0;
 
-  const { price: amountDue } = usePrice({ amount: amountPayable });
-
-  const totalItem = order?.products.reduce(
-    // @ts-ignore
-    (initial = 0, p) => initial + parseInt(p?.pivot?.order_quantity!),
-    0
-  );
+  const { price: amountDue } = usePrice({ amount: amountPayable,    currencyCode: "INR"
+  });
+  console.log(order,"order")
+  // const totalItem = order?.products.reduce(
+  //   // @ts-ignore
+  //   (initial = 0, p) => initial + parseInt(p?.pivot?.order_quantity!),
+  //   0
+  // );
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -143,10 +152,10 @@ export default function OrderDetailsPage() {
       dataIndex: 'image',
       key: 'image',
       width: 70,
-      render: (image: Attachment) => (
+      render: (image: Attachment,item:any) => (
         <div className="relative h-[50px] w-[50px]">
           <Image
-            src={image?.thumbnail ?? siteSettings.product.placeholder}
+            src={ getImageURL(item?.product?.image?.file) ?? siteSettings.product.placeholder}
             alt="alt text"
             fill
             sizes="(max-width: 768px) 100vw"
@@ -162,10 +171,10 @@ export default function OrderDetailsPage() {
       align: alignLeft,
       render: (name: string, item: any) => (
         <div>
-          <span>{name}</span>
+          <span>{item?.product?.name}</span>
           <span className="mx-2">x</span>
           <span className="font-semibold text-heading">
-            {item.pivot.order_quantity}
+            {item.quantity}
           </span>
         </div>
       ),
@@ -177,20 +186,21 @@ export default function OrderDetailsPage() {
       align: alignRight,
       render: function Render(_: any, item: any) {
         const { price } = usePrice({
-          amount: parseFloat(item.pivot.subtotal),
+          amount: parseFloat(item.price),
+          currencyCode: "INR"
         });
         return <span>{price}</span>;
       },
     },
   ];
-
+  console.log(order,"order")
   return (
     <>
       <Card className="relative overflow-hidden">
         <div className="mb-6 -mt-5 -ml-5 -mr-5 md:-mr-8 md:-ml-8 md:-mt-8">
           <OrderViewHeader order={order} wrapperClassName="px-8 py-4" />
         </div>
-        <div className="flex w-full">
+        {/* <div className="flex w-full">
           <Button
             onClick={handleDownloadInvoice}
             className="mb-5 bg-blue-500 ltr:ml-auto rtl:mr-auto"
@@ -198,7 +208,7 @@ export default function OrderDetailsPage() {
             <DownloadIcon className="h-4 w-4 me-3" />
             {t('common:text-download')} {t('common:text-invoice')}
           </Button>
-        </div>
+        </div> */}
 
         <div className="flex flex-col items-center lg:flex-row">
           <h3 className="mb-8 w-full whitespace-nowrap text-center text-2xl font-semibold text-heading lg:mb-0 lg:w-1/3 lg:text-start">
@@ -248,7 +258,7 @@ export default function OrderDetailsPage() {
               //@ts-ignore
               columns={columns}
               emptyText={t('table:empty-table-data')}
-              data={order?.products!}
+              data={order?.data?.items}
               rowKey="id"
               scroll={{ x: 300 }}
             />
@@ -319,11 +329,11 @@ export default function OrderDetailsPage() {
 
             <div className="flex flex-col items-start space-y-1 text-sm text-body">
               <span>
-                {formatString(order?.products?.length, t('text-item'))}
+                {formatString(order?.data?.items?.length, t('text-item'))}
               </span>
               <span>{order?.delivery_time}</span>
               <span>
-                {`${t('text-payment-method')}:  ${order?.payment_gateway}`}
+                {`${t('text-payment-method')}:  ${order?.payment_gateway ?? "RAZORPAY"} `}
               </span>
             </div>
           </div>

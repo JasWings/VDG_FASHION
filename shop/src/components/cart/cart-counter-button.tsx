@@ -16,7 +16,8 @@ const CartCounterButton = () => {
   const [isAuthorize]=useAtom(authorizationAtom)
   const {openModal}=useModalAction()
   const { price: totalPrice } = usePrice({
-    amount: Cart.price_details.total_actual_price ?Cart.price_details.total_actual_price:0 ,
+    amount: Cart.price_details.total_actual_price ?Cart.price_details.total_actual_price:0 ,    currencyCode: "INR"
+
   });
 
   const handleCartOpen=()=>{

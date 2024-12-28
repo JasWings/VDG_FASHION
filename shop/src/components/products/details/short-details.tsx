@@ -37,7 +37,8 @@ const ShortDetails: React.FC<ShortDetailsProps> = ({ product, isSticky }) => {
   
   const { price, basePrice, discount } = usePrice({
     amount: product?.sale_price ? product?.sale_price : product?.price!,
-    baseAmount: product?.price!,
+    baseAmount: product?.price!,    currencyCode: "INR"
+
   });
 
   const variations = useMemo(

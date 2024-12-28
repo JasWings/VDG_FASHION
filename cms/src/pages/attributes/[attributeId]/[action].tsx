@@ -33,7 +33,7 @@ export default function UpdateAttributePage() {
           {t('form:edit-attribute')}
         </h1>
       </div>
-      <CreateOrUpdateAttributeForm initialValues={data} />
+      <CreateOrUpdateAttributeForm initialValues={data ? {...data,name: data?.identity }: data} />
     </>
   );
 }

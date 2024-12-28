@@ -75,6 +75,10 @@ const attributeSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    is_deleted : {
+      type: Boolean, 
+      default : false
+    }
   },
   {
     timestamps: true,

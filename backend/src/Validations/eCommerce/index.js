@@ -31,7 +31,7 @@ const valueValidationSchema = Joi.object({
 const attributeValidationSchema = Joi.object({
   identity: Joi.string().trim().min(2).max(50).required(),
   values: Joi.array().items(valueValidationSchema).min(1).optional(),
-  meta: Joi.string().max(255).optional(),
+  meta: Joi.any().optional(),
   createdAt: Joi.date().optional(),
   updatedAt: Joi.date().optional(),
 });
@@ -51,9 +51,9 @@ export const validateAttribute = (attributeData) => {
 const categoryValidationSchema = Joi.object({
   identity: Joi.string().min(2).max(50).required(),
   slug: Joi.string().required(),
-  details: Joi.string().optional(),
+  details: Joi.any().optional(),
   type_id : Joi.string().required(),
-  icon: Joi.string().optional(),
+  // icon: Joi.string().optional(),
   image: Joi.string().optional(),
   is_child: Joi.boolean().optional(),
   parent: Joi.any().optional(),

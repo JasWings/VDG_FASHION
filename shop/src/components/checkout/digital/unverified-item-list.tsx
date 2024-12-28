@@ -9,9 +9,11 @@ import { CheckAvailabilityAction } from '@/components/checkout/check-availabilit
 const UnverifiedItemList = ({ hideTitle = false }: { hideTitle?: boolean }) => {
   const { t } = useTranslation('common');
   const { items, total, isEmpty } = useCart();
+
   const { price: subtotal } = usePrice(
     items && {
       amount: total,
+      currencyCode: "INR"
     }
   );
   return (

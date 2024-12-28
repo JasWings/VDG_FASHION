@@ -27,13 +27,16 @@ function WishlistItem({ product }: { product: Product }) {
 
   const { price, basePrice } = usePrice({
     amount: product?.sale_price ? product?.sale_price : product?.price,
-    baseAmount: product?.price,
+    baseAmount: product?.price,     currencyCode: "INR"
+
   });
   const { price: minPrice } = usePrice({
-    amount: product?.min_price,
+    amount: product?.min_price,     currencyCode: "INR"
+
   });
   const { price: maxPrice } = usePrice({
-    amount: product?.max_price,
+    amount: product?.max_price,     currencyCode: "INR"
+
   });
 
   const { openModal } = useModalAction();

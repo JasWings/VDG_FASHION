@@ -15,6 +15,7 @@ import { getImageURL } from '@/lib/image';
 const OrderItemList = (_: any, record: any) => {
   const { price } = usePrice({
     amount: record?.sale_price,
+    currencyCode: "INR"
   });
   let name = record.product.identity;
   
@@ -112,6 +113,7 @@ export const OrderItems = ({
       render: function RenderPrice(pivot: any) {
         const { price } = usePrice({
           amount: pivot?.sale_price*pivot.quantity,
+          currencyCode: "INR"
         });
         return <div>&#8377;{pivot?.sale_price*pivot.quantity}</div>;
       },

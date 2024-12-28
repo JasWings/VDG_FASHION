@@ -4,9 +4,9 @@ export interface State {
 }
 
 const initialState = {
-  siteTitle: 'PickBazar',
+  siteTitle: 'VDG Fashion',
   siteSubtitle: '',
-  currency: 'USD',
+  currency: 'INR',
   currencyOptions: {
     formation: "en-US",
     fractions: 2,

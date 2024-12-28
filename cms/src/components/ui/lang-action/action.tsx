@@ -35,7 +35,7 @@ export default function LanguageSwitcher({
         />
       ) : (
         <ActionButtons
-          id={record?.id}
+          id={record?._id}
           editUrl={routes.editWithoutLang(slug, shop)}
           deleteModalView={deleteModalView}
         />

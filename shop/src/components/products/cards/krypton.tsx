@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { Routes } from '@/config/routes';
 import { productPlaceholder } from '@/lib/placeholders';
 import { ExternalIcon } from '@/components/icons/external-icon';
+import { getImageURL } from '@/lib/image';
 
 type KryptonProps = {
   product: any;
@@ -38,7 +39,7 @@ const Krypton: React.FC<KryptonProps> = ({ product, className }) => {
         <div className="relative flex h-48 w-auto items-center justify-center sm:h-64">
           <span className="sr-only">{t('text-product-image')}</span>
           <Image
-            src={image?.original ?? productPlaceholder}
+            src={ getImageURL(image?.file) ?? productPlaceholder}
             alt={name}
             fill
             sizes="(max-width: 768px) 100vw"

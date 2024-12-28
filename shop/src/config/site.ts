@@ -27,8 +27,8 @@ export const siteSettings = {
   },
   authorizedLinks: [
     { href: Routes.profile, label: 'Profile' },
-    { href: Routes.orders, label: 'My Orders' }
-    // { href: Routes.wishlists, label: 'profile-sidebar-my-wishlist' },
+    { href: Routes.orders, label: 'My Orders' },
+    { href: Routes.wishlists, label: 'my wishlist' },
     // { href: Routes.checkout, label: 'auth-menu-checkout' },
   ],
   authorizedLinksMobile: [

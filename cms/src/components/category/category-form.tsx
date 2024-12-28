@@ -156,8 +156,8 @@ function SelectCategories({
       <SelectInput
         name="parent"
         control={control}
-        getOptionLabel={(option: any) => option.name}
-        getOptionValue={(option: any) => option.id}
+        getOptionLabel={(option: any) => option.identity}
+        getOptionValue={(option: any) => option._id}
         options={categories}
         isClearable={true}
         isLoading={loading}
@@ -214,20 +214,17 @@ export default function CreateOrUpdateCategoriesForm({
     //@ts-ignore
     defaultValues: initialValues
       ? {
+          image : initialValues?.image,
           ...initialValues,
-          icon: initialValues?.icon
-            ? categoryIcons.find(
-                (singleIcon) => singleIcon.value === initialValues?.icon!
-              )
-            : '',
-          ...(isNewTranslation && {
-            type: null,
-          }),
+          type: initialValues?.type_id,
+          parent : initialValues?.parent,
+          name: initialValues?.identity,
+          parent: initialValues?.parent,
         }
       : defaultValues,
     resolver: yupResolver(categoryValidationSchema),
   });
-
+  console.log(initialValues)
   const { openModal } = useModalAction();
   const slugAutoSuggest = formatSlug(watch('name'));
   const { locale } = router;
@@ -261,19 +258,16 @@ export default function CreateOrUpdateCategoriesForm({
   const onSubmit = async (values: FormValues) => {
     console.log(values,"values",control)
     const input = {
-      language: router.locale,
       name: values.name,
       slug: values.slug,
       details: values.details,
       image: values?.image?.file,
-      icon: values.icon?.value || '',
-      parent: values.parent?.id ?? null,
+      // icon: values.icon?.value || '',
+      parent: values.parent?._id ?? null,
       type_id: values.type?._id,
     };
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
-    ) {
+      !initialValues     ) {
       const data = {
          identity : input?.name,
          icon : input?.icon,
@@ -289,13 +283,20 @@ export default function CreateOrUpdateCategoriesForm({
       // });
       createCategory(data)
     } else {
-      updateCategory({
-        ...input,
-        id: initialValues.id!,
-      });
+      const data = {
+        identity : input.name,
+        details : input?.details,
+        _id : values?._id,
+        image : values?.image.file,
+        slug: values?.slug,
+        type_id : values?.type?._id,
+        parent: values?.parent?._id
+      }
+      console.log(input)
+      updateCategory(data);
     }
   };
-
+  console.log(defaultValues)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
@@ -306,7 +307,7 @@ export default function CreateOrUpdateCategoriesForm({
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
-          <FileInput name="image" control={control} multiple={false} />
+          <FileInput name="image"  control={control} multiple={false} />
         </Card>
       </div>
 
@@ -374,7 +375,7 @@ export default function CreateOrUpdateCategoriesForm({
             />
           </div>
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <Label>{t('form:input-label-select-icon')}</Label>
             <SelectInput
               name="icon"
@@ -382,7 +383,7 @@ export default function CreateOrUpdateCategoriesForm({
               options={updatedIcons}
               isClearable={true}
             />
-          </div>
+          </div> */}
           <SelectTypes control={control} errors={errors} />
           <SelectCategories control={control} setValue={setValue} />
         </Card>

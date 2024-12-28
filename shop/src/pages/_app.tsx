@@ -1,6 +1,5 @@
 import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
-import { SessionProvider } from 'next-auth/react';
 import '@/assets/css/main.css';
 import 'react-toastify/dist/ReactToastify.css';
 import { ModalProvider } from '@/components/ui/modal/modal.context';
@@ -17,7 +16,6 @@ import { getDirection } from '@/lib/constants';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-import { CountryProvider } from '@/store/country/country.context';
 import "styled-jsx/style"
 
 const ToastContainer = dynamic(

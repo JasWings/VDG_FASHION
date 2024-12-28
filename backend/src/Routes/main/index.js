@@ -9,9 +9,6 @@ import AnalysisRouter from "../dev/analysis.js"
 import MeRouter from "../dev/me.js"
 import Paymentrouter from "../payment/index.js"
 import Ordersrouter from "../product-management/orders/index.js"
-import Faqrouter from "../Faq/index.js"
-import couponrouter from "../product-management/coupons/index.js"
-import reportrouter from "../reports/index.js"
 
 
 const router = express.Router()
@@ -27,7 +24,5 @@ router.use("/analytics",AnalysisRouter)
 router.use("/me",MeRouter)
 router.use("/payment", Paymentrouter)
 router.use('/orders', Ordersrouter)
-router.use("/coupons", couponrouter)
-router.use("/reports", reportrouter)
-router.use("/faqs", Faqrouter)
+
 export default router

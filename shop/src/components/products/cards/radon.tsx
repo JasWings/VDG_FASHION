@@ -20,13 +20,16 @@ const Radon: React.FC<RadonProps> = ({ product, className }) => {
 
   const { price, basePrice, discount } = usePrice({
     amount: product.sale_price ? product.sale_price : product.price!,
-    baseAmount: product.price,
+    baseAmount: product.price,    currencyCode: "INR"
+
   });
   const { price: minPrice } = usePrice({
-    amount: min_price!,
+    amount: min_price!,    currencyCode: "INR"
+
   });
   const { price: maxPrice } = usePrice({
-    amount: max_price!,
+    amount: max_price!,    currencyCode: "INR"
+
   });
 
   return (

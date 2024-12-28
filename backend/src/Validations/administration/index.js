@@ -1,4 +1,4 @@
-import Joi from "Joi";
+import Joi from "joi"
 
  const FeatureSchema = Joi.object({
   identity: Joi.string().required(),

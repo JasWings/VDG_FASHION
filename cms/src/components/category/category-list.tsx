@@ -12,7 +12,7 @@ import { Category, MappedPaginatorInfo } from '@/types';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
-// import LanguageSwitcher from '@/components/ui/lang-action/action';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { getImageURL } from '@/utils/image';
 
 export type IProps = {
@@ -81,14 +81,14 @@ const CategoryList = ({
       width: 150,
       onHeaderCell: () => onHeaderClick('name'),
     },
-    {
-      title: t('table:table-item-details'),
-      dataIndex: 'details',
-      key: 'details',
-      ellipsis: true,
-      align: alignLeft,
-      width: 200,
-    },
+    // {
+    //   title: t('table:table-item-details'),
+    //   dataIndex: 'details',
+    //   key: 'details',
+    //   ellipsis: true,
+    //   align: alignLeft,
+    //   width: 200,
+    // },
     {
       title: t('table:table-item-image'),
       dataIndex: 'image',
@@ -112,25 +112,25 @@ const CategoryList = ({
         );
       },
     },
-    {
-      title: t('table:table-item-icon'),
-      dataIndex: 'icon',
-      key: 'icon',
-      align: 'center',
-      width: 120,
-      render: (icon: string) => {
-        if (!icon) return null;
-        return (
-          <span className="flex items-center justify-center">
-            {getIcon({
-              iconList: categoriesIcon,
-              iconName: icon,
-              className: 'w-5 h-5 max-h-full max-w-full',
-            })}
-          </span>
-        );
-      },
-    },
+    // {
+    //   title: t('table:table-item-icon'),
+    //   dataIndex: 'icon',
+    //   key: 'icon',
+    //   align: 'center',
+    //   width: 120,
+    //   render: (icon: string) => {
+    //     if (!icon) return null;
+    //     return (
+    //       <span className="flex items-center justify-center">
+    //         {getIcon({
+    //           iconList: categoriesIcon,
+    //           iconName: icon,
+    //           className: 'w-5 h-5 max-h-full max-w-full',
+    //         })}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
       title: (
         <TitleWithSort
@@ -163,21 +163,21 @@ const CategoryList = ({
         </div>
       ),
     },
-    // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'slug',
-    //   key: 'actions',
-    //   align: alignRight,
-    //   width: 290,
-    //   render: (slug: string, record: Category) => (
-    //     <LanguageSwitcher
-    //       slug={slug}
-    //       record={record}
-    //       deleteModalView="DELETE_CATEGORY"
-    //       routes={Routes?.category}
-    //     />
-    //   ),
-    // },
+    {
+      title: t('table:table-item-actions'),
+      dataIndex: '_id',
+      key: 'actions',
+      align: alignRight,
+      width: 290,
+      render: (_id: string, record: Category) => (
+        <LanguageSwitcher
+          slug={_id}
+          record={record}
+          deleteModalView="DELETE_CATEGORY"
+          routes={Routes?.category}
+        />
+      ),
+    },
   ];
 
   return (

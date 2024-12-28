@@ -21,9 +21,11 @@ const Wallet = ({ totalPrice, walletAmount, walletCurrency }: Props) => {
 
   const { price: currentWalletCurrency } = usePrice({
     amount: Number(calculateCurrentWalletCurrency),
+    currencyCode: "INR"
   });
   const { price: payableAmount } = usePrice({
     amount: calculatePayableAmount,
+    currencyCode: "INR"
   });
   useEffect(() => {
     if (use_wallet) {

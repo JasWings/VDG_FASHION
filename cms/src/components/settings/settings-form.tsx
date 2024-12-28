@@ -656,7 +656,7 @@ export default function SettingsForm({
         </Card>
       </div>
 
-      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title={t('Payment')}
           details={t('Configure Payment Option')}
@@ -807,7 +807,7 @@ export default function SettingsForm({
             </div>
           )}
         </Card>
-      </div>
+      </div> */}
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title="SEO"
@@ -891,7 +891,7 @@ export default function SettingsForm({
           />
         </Card>
       </div>
-      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title={t('form:title-sms-event-settings')}
           details={t('form:description-sms-event-settings')}
@@ -957,7 +957,7 @@ export default function SettingsForm({
             <ValidationError message={t(errors.currency?.message)} />
           </div>
         </Card>
-      </div>
+      </div> */}
 
       <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
         <Description

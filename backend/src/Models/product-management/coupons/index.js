@@ -4,13 +4,15 @@ import { generateUUID } from "../../../utils/helpers.js";
 import { Sequence } from "../../helpers/sequence.js";
 
 const couponSchema = new mongoose.Schema({
+    id : { type: Number, unique: true },
+    uuid : { type: String, unique: true },
     code:{type:String,required:true,unique:true},
     type: { type: String, enum: ['fixed', 'percentage'], required: true},
     description:{type:String,required:true},
     amount:{type:Number,required:true},
     minimum_cart_amount:{type:Number,requird:true},
-    image:{type:String,default:null},
-    active_form:{type:Date,required:true},
+    image:{type:String,required:true},
+    active_from:{type:Date,required:true},
     expire_at: { type: Date, required: true }, 
     is_active: { type: Boolean, default: true }
 })

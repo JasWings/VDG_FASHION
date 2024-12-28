@@ -57,9 +57,9 @@ const BannerWithSearch: React.FC<BannerProps> = ({ banners, layout }) => {
                   })}
                 >
                   <Image
-                    className="h-[550px] min-h-140 w-full object-cover mt-20"
+                    className="h-[550px] min-h-140 w-full object-fill mt-20"
                     // src={banner.image?.original ?? productPlaceholder}
-                    src={"/img/HeroImage.png"}
+                    src={"/img/HeroImage.jpg"}
                     alt={banner.title ?? ''}
                     width={0}
                     height={60}

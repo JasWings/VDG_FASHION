@@ -9,7 +9,7 @@ import TitleWithSort from '@/components/ui/title-with-sort';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
-// import LanguageSwitcher from '@/components/ui/lang-action/action';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 export type IProps = {
   types: Type[] | undefined;
@@ -69,38 +69,38 @@ const TypeList = ({ types, onSort, onOrder }: IProps) => {
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: any) => <span className="whitespace-nowrap">{name}</span>,
     },
-    {
-      title: t('table:table-item-icon'),
-      dataIndex: 'icon',
-      key: 'slug',
-      align: 'center',
-      render: (icon: string) => {
-        if (!icon) return null;
-        return (
-          <span className="flex items-center justify-center">
-            {getIcon({
-              iconList: typeIcons,
-              iconName: icon,
-              className: 'w-5 h-5 max-h-full max-w-full',
-            })}
-          </span>
-        );
-      },
-    },
     // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'slug',
-    //   key: 'actions',
-    //   align: alignRight,
-    //   render: (slug: string, record: Type) => (
-    //     <LanguageSwitcher
-    //       slug={slug}
-    //       record={record}
-    //       deleteModalView="DELETE_TYPE"
-    //       routes={Routes?.type}
-    //     />
-    //   ),
+    //   title: t('table:table-item-icon'),
+    //   dataIndex: 'icon',
+    //   key: 'slug',
+    //   align: 'center',
+    //   render: (icon: string) => {
+    //     if (!icon) return null;
+    //     return (
+    //       <span className="flex items-center justify-center">
+    //         {getIcon({
+    //           iconList: typeIcons,
+    //           iconName: icon,
+    //           className: 'w-5 h-5 max-h-full max-w-full',
+    //         })}
+    //       </span>
+    //     );
+    //   },
     // },
+    {
+      title: t('table:table-item-actions'),
+      dataIndex: 'slug',
+      key: 'actions',
+      align: alignRight,
+      render: (slug: string, record: Type) => (
+        <LanguageSwitcher
+          slug={slug}
+          record={record}
+          deleteModalView="DELETE_TYPE"
+          routes={Routes?.type}
+        />
+      ),
+    },
   ];
 
   return (

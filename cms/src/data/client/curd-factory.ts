@@ -21,11 +21,11 @@ export function crudFactory<Type, QueryParams extends LanguageParam, InputType>(
     create(data: InputType) {
       return HttpClient.post<Type>(endpoint, data);
     },
-    update({ id, ...input }: Partial<InputType> & { id: string }) {
-      return HttpClient.put<Type>(`${endpoint}/${id}`, input);
+    update({ _id, ...input }: Partial<InputType> & { _id: string }) {
+      return HttpClient.put<Type>(`${endpoint}/${_id}`, input);
     },
     delete({ id }: { id: string }) {
-      return HttpClient.delete<boolean>(`${endpoint}/${id}`);
+      return HttpClient.delete<boolean>(`${endpoint}${id}`);
     },
   };
 }

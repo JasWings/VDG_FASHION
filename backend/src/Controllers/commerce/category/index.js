@@ -5,28 +5,51 @@ const createCategory = async (req, res) => {
   try {
     const categoryData = req.body;
     const validatedCategory = Validations.validateCategory(categoryData);
-    const category = new Category(validatedCategory);
+    const category = new Category({...validatedCategory,description: validatedCategory?.details});
     await category.save();
     res.status(201).json({ status: "success", message: 'Category created successfully', data: category });
   } catch (error) {
-    res.status(400).json({ status: "success", message : error.message });
+    res.status(500).json({ status: "failed", message : error.message });
   }
 };
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find().populate({ path: "type_id", model: "Group"})
-    
-    res.status(200).json({ status: "success", message: "All Categories retrived successfully", data: categories});
+    const categories = await Category.find({ is_deleted: false}).populate({ path: "type_id", model: "Group" });
+
+    const categoryMap = new Map();
+    categories.forEach((category) => {
+      const parentId = category.parent ? category.parent.toString() : null;
+      if (!categoryMap.has(parentId)) {
+        categoryMap.set(parentId, []);
+      }
+      categoryMap.get(parentId).push(category);
+    });
+
+    const buildCategoryTree = (parentId) => {
+      return (categoryMap.get(parentId) || []).map((category) => ({
+        ...category.toObject(),
+        children: buildCategoryTree(category._id.toString()),
+      }));
+    };
+
+    const rootCategories = buildCategoryTree(null);
+
+    res.status(200).json({
+      status: "success",
+      message: "All Categories retrieved successfully",
+      data: rootCategories,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+
 const getCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await Category.findById(id);
+    const category = await Category.findById(id).populate({ path: "type_id"}).populate({ path: "parent",strictPopulate:false})
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }
@@ -54,7 +77,7 @@ const updateCategory = async (req, res) => {
 const deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await Category.findByIdAndDelete(id);
+    const category = await Category.findByIdAndUpdate(id,{ is_deleted: true  })
     if (!category) {
       return res.status(404).json({ message: 'Category not found' });
     }

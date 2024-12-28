@@ -12,6 +12,7 @@ const UnverifiedItemList = () => {
   const { price: subtotal } = usePrice(
     items && {
       amount: total,
+      currencyCode: "INR"
     }
   );
   return (

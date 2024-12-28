@@ -79,7 +79,7 @@ export default function Orders() {
       a.click();
     }
   }
-
+   console.log(orders,"orders")
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -140,7 +140,7 @@ export default function Orders() {
       </Card>
 
       <OrderList
-        orders={orders}
+        orders={orders?.data}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrder={setOrder}

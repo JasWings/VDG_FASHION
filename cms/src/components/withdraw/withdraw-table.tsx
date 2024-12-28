@@ -55,6 +55,7 @@ const WithdrawTable = ({ withdraws, title }: IProps) => {
       render: function Render(amount: number) {
         const { price } = usePrice({
           amount: amount as number,
+          currencyCode: "INR"
         });
         return <div>{price}</div>;
       },

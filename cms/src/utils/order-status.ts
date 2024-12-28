@@ -1,8 +1,8 @@
 import { PaymentStatus } from '@/types';
 
 export const ORDER_STATUS = [
-  { name: 'text-order-pending', status: 'order-pending', serial: 1 },
-  { name: 'text-order-processing', status: 'order-processing', serial: 2 },
+  { name: 'text-order-pending', status: 'initiated', serial: 1 },
+  { name: 'text-order-processing', status: 'placed', serial: 2 },
   {
     name: 'text-order-at-local-facility',
     status: 'order-at-local-facility',

@@ -20,7 +20,7 @@ const FileInput = ({
   defaultValue = [],
   maxSize,
 }: FileInputProps) => {
-  
+
   return (
     <Controller
       control={control}

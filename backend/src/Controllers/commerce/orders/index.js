@@ -19,7 +19,7 @@ const createOrder = async (req, res) => {
 const getOrderById = async (req, res) => {
     try {
         const { id } = req.params
-        const order = await Order.findOne({ uuid: id }).populate('customer_id')
+        const order = await Order.findOne({ uuid: id }).populate('customer_id').populate({ path: "data", populate: { path: "items.product"} })
             .populate('shipping_address')
             .populate('billing_address');
 
@@ -43,7 +43,7 @@ const getAllOrders = async (req, res) => {
 
 export const updateOrder = async (req, res) => {
     try {
-        // Validate request body
+        
         const { error } = Validations.orderdetails(req.body);
         if (error) {
             return res.status(400).json({ message: error.details[0].message });

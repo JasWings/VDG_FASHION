@@ -138,6 +138,7 @@ export const placeonorder = async (req, res) => {
       total: cart?.price_details?.total_current_price,
       shipping_address: cart?.shipping_address,
       billing_address: cart?.billing_address,
+      payment_gateway : "payment_gateway",
       order_status: "initiated", 
       payment_status: "initiated", 
       data: {

@@ -49,14 +49,17 @@ const Offer: React.FC<NeonProps> = ({ product, className }) => {
 const [isAuthorize]=useAtom(authorizationAtom)
   const { price, basePrice, discount } = usePrice({
     amount: product_prices&&product_prices[0]&&product_prices[0].actual_price ? product_prices[findPriceIndex()].current_price : product.product_prices!,
-    baseAmount: product_prices&&product_prices[0]&&product_prices[0].actual_price,currencyCode:"USD"
+    baseAmount: product_prices&&product_prices[0]&&product_prices[0].actual_price,    currencyCode: "INR"
+
   });
 
   const { price: minPrice } = usePrice({
-    amount: min_price,
+    amount: min_price,    currencyCode: "INR"
+
   });
   const { price: maxPrice } = usePrice({
-    amount: max_price,
+    amount: max_price,    currencyCode: "INR"
+
   });
   const { openModal } = useModalAction();
   

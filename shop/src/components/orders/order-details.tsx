@@ -103,18 +103,23 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
   console.log(order,"order_details")
   const { price: amount } = usePrice({
     amount: price_details?.total_actual_price,
+    currencyCode: "INR"
   });
   const { price: discount } = usePrice({
     amount: order?.discount ?? 0,
+    currencyCode: "INR"
   });
   const { price: total } = usePrice({
     amount: price_details?.total_actual_price,
+    currencyCode: "INR"
   });
   const { price: delivery_fee } = usePrice({
     amount: order?.delivery_fee ?? 0,
+    currencyCode: "INR"
   });
   const { price: sales_tax } = usePrice({
     amount: order?.sales_tax,
+    currencyCode: "INR"
   });
 
   const handleCancelOrder=(order:any)=>{

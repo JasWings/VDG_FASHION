@@ -57,7 +57,7 @@ export const useUpdateCategoryMutation = () => {
         ? `/${router.query.shop}${Routes.category.list}`
         : Routes.category.list;
       await router.push(
-        `${generateRedirectUrl}/${data?.slug}/edit`,
+        `${generateRedirectUrl}`,
         undefined,
         {
           locale: Config.defaultLanguage,
@@ -82,7 +82,7 @@ export const useCategoryQuery = ({ slug, language }: GetParams) => {
   );
 
   return {
-    category: data,
+    category: data?.data,
     error,
     isLoading,
   };

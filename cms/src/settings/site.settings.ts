@@ -13,8 +13,8 @@ export const siteSettings = {
   },
   defaultLanguage: 'en',
   author: {
-    name: 'RedQ, Inc.',
-    websiteUrl: 'https://redq.io',
+    name: 'VDG.',
+    websiteUrl: 'https://vdg-fashion-teal.vercel.app/',
     address: '',
   },
   headerLinks: [],
@@ -28,7 +28,7 @@ export const siteSettings = {
       labelTransKey: 'authorized-nav-item-logout',
     },
   ],
-  currencyCode: 'USD',
+  currencyCode: 'INR',
   sidebarLinks: {
     admin: [
       {
@@ -101,46 +101,46 @@ export const siteSettings = {
         label: 'sidebar-nav-item-coupons',
         icon: 'CouponsIcon',
       },
-      {
-        href: Routes.tax.list,
-        label: 'sidebar-nav-item-taxes',
-        icon: 'TaxesIcon',
-      },
+      // {
+      //   href: Routes.tax.list,
+      //   label: 'sidebar-nav-item-taxes',
+      //   icon: 'TaxesIcon',
+      // },
       {
         href: Routes.shipping.list,
         label: 'sidebar-nav-item-shippings',
         icon: 'ShippingsIcon',
       },
-      {
-        href: Routes.withdraw.list,
-        label: 'sidebar-nav-item-withdraws',
-        icon: 'WithdrawIcon',
-      },
-      {
-        href: Routes.message.list,
-        label: 'sidebar-nav-item-message',
-        icon: 'ChatIcon',
-      },
-      {
-        href: Routes.refund.list,
-        label: 'sidebar-nav-item-refunds',
-        icon: 'RefundsIcon',
-      },
-      {
-        href: Routes.question.list,
-        label: 'sidebar-nav-item-questions',
-        icon: 'QuestionIcon',
-      },
-      {
-        href: Routes.storeNotice.list,
-        label: 'sidebar-nav-item-store-notice',
-        icon: 'StoreNoticeIcon',
-      },
-      {
-        href: Routes.reviews.list,
-        label: 'sidebar-nav-item-reviews',
-        icon: 'ReviewIcon',
-      },
+      // {
+      //   href: Routes.withdraw.list,
+      //   label: 'sidebar-nav-item-withdraws',
+      //   icon: 'WithdrawIcon',
+      // },
+      // {
+      //   href: Routes.message.list,
+      //   label: 'sidebar-nav-item-message',
+      //   icon: 'ChatIcon',
+      // },
+      // {
+      //   href: Routes.refund.list,
+      //   label: 'sidebar-nav-item-refunds',
+      //   icon: 'RefundsIcon',
+      // },
+      // {
+      //   href: Routes.question.list,
+      //   label: 'sidebar-nav-item-questions',
+      //   icon: 'QuestionIcon',
+      // },
+      // {
+      //   href: Routes.storeNotice.list,
+      //   label: 'sidebar-nav-item-store-notice',
+      //   icon: 'StoreNoticeIcon',
+      // },
+      // {
+      //   href: Routes.reviews.list,
+      //   label: 'sidebar-nav-item-reviews',
+      //   icon: 'ReviewIcon',
+      // },
       {
         href: Routes.settings,
         label: 'sidebar-nav-item-settings',

@@ -159,7 +159,7 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
       minimum_cart_amount: values.minimum_cart_amount,
       active_from: new Date(values.active_from).toISOString(),
       expire_at: new Date(values.expire_at).toISOString(),
-      image: values?.image?.file,
+      image: values?.image.file,
     };
 
     try {

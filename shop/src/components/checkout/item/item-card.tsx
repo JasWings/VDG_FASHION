@@ -10,6 +10,7 @@ const ItemCard = ({ item, notAvailable }: Props) => {
   const { t } = useTranslation('common');
   const { price } = usePrice({
     amount: item.quantity*item.sale_price ,
+    currencyCode: "INR"
   });
   
   return (

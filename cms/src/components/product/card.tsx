@@ -31,12 +31,16 @@ const ProductCard = ({ item }: Props) => {
   } = usePrice({
     amount: sale_price ? sale_price : price!,
     baseAmount: price ?? 0,
+    currencyCode: "INR"
+
   });
   const { price: minPrice } = usePrice({
     amount: min_price ?? 0,
+    currencyCode: "INR"
   });
   const { price: maxPrice } = usePrice({
     amount: max_price ?? 0,
+    currencyCode: "INR"
   });
 
   const { openModal } = useModalAction();

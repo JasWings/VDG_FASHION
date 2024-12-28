@@ -55,13 +55,14 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
 
   const [isAuthorize]=useAtom(authorizationAtom)
   const { price, basePrice, discount } = usePrice({
-    amount: isVariant ? first_variant?.sale_price : product?.sale_price,
+    amount: isVariant ? first_variant?.sale_price : product?.sale_price, 
     baseAmount: isVariant ? first_variant?.price : product?.price,    currencyCode: "INR"
 
   });
   
   const { price: minPrice } = usePrice({
-    amount: min_price,    currencyCode: "INR"
+    amount: min_price,    
+    currencyCode: "INR"
 
   });
   const { price: maxPrice } = usePrice({

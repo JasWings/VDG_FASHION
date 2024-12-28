@@ -13,8 +13,8 @@ export const siteSettings = {
   },
   defaultLanguage: 'en',
   author: {
-    name: 'RedQ, Inc.',
-    websiteUrl: 'https://redq.io',
+    name: 'VDG.',
+    websiteUrl: 'https://vdg-fashion-teal.vercel.app/',
     address: '',
   },
   headerLinks: [],
@@ -101,11 +101,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-coupons',
         icon: 'CouponsIcon',
       },
-      {
-        href: Routes.tax.list,
-        label: 'sidebar-nav-item-taxes',
-        icon: 'TaxesIcon',
-      },
+      // {
+      //   href: Routes.tax.list,
+      //   label: 'sidebar-nav-item-taxes',
+      //   icon: 'TaxesIcon',
+      // },
       {
         href: Routes.shipping.list,
         label: 'sidebar-nav-item-shippings',
@@ -141,11 +141,11 @@ export const siteSettings = {
       //   label: 'sidebar-nav-item-reviews',
       //   icon: 'ReviewIcon',
       // },
-      // {
-      //   href: Routes.settings,
-      //   label: 'sidebar-nav-item-settings',
-      //   icon: 'SettingsIcon',
-      // },
+      {
+        href: Routes.settings,
+        label: 'sidebar-nav-item-settings',
+        icon: 'SettingsIcon',
+      },
     ],
     shop: [
       {

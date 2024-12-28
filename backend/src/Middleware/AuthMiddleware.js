@@ -26,32 +26,3 @@
         }
     };
 
-
-    export const isAdmin = async (req, res, next) => {
-        try {
-            const user = await userModel.findById(req.user._id);
-
-            if (!user) {
-                return res.status(404).json({
-                    success: false,
-                    message: 'User not found',
-                });
-            }
-
-            if (user.role !== 1) { 
-                return res.status(403).json({
-                    success: false,
-                    message: 'Unauthorized Access',
-                });
-            }
-
-            next();
-        } catch (error) {
-            console.error('Error in admin middleware:', error);
-            return res.status(500).json({
-                success: false,
-                message: 'Server error while checking admin access',
-                error: error.message,
-            });
-        }
-    };

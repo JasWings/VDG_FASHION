@@ -3,6 +3,7 @@ import Link from '@/components/ui/link';
 import cn from 'classnames';
 import { siteSettings } from '@/settings/site.settings';
 import { useSettings } from '@/contexts/settings.context';
+import { getImageURL } from '@/utils/image';
 
 const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   className,
@@ -24,7 +25,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
         }}
       >
         <Image
-          src={logo?.original ?? siteSettings.logo.url}
+          src={ getImageURL(logo?.original) ?? siteSettings.logo.url}
           alt={siteTitle ?? siteSettings.logo.alt}
           fill
           sizes="(max-width: 768px) 100vw"

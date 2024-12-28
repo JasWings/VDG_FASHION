@@ -81,14 +81,14 @@ const CategoryList = ({
       width: 150,
       onHeaderCell: () => onHeaderClick('name'),
     },
-    {
-      title: t('table:table-item-details'),
-      dataIndex: 'details',
-      key: 'details',
-      ellipsis: true,
-      align: alignLeft,
-      width: 200,
-    },
+    // {
+    //   title: t('table:table-item-details'),
+    //   dataIndex: 'details',
+    //   key: 'details',
+    //   ellipsis: true,
+    //   align: alignLeft,
+    //   width: 200,
+    // },
     {
       title: t('table:table-item-image'),
       dataIndex: 'image',

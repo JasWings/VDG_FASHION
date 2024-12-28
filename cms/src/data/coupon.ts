@@ -105,7 +105,7 @@ export const useCouponsQuery = (options: Partial<CouponQueryOptions>) => {
   );
 
   return {
-    coupons: data?.data ?? [],
+    coupons: data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

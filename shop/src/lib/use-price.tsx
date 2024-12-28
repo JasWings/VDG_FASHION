@@ -58,23 +58,21 @@ export default function usePrice(
   const {
     settings: { currency, currencyOptions },
   } = useSettings();
+
   const { amount, baseAmount, currencyCode } = {
     ...data,
-    currencyCode: currency ?? 'USD',
+    currencyCode: data?.currencyCode ?? currency ?? 'INR',
   };
-  const { formation, fractions } = {
-    "formation": "en-US",
-    "fractions": 2
-}
 
-  const { locale } = useRouter();
+  const { formation, fractions } = {
+    formation: 'en-IN', // Use Indian locale for INR
+    fractions: 2,
+  };
+
   const value = useMemo(() => {
     if (typeof amount !== 'number' || !currencyCode) return '';
-    const fractionalDigit = fractions ? fractions : 2;
-    let currentLocale = formation ? formation : 'en';
-    // if (process.env.NEXT_PUBLIC_ENABLE_MULTI_LANG) {
-    //   currentLocale = locale ? locale : 'en';
-    // }
+    const fractionalDigit = fractions ?? 2;
+    const currentLocale = formation;
 
     return baseAmount
       ? formatVariantPrice({
@@ -90,8 +88,10 @@ export default function usePrice(
           locale: currentLocale,
           fractions: fractionalDigit,
         });
-  }, [amount, baseAmount, currencyCode, locale]);
+  }, [amount, baseAmount, currencyCode]);
+
   return typeof value === 'string'
     ? { price: value, basePrice: null, discount: null }
     : value;
 }
+

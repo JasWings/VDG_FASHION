@@ -30,6 +30,7 @@ export default function Coupons() {
     sortedBy,
   });
 
+  console.log(coupons)
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 

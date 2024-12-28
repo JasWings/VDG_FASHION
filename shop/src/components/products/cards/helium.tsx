@@ -6,6 +6,7 @@ import { useTranslation } from 'next-i18next';
 import { useModalAction } from '@/components/ui/modal/modal.context';
 import { productPlaceholder } from '@/lib/placeholders';
 import CartIcon from '@/components/icons/cart';
+import { getImageURL } from '@/lib/image';
 
 type HeliumProps = {
   product: any;
@@ -14,19 +15,19 @@ type HeliumProps = {
 
 const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   const { t } = useTranslation('common');
-  const { identity    , image, unit, quantity, min_price, max_price, thumb_image } =
+  const { name    ,image, unit, quantity, min_price, max_price, thumb_image,product_type } =
     product ?? {};
-  // const { price, basePrice, discount } = usePrice({
-  //   amount: product.sale_price ? product.sale_price : product.price!,
-  //   baseAmount: product.price,
-  // });
-  // const { price: minPrice } = usePrice({
-  //   amount: min_price,
-  // });
-  // const { price: maxPrice } = usePrice({
-  //   amount: max_price,
-  // });
-
+  const { price, basePrice, discount } = usePrice({
+    amount: product.sale_price ? product.sale_price : product.price!,
+    baseAmount: product.price,
+  });
+  const { price: minPrice } = usePrice({
+    amount: min_price,
+  });
+  const { price: maxPrice } = usePrice({
+    amount: max_price,
+  });
+  console.log(product,"product")
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {
@@ -47,17 +48,17 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
       >
         <span className="sr-only">{t('text-product-image')}</span>
         <Image
-          src={image?.original ?? productPlaceholder}
-          alt={identity}
+          src={image?.file ? getImageURL(image?.file) : productPlaceholder}
+          alt={name}
           fill
           sizes="(max-width: 768px) 100vw"
           className="product-image object-contain"
         />
-        {/* {discount && (
+        {discount && (
           <div className="absolute top-3 rounded-full bg-yellow-500 px-1.5 text-xs font-semibold leading-6 text-light ltr:right-3 rtl:left-3 sm:px-2 md:top-4 md:px-2.5 ltr:md:right-4 rtl:md:left-4">
             {discount}
           </div>
-        )} */}
+        )}
       </div>
       {/* End of product image */}
 
@@ -67,12 +68,12 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
           role="button"
           className="mb-2 truncate text-sm font-semibold text-heading"
         >
-          {identity}
+          {name}
         </h3>
         <p className="text-xs text-muted">{unit}</p>
         {/* End of product info */}
 
-        {/* <div className="relative mt-7 flex min-h-6 items-center justify-between md:mt-8">
+         <div className="relative mt-7 flex min-h-6 items-center justify-between md:mt-8">
           {product_type.toLowerCase() === 'variable' ? (
             <>
               <div>
@@ -120,7 +121,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
             </div>
           )}
           {/* End of product price */}
-        {/* </div> */} 
+        </div> 
       </header>
     </article>
   );

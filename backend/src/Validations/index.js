@@ -5,6 +5,8 @@ import { validateAttribute, validateCategory, validateGroup, validateTag } from 
 import { orderdetails } from "./eCommerce/order.js";
 import { Paymentdetails } from "./eCommerce/payment.js";
 import { reportdetails } from "./eCommerce/report.js";
+import { validateShipping } from "./eCommerce/shipping.js";
+import { validateTax } from "./eCommerce/tax.js";
 
 
 
@@ -24,7 +26,9 @@ const Validations = {
     orderdetails: orderdetails,
     Paymentdetails:Paymentdetails,
     coupondetails:coupondetails,
-    reportdetails: reportdetails
+    reportdetails: reportdetails,
+    validateTax,
+    validateShipping
 }
 
 export default Validations

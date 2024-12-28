@@ -51,7 +51,7 @@ export const validateAttribute = (attributeData) => {
 const categoryValidationSchema = Joi.object({
   identity: Joi.string().min(2).max(50).required(),
   slug: Joi.string().required(),
-  details: Joi.string().optional(),
+  details: Joi.any().optional(),
   type_id : Joi.string().required(),
   // icon: Joi.string().optional(),
   image: Joi.string().optional(),

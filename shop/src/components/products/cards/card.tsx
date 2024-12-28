@@ -32,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const router=useRouter()
   const Component = router.pathname==="/offers"?MAP_PRODUCT_TO_CARD['offer']: MAP_PRODUCT_TO_CARD["neon"]
-  return <Component product={product} {...props} className={className} />;
+  return <Component product={product} {...props}  className={className} />;
 };
 export default ProductCard;
 

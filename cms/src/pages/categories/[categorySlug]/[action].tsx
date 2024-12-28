@@ -34,7 +34,11 @@ export default function UpdateCategoriesPage() {
 
       <CreateOrUpdateCategoriesForm 
       initialValues={
-        category }
+        category ? 
+        {...category,image:{ file: category?.image, uuid:category?._id,id:1}}
+      :
+      category
+    }
       />
     </>
   );

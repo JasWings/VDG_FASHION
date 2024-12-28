@@ -17,7 +17,8 @@ import Link from '@/components/ui/link';
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 import { useRouter } from 'next/router';
-// import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { getImageURL } from '@/utils/image';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -47,7 +48,7 @@ const CouponList = ({
     sort: SortOrder.Desc,
     column: null,
   });
-
+   
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
       onSort((currentSortDirection: SortOrder) =>
@@ -78,7 +79,7 @@ const CouponList = ({
       width: 74,
       render: (image: Attachment) => (
         <Image
-          src={image?.thumbnail ?? siteSettings.product.placeholder}
+          src={ getImageURL(image) ?? siteSettings.product.placeholder}
           alt="coupon banner"
           width={42}
           height={42}
@@ -201,20 +202,20 @@ const CouponList = ({
         </span>
       ),
     },
-    // {
-    //   title: t('table:table-item-actions'),
-    //   dataIndex: 'code',
-    //   key: 'actions',
-    //   align: 'right',
-    //   render: (slug: string, record: Coupon) => (
-    //     <LanguageSwitcher
-    //       slug={slug}
-    //       record={record}
-    //       deleteModalView="DELETE_COUPON"
-    //       routes={Routes?.coupon}
-    //     />
-    //   ),
-    // },
+    {
+      title: t('table:table-item-actions'),
+      dataIndex: 'code',
+      key: 'actions',
+      align: 'right',
+      render: (slug: string, record: Coupon) => (
+        <LanguageSwitcher
+          slug={slug}
+          record={record}
+          deleteModalView="DELETE_COUPON"
+          routes={Routes?.coupon}
+        />
+      ),
+    },
   ];
 
   return (

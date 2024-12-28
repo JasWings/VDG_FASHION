@@ -214,11 +214,12 @@ export default function CreateOrUpdateCategoriesForm({
     //@ts-ignore
     defaultValues: initialValues
       ? {
+          image : initialValues?.image,
           ...initialValues,
           type: initialValues?.type_id,
+          parent : initialValues?.parent,
           name: initialValues?.identity,
           parent: initialValues?.parent,
-          image: { file: initialValues?.image }
         }
       : defaultValues,
     resolver: yupResolver(categoryValidationSchema),
@@ -257,19 +258,16 @@ export default function CreateOrUpdateCategoriesForm({
   const onSubmit = async (values: FormValues) => {
     console.log(values,"values",control)
     const input = {
-      language: router.locale,
       name: values.name,
       slug: values.slug,
       details: values.details,
       image: values?.image?.file,
       // icon: values.icon?.value || '',
-      parent: values.parent?.id ?? null,
+      parent: values.parent?._id ?? null,
       type_id: values.type?._id,
     };
     if (
-      !initialValues ||
-      !initialValues.translated_languages.includes(router.locale!)
-    ) {
+      !initialValues     ) {
       const data = {
          identity : input?.name,
          icon : input?.icon,
@@ -285,13 +283,20 @@ export default function CreateOrUpdateCategoriesForm({
       // });
       createCategory(data)
     } else {
-      updateCategory({
-        ...input,
-        id: initialValues.id!,
-      });
+      const data = {
+        identity : input.name,
+        details : input?.details,
+        _id : values?._id,
+        image : values?.image.file,
+        slug: values?.slug,
+        type_id : values?.type?._id,
+        parent: values?.parent?._id
+      }
+      console.log(input)
+      updateCategory(data);
     }
   };
-
+  console.log(defaultValues)
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
@@ -302,7 +307,7 @@ export default function CreateOrUpdateCategoriesForm({
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
-          <FileInput name="image" control={control} multiple={false} />
+          <FileInput name="image"  control={control} multiple={false} />
         </Card>
       </div>
 

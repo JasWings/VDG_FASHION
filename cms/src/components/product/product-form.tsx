@@ -152,7 +152,7 @@ export default function CreateOrUpdateProductForm({
   } = methods;
 
   const upload_max_filesize = options?.server_info?.upload_max_filesize / 1024;
-  console.log(control._defaultValues)
+  
   const { mutate: createProduct, isLoading: creating } =
     useCreateProductMutation();
   const { mutate: updateProduct, isLoading: updating } =

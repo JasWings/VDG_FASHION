@@ -194,7 +194,7 @@ export function filterAttributes(attributes: any, variations: any) {
 export function getCartesianProduct(values: any) {
   const formattedValues = values
     ?.map((v: any) =>
-      v?.value?.map((a: any) => ({ name: v?.attribute?.name, value: a?.value }))
+      v?.value?.map((a: any) => ({ name: v?.attribute?.identity, value: a?.value }))
     )
     .filter((i: any) => i !== undefined);
   if (isEmpty(formattedValues)) return [];

@@ -131,7 +131,7 @@ const Details: React.FC<Props> = ({
   };
 
   const variations = useMemo(
-    () => getVariations(product?.variations),
+    () => getVariations(product?.variants),
     [product?.variations]
   );
   const isSelected = isVariationSelected(variations, attributes);
@@ -144,14 +144,14 @@ const Details: React.FC<Props> = ({
       )
     );
   }
-
+  console.log(variations,product,isSelected,selectedVariation,attributes)
   const scrollDetails = () => {
     scroller.scrollTo('details', {
       smooth: true,
       offset: -80,
     });
   };
-  const hasVariations = !isEmpty(images);
+  const hasVariations = !isEmpty(variations);
   const previewImages = displayImage(images, gallery, images);
   const checkMainProduct=async()=>{
     const response:any=await client.products.MainProducts({id:product?.base_product})
@@ -175,7 +175,7 @@ const Details: React.FC<Props> = ({
     checkMainProduct()
     return <Spinner />
   }
-  console.log(product,"product",previewImages,variants_list)
+  
   return (
     <article className="rounded-lg bg-light">
       <div className="flex flex-col border-b border-border-200 border-opacity-70 md:flex-row">
@@ -287,18 +287,18 @@ const Details: React.FC<Props> = ({
               </div>
             )}
 
-            {isVariant ? (
+            {hasVariations ? (
               <>
                 <div className="my-5 flex items-center md:my-10">
-                  {/* <VariationPrice
-                    selectedVariation={first_variant}
-                    minPrice={first_variant.price}
-                    maxPrice={first_variant.sale_price}
-                  /> */}
+                  <VariationPrice
+                    selectedVariation={selectedVariation}
+                    minPrice={product?.min_price}
+                    maxPrice={product?.max_price}
+                  />
                 </div>
-                {/* <div>
-                  <VariationGroups variations={variants_list} name={name} />
-                </div> */}
+                <div>
+                  <VariationGroups variations={variations}  />
+                </div>
               </>
             ) : (
               <span className="my-5 flex items-center md:my-10">
@@ -325,7 +325,7 @@ const Details: React.FC<Props> = ({
             <div className="flex flex-col items-center   md:mt-6 lg:flex-row">
               <div className="mb-3 w-full lg:mb-0 lg:max-w-[400px]">
                 <AddToCart
-                  data={ isVariant ? first_variant :product}
+                  data={ product}
                   variant="big"
                   variation={selectedVariation}
                   disabled={selectedVariation?.is_disable || !isSelected}

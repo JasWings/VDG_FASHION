@@ -60,7 +60,7 @@ export default function ProductVariableForm({
   });
   const variations = watch('variations');
   const cartesianProduct = getCartesianProduct(getValues('variations'));
-  
+  console.log(cartesianProduct)
   return (
     <div className="my-5 flex flex-wrap sm:my-8">
       <Description

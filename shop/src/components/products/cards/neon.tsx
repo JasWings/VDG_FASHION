@@ -36,7 +36,7 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
   const searchText=router.query.text as String
   const filterCategory=router.query.category as String
   const filteredProducts=searchText ?product?.name.toLowerCase().includes(searchText.toLowerCase()):filterCategory?product?.category?.slug===filterCategory:product
-  const {  unit, quantity, min_price, max_price, main_image ,is_variant ,uuid,name,image,product_prices ,weight_in_grams ,slug ,has_variants } =
+  const {  unit, quantity, min_price, max_price, main_image ,is_variant ,uuid,name,image,product_prices ,weight_in_grams ,slug ,has_variants, product_type } =
     product ?? {};
     const isVariant = product?.product_type === "variable" ? true : false
     const variants_list = product?.variation_options
@@ -153,9 +153,9 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
               </div>
               {/* End of product title */}
       
-              {false ? (
+              {product_type.toLowerCase() === 'variable' ? (
                 <>
-                  {Number(quantity) > 0 || Number(quantity)===0 && (
+                  {Number(quantity) > 0 && (
                     <button
                       onClick={handleProductQuickView}
                       className="group flex h-7 w-full items-center justify-between rounded bg-gray-100 text-xs text-body-dark transition-colors hover:border-accent hover:bg-accent hover:text-light focus:border-accent focus:bg-accent focus:text-light focus:outline-0 md:h-9 md:text-sm"

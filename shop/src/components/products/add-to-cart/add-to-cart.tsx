@@ -115,9 +115,9 @@ export const AddToCart = ({
     <div>
       {!data?.is_external || !data?.external_product_url ? (
         <AddToCartBtn
-          // disabled={
-          //   disabled || outOfStock || data.status.toLowerCase() != 'publish'
-          // }
+          disabled={
+            disabled || outOfStock || data.status.toLowerCase() != 'publish'
+          }
           variant={variant}
           onClick={()=>handleAddCart(item)}
         />

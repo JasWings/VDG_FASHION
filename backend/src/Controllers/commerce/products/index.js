@@ -54,7 +54,7 @@ export const createProduct = async (req, res) => {
                 length,
                 is_active: true,
                 is_delete: false,
-                group: type_id
+                group: type_id,unit:unit
             });
 
             const savedProduct = await simpleProduct.save();

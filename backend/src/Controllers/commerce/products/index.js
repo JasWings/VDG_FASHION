@@ -160,17 +160,53 @@ export const createProduct = async (req, res) => {
 };
 
 
-export const getProducts = async (req,res) => {
+export const getProducts = async (req, res) => {
     try {
-    const filterQuerys = FilterQuery("product",req.query)
-    console.log(filterQuerys)
-    const product_list = await ProductModel.find({...filterQuerys,is_delete: false})
-    .populate({ path: "group",model:"Group"}).populate({ path: "variants",populate: { path: "attributes"}})
-    res.status(200).json({ status: "success", message: "All products retrived successfully",data: product_list})    
+      const filterQuerys = FilterQuery("product", req.query);
+      const { orderBy = "created_at", sortedBy = "DESC" } = req.query;
+  
+      const sortOrder = sortedBy === "ASC" ? 1 : -1;
+      let sortQuery = {};
+      console.log(req.query)
+      
+      if (orderBy === "min_price") {
+        sortQuery = { price: sortOrder };
+      } else if (orderBy === "max_price") {
+        sortQuery = { price: sortOrder };
+      } else {
+        sortQuery = { created_at: sortOrder };
+      }
+  
+      const priceFilter = {};
+      if (req.query.min_price) {
+        priceFilter.price = { $gte: parseFloat(req.query.min_price) };
+      }
+      if (req.query.max_price) {
+        if (!priceFilter.price) {
+          priceFilter.price = {};
+        }
+        priceFilter.price.$lte = parseFloat(req.query.max_price);
+      }
+  
+      const product_list = await ProductModel.find({
+        ...filterQuerys,
+        ...priceFilter,
+        is_delete: false,
+      })
+        .populate({ path: "group", model: "Group" })
+        .populate({ path: "variants", populate: { path: "attributes" } })
+        .sort(sortQuery);
+  
+      res.status(200).json({
+        status: "success",
+        message: "All products retrieved successfully",
+        data: product_list,
+      });
     } catch (error) {
-      res.status(500).json({ status: "failed", message: error?.message })  
+      res.status(500).json({ status: "failed", message: error?.message });
     }
-}
+  };
+  
 
 export const getProductWithUUID = async (req,res) => {
     try {

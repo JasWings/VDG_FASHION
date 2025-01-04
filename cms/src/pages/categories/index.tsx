@@ -27,7 +27,7 @@ export default function Categories() {
   const { categories, paginatorInfo, loading, error } = useCategoriesQuery({
     limit: 20,
     page,
-    type,
+    type_id: type,
     name: searchTerm,
     orderBy,
     sortedBy,
@@ -66,7 +66,7 @@ export default function Categories() {
             <TypeFilter
               className="md:ms-6"
               onTypeFilter={(type: Type) => {
-                setType(type?.slug!);
+                setType(type?._id!);
                 setPage(1);
               }}
             />

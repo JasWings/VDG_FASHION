@@ -30,10 +30,10 @@ export const productClient = {
       searchJoin: 'and',
       with: 'shop;type',
       ...params,
+      categories,
       search: HttpClient.formatSearchParams({
         type,
         name,
-        categories,
         shop_id,
       }),
     });

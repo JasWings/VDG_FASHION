@@ -167,8 +167,7 @@ export default function CreateOrUpdateProductForm({
   
     try {
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
       ) {
         //@ts-ignore
         createProduct({
@@ -178,10 +177,16 @@ export default function CreateOrUpdateProductForm({
           shop_id: shopId || initialValues?.shop_id,
         });
       } else {
+        console.log("update true",initialValues,inputValues,initialValues?._id)
         //@ts-ignore
+        
         updateProduct({
           ...inputValues,
-          id: initialValues.id!,
+          group : initialValues?.type_id,
+          _id: initialValues._id!,
+          id : initialValues?.id,
+          variants : initialValues?.variants,
+          variation_options : initialValues?.variation_options,
           shop_id: initialValues.shop_id!,
         });
       }
@@ -533,7 +538,7 @@ export default function CreateOrUpdateProductForm({
 
           {/* Simple Type */}
           {product_type?.value === ProductType.Simple && (
-            <ProductSimpleForm initialValues={initialValues} />
+            <ProductSimpleForm initialValues={initialValues}  />
           )}
 
           {/* Variation Type */}

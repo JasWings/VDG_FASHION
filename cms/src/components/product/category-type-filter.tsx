@@ -53,7 +53,7 @@ export default function CategoryTypeFilter({
         <Label>{t('common:filter-by-category')}</Label>
         <Select
           options={categories}
-          getOptionLabel={(option: any) => option.name}
+          getOptionLabel={(option: any) => option.identity}
           getOptionValue={(option: any) => option.slug}
           placeholder={t('common:filter-by-category-placeholder')}
           isLoading={categoryLoading}

@@ -103,21 +103,21 @@ export default function ProductSimpleForm({ initialValues }: IProps) {
           variant="outline"
           className="mb-5"
         />
-        <Checkbox
+        {/* <Checkbox
           {...register('is_digital')}
           id="is_digital"
           label={t('form:input-label-is-digital')}
           disabled={Boolean(is_external)}
           className="mb-5"
-        />
+        /> */}
 
-        <Checkbox
+        {/* <Checkbox
           {...register('is_external')}
           id="is_external"
           label={t('form:input-label-is-external')}
           disabled={Boolean(is_digital)}
           className="mb-5"
-        />
+        /> */}
 
         {is_digital ? (
           <>

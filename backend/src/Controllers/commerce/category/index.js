@@ -1,4 +1,5 @@
 import Category from '../../../Models/product-management/category/index.js';
+import { FilterQuery } from '../../../utils/helpers.js';
 import Validations from '../../../Validations/index.js';
 
 const createCategory = async (req, res) => {
@@ -15,9 +16,12 @@ const createCategory = async (req, res) => {
 
 const getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find({ is_deleted: false}).populate({ path: "type_id", model: "Group" });
-
+    const filters = FilterQuery('category',req.query)
+    
+    const categories = await Category.find({...filters, is_deleted: false }).populate({ path: "type_id", model: "Group" });
     const categoryMap = new Map();
+    console.log(filters,req.query,categories.length)
+
     categories.forEach((category) => {
       const parentId = category.parent ? category.parent.toString() : null;
       if (!categoryMap.has(parentId)) {

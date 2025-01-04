@@ -243,24 +243,15 @@ const updateProductSchema = Joi.object({
     categories: Joi.array().items(Joi.string()).optional(),
     product_type: Joi.string().valid("simple", "variable").optional(),
     has_variants: Joi.boolean().optional(),
-    variants: Joi.array().items(
-        Joi.object({
-            id: Joi.number().optional(),
-            uuid: Joi.string().optional(),
-            value: Joi.string().required(),
-            slug: Joi.string().required(),
-            meta: Joi.string().optional(),
-            attributes: Joi.string().optional(),
-        })
-    ).optional(),
+    variants: Joi.any().optional(),
     variation_options: Joi.any().optional(),
     quantity: Joi.number().optional(),
     min_price: Joi.any().optional(),
     max_price: Joi.any().optional(),
     unit: Joi.string().optional(),
-    width: Joi.string().optional(),
-    height: Joi.string().optional(),
-    length: Joi.string().optional(),
+    width: Joi.string().optional().allow(null,''),
+    height: Joi.string().optional().allow(null,''),
+    length: Joi.string().optional().allow(null,''),
     image: Joi.object({
         uuid: Joi.string().required(),
         is_active: Joi.boolean().optional(),

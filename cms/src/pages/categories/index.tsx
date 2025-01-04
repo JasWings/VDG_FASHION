@@ -27,7 +27,7 @@ export default function Categories() {
   const { categories, paginatorInfo, loading, error } = useCategoriesQuery({
     limit: 20,
     page,
-    type_id: type,
+    type_id: type ? type : null,
     name: searchTerm,
     orderBy,
     sortedBy,

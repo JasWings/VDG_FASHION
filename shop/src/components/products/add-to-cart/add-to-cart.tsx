@@ -45,6 +45,7 @@ export const AddToCart = ({
   const {
     addItemToCart,
     removeItemFromCart,
+    addItemsToCart,
     isInStock,
     getItemFromCart,
     isInCart,
@@ -104,9 +105,10 @@ export const AddToCart = ({
         if(isAuthorize){
           handleAddClick(item)
         }else if(!isAuthorize){
-          setIsLoading(false)
-          openModal('LOGIN_VIEW')
-          showToast("Login to continue","warning")
+          // setIsLoading(false)
+          // openModal('LOGIN_VIEW')
+          // showToast("Login to continue","warning")
+          addItemsToCart(item,isAuthorize)
         }
   }
   

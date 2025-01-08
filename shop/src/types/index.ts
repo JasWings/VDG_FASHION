@@ -116,7 +116,7 @@ export interface BestSellingProductQueryOptions extends QueryOptions {
 export interface CategoryQueryOptions extends QueryOptions {
   language: string;
   parent: string | null;
-  type: string;
+  type_id: string;
 }
 
 export interface TagQueryOptions extends QueryOptions {

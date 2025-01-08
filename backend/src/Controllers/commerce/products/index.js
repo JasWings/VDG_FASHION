@@ -212,7 +212,8 @@ export const getProductWithUUID = async (req,res) => {
     try {
     const { id } = req.params
     const product_item = await ProductModel.findOne({ uuid: id })
-    .populate({ path: "categories", model: "category"}).populate({ path: "group", model: "Group"}).populate({ path: "tags", model:"Tag"})
+    .populate({ path: "categories", model: "category"})
+    .populate({ path: "group", model: "Group"}).populate({ path: "tags", model:"Tag"}).populate({ path: "variants",populate: { path: "attributes"}})
     res.status(200).json({ status: "failed", message: "Product details retrived successfully",data: product_item})     
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message }) 

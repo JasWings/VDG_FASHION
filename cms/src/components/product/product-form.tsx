@@ -222,7 +222,7 @@ export default function CreateOrUpdateProductForm({
       suggestion: autoSuggestionList as ItemProps[],
     });
   }, [productName]);
-
+  console.log(initialValues)
   const slugAutoSuggest = formatSlug(watch('name'));
   if (Boolean(options?.isProductReview)) {
     if (permission) {

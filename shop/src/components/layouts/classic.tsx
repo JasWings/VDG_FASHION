@@ -6,7 +6,8 @@ import FilterBar from './filter-bar';
 import ProductGridHome from '@/components/products/grids/home';
 import type { HomePageProps } from '@/types';
 import { useState,useEffect } from 'react';
-
+import SidebarFilter from "./filter-bar2";
+import StickyBox from 'react-sticky-box';
 
 export default function ClassicLayout({ variables }: HomePageProps) {
        const [filterLoading,setFilterLoading]=useState(false)
@@ -34,7 +35,12 @@ export default function ClassicLayout({ variables }: HomePageProps) {
         name="grid"
         className="flex border-t border-solid border-border-200 border-opacity-70"
       >
-        <Categories layout="classic" variables={variables.categories} filterLoading={filterLoading} setFilterLoading={setFilterLoading} />
+       <div className=" w-80 shrink-0 lg:block">
+       <StickyBox offsetTop={140} offsetBottom={30}>
+        <SidebarFilter variables={variables.categories} />
+       </StickyBox>
+       </div>
+        {/* <Categories layout="classic" variables={variables.categories} filterLoading={filterLoading} setFilterLoading={setFilterLoading} /> */}
         <ProductGridHome
           className="px-4 pb-8 lg:p-8"
           variables={variables.products}

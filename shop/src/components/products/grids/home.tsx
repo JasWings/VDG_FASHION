@@ -25,11 +25,14 @@ export default function ProductGridHome({
   // Extract category and group from query params
   const category = query.category as string;
   const group = query.group as string;
+  const price = query.price as string;
+  const sortedBy = query.sortedBy as string
+  const orderBy = query.orderBy as string
 
   // Pass category and group as parameters to the useProducts hook
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-    useProducts(30, category, group);
-
+    useProducts(30, category, group,price,orderBy,sortedBy);
+  console.log(orderBy,sortedBy)
   return (
     <Grid
       products={products}

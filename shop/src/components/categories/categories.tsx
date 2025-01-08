@@ -1,6 +1,7 @@
 import ErrorMessage from '@/components/ui/error-message';
 import dynamic from 'next/dynamic';
 import { useCategories } from '@/framework/category';
+import { useRouter } from 'next/router';
 
 const StickySidebarListCategories = dynamic(
   () => import('@/components/categories/sticky-sidebar-list-categories')
@@ -39,7 +40,9 @@ export default function Categories({
   filterLoading,
   setFilterLoading
 }: CategoriesProps) {
-  const { categories, isLoading, error } = useCategories(variables);
+  const { query } = useRouter()
+  const type_id = query.group as string
+  const { categories, isLoading, error } = useCategories({...variables,type_id});
   if (error) return <ErrorMessage message={error.message} />;
   const Component = MAP_CATEGORY_TO_GROUP[layout];
   

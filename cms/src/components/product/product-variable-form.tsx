@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next';
 import { useAttributesQuery } from '@/data/attributes';
 import FileInput from '@/components/ui/file-input';
 import ValidationError from '@/components/ui/form-validation-error';
-import { getCartesianProduct, filterAttributes } from './form-utils';
+import { getCartesianProduct, filterAttributes, getEditCartesianProduct } from './form-utils';
 import { useRouter } from 'next/router';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
@@ -56,11 +56,11 @@ export default function ProductVariableForm({
   const { fields, append, remove } = useFieldArray({
     shouldUnregister: true,
     control,
-    name: 'variations',
+    name:  'variations',
   });
   const variations = watch('variations');
-  const cartesianProduct = getCartesianProduct(getValues('variations'));
-  console.log(cartesianProduct)
+  const cartesianProduct = initialValues ? getEditCartesianProduct(getValues("variation_options")) : getCartesianProduct(getValues('variations'));
+  console.log(cartesianProduct,initialValues,data,fields)
   return (
     <div className="my-5 flex flex-wrap sm:my-8">
       <Description
@@ -231,10 +231,10 @@ export default function ProductVariableForm({
                         />
                       </div>
                       <div className="mt-5 mb-5">
-                        <Checkbox
+                        {/* <Checkbox
                           {...register(`variation_options.${index}.is_digital`)}
                           label={t('form:input-label-is-digital')}
-                        />
+                        /> */}
                         {!!watch(`variation_options.${index}.is_digital`) && (
                           <div className="mt-5">
                             <Label>{t('form:input-label-digital-file')}</Label>

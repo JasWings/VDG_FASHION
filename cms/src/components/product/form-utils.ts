@@ -192,9 +192,21 @@ export function filterAttributes(attributes: any, variations: any) {
 }
 
 export function getCartesianProduct(values: any) {
+  console.log(values,"values")
   const formattedValues = values
     ?.map((v: any) =>
       v?.value?.map((a: any) => ({ name: v?.attribute?.identity, value: a?.value }))
+    )
+    .filter((i: any) => i !== undefined);
+  if (isEmpty(formattedValues)) return [];
+  return cartesian(...formattedValues);
+}
+
+export function getEditCartesianProduct(values: any) {
+  console.log(values,"values")
+  const formattedValues = values
+    ?.map((v: any) =>
+      v?.options?.map((a: any) => ({ name: v?.name, value: a?.value }))
     )
     .filter((i: any) => i !== undefined);
   if (isEmpty(formattedValues)) return [];

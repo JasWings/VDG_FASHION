@@ -45,9 +45,9 @@ const CategoryFilterView = ({ categories }: Props) => {
             {categories.map((plan) => (
               <Checkbox
                 key={plan.id}
-                label={plan.name}
+                label={plan.identity}
                 name={plan.slug}
-                value={plan.slug}
+                value={plan._id}
                 theme="secondary"
               />
             ))}
@@ -64,7 +64,7 @@ const CategoryFilter: React.FC<{ type?: any }> = ({ type }) => {
   // @ts-ignore
   const { categories, isLoading, error } = useCategories({
     ...(type ? { type } : { type: query.searchType }),
-    limit: 1000,
+    limit: 1000, type_id: query.group
   });
 
   if (error) return <ErrorMessage message={error.message} />;

@@ -28,19 +28,19 @@ export default function ClassicLayout({ variables }: HomePageProps) {
   
   return (
     <>
-      <Banner layout="classic" variables={variables.types} />
-      <PromotionSliders variables={variables.types} />
+      <Banner layout="compact" variables={variables.types} />
+      {/* <PromotionSliders variables={variables.types} /> */}
       <FilterBar variables={variables.categories} />
+      <Categories layout="standard" variables={variables.categories} filterLoading={filterLoading} setFilterLoading={setFilterLoading} />
       <Element
         name="grid"
         className="flex border-t border-solid border-border-200 border-opacity-70"
       >
-       <div className=" w-80 shrink-0 lg:block">
+       <div className=" w-80 shrink-0 lg:block pt-6 ">
        <StickyBox offsetTop={140} offsetBottom={30}>
         <SidebarFilter variables={variables.categories} />
        </StickyBox>
        </div>
-        {/* <Categories layout="classic" variables={variables.categories} filterLoading={filterLoading} setFilterLoading={setFilterLoading} /> */}
         <ProductGridHome
           className="px-4 pb-8 lg:p-8"
           variables={variables.products}

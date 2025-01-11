@@ -8,6 +8,7 @@ import { ArrowNextIcon } from '@/components/icons/arrow-next';
 import { Swiper, SwiperSlide, Navigation } from '@/components/ui/slider';
 import { productPlaceholder } from '@/lib/placeholders';
 import { Image } from '@/components/ui/image';
+import { getImageURL } from '@/lib/image';
 
 interface CategoryItemProps {
   item: any;
@@ -49,22 +50,22 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ item }) => {
     <div
       className={cn(
         'relative cursor-pointer overflow-hidden rounded border-2 bg-light text-center',
-        selectedQueries === item.slug ? 'border-accent' : 'border-light'
+        selectedQueries === item._id ? 'border-accent' : 'border-light'
       )}
       role="button"
-      onClick={() => onCategoryClick(item?.slug!)}
+      onClick={() => onCategoryClick(item?._id!)}
     >
       <div className="relative my-2 mb-3 flex h-32 w-auto items-center justify-center overflow-hidden">
         <Image
-          src={item?.image?.original! ?? productPlaceholder}
-          alt={item?.name!}
+          src={ item?.image ?  getImageURL(item?.image) : productPlaceholder}
+          alt={item?.identity!}
           fill
           sizes="(max-width: 768px) 100vw"
           className="object-contain"
         />
       </div>
       <span className="block px-4 pb-4 text-center text-sm font-semibold text-heading">
-        {item.name}
+        {item.identity}
       </span>
     </div>
   );
@@ -119,9 +120,11 @@ function SolidBoxedCategoryMenu({ items }: any) {
         spaceBetween={10}
       >
         {items?.map((category: any, idx: number) => (
+          category.parent === null ?
           <SwiperSlide key={idx}>
             <CategoryItem item={category} />
           </SwiperSlide>
+          : null
         ))}
       </Swiper>
       <div

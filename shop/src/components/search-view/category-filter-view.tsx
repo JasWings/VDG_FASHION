@@ -43,6 +43,9 @@ const CategoryFilterView = ({ categories }: Props) => {
         <div className="grid grid-cols-1 gap-4">
           <CheckboxGroup values={state} onChange={handleChange}>
             {categories.map((plan) => (
+              plan.parent === null ?
+             null
+              :
               <Checkbox
                 key={plan.id}
                 label={plan.identity}

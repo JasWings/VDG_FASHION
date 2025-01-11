@@ -263,7 +263,7 @@ export default function CreateOrUpdateCategoriesForm({
       details: values.details,
       image: values?.image?.file,
       // icon: values.icon?.value || '',
-      parent: values.parent?._id ?? null,
+      parent: values.parent?._id ,
       type_id: values.type?._id,
     };
     if (
@@ -290,9 +290,10 @@ export default function CreateOrUpdateCategoriesForm({
         image : values?.image.file,
         slug: values?.slug,
         type_id : values?.type?._id,
-        parent: values?.parent?._id
+        parent: values?.parent?._id ? values?.parent?._id : null
       }
       console.log(input)
+      
       updateCategory(data);
     }
   };

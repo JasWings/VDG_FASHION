@@ -84,9 +84,8 @@ export const validateGroup = (data) => {
   });
 
   const promotionalSliderSchema = Joi.object({
-    id: Joi.string().optional(),
-    original: Joi.string().uri().optional(),
-    thumbnail: Joi.string().uri().optional(),
+    id: Joi.number().optional(),
+    file: Joi.string().optional(),
   });
 
   const settingsSchema = Joi.object({

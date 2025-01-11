@@ -75,6 +75,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
     fetchCart();
     return response;
   } else {
+    console.log(item,"item")
     const item = getItem(state.items, id) || { id, quantity: 0 };
     const updatedItem = { ...item, quantity: item.quantity + quantity };
     const updatedCart = addItemWithQuantity(state.items, updatedItem, quantity);

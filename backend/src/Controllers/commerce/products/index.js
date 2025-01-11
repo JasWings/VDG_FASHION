@@ -167,7 +167,6 @@ export const getProducts = async (req, res) => {
   
       const sortOrder = sortedBy === "ASC" ? 1 : -1;
       let sortQuery = {};
-      console.log(req.query)
       
       if (orderBy === "min_price") {
         sortQuery = { price: sortOrder };
@@ -187,10 +186,17 @@ export const getProducts = async (req, res) => {
         }
         priceFilter.price.$lte = parseFloat(req.query.max_price);
       }
-  
+    
+      const categoryFilter = {};
+    if (filterQuerys.categories) {
+      categoryFilter.categories = { $in: filterQuerys.categories }; // Use $in for array filtering
+    }
+    console.log(req.query,filterQuerys,filterQuerys,categoryFilter)
+
       const product_list = await ProductModel.find({
         ...filterQuerys,
         ...priceFilter,
+        ...categoryFilter,
         is_delete: false,
       })
         .populate({ path: "group", model: "Group" })
@@ -304,4 +310,15 @@ export const updateProductById = async (req, res) => {
         res.status(500).json({ success: false, message: "Error updating product", error: error.message });
     }
 };
+
+
+export const deleteProductwithId = async (req,res) => {
+    try {
+    const { id} = req.params
+    const delete_product = await ProductModel.findOneAndUpdate({_id: id},{ is_delete: true})   
+    res.status(200).json({ status: 'success', message: "product deleted successfully"}) 
+    } catch (error) {
+       res.status(500).json({ success: false, message: error.message}) 
+    }
+}
 

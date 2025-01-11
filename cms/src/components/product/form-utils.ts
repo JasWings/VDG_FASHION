@@ -198,6 +198,7 @@ export function getCartesianProduct(values: any) {
       v?.value?.map((a: any) => ({ name: v?.attribute?.identity, value: a?.value }))
     )
     .filter((i: any) => i !== undefined);
+
   if (isEmpty(formattedValues)) return [];
   return cartesian(...formattedValues);
 }
@@ -205,12 +206,11 @@ export function getCartesianProduct(values: any) {
 export function getEditCartesianProduct(values: any) {
   console.log(values,"values")
   const formattedValues = values
-    ?.map((v: any) =>
-      v?.options?.map((a: any) => ({ name: v?.name, value: a?.value }))
-    )
+    ?.map((v: any) => ({ name: v?.attributes.identity, value: v?.value }))
     .filter((i: any) => i !== undefined);
+    console.log(formattedValues,"formatted_values")
   if (isEmpty(formattedValues)) return [];
-  return cartesian(...formattedValues);
+  return formattedValues
 }
 
 export function processFileWithName(file_input: any) {

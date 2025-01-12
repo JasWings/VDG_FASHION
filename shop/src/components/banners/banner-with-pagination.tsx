@@ -38,7 +38,7 @@ const BannerWithPagination: React.FC<BannerProps> = ({ banners, slug }) => {
           >
             {banners?.map((banner, idx) => (
               <SwiperSlide key={idx}>
-                <Link href={`/${slug}${Routes.search}`}>
+                <Link href={`?group=675fd2d26b6b9321b2092503`}>
                   <div className="relative h-full max-h-[240px] w-full md:max-h-[610px]">
                     <Image
                       className="h-full w-full"

@@ -1,6 +1,7 @@
 export const API_ENDPOINTS = {
   ATTACHMENTS: '/commerce/upload-file/',
   ANALYTICS: 'analytics',
+  OFFERS : "offers",
   ATTRIBUTES: '/commerce/attributes',
   ATTRIBUTE_VALUES: 'attribute-values',
   ORDER_STATUS: 'order-status',
@@ -15,6 +16,7 @@ export const API_ENDPOINTS = {
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',
   SETTINGS: 'settings',
+  SLIDER : "slider",
   CATEGORIES: '/commerce/category/',
   TAGS: '/commerce/tags',
   TYPES: '/commerce/group',

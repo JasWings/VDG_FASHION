@@ -82,6 +82,16 @@ export const siteSettings = {
       //   icon: 'FountainPenIcon',
       // },
       {
+        href: Routes.sliders.list,
+        label: 'sidebar-nav-item-sliders',
+        icon: 'AttributeIcon',
+      },
+      {
+        href: Routes.offers.list,
+        label: 'sidebar-nav-item-offers',
+        icon: 'CouponsIcon',
+      },
+      {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',
         icon: 'OrdersIcon',

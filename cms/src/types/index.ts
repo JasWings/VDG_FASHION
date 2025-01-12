@@ -49,6 +49,50 @@ export enum PaymentGateway {
   FLUTTERWAVE = 'FLUTTERWAVE',
 }
 
+export interface Offer {
+  _id: string;
+  title: string;
+  description: string;
+  discountPercentage: number;
+  startDate: string;
+  endDate: string;
+  offerType: string; // You can adjust this to a specific enum if needed
+  image?: string; // Optional image URL for the offer
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+
+export interface OfferPaginator {
+  data: Offer[];
+  totalCount: number;
+  currentPage: number;
+  totalPages: number;
+  perPage: number;
+}
+
+export interface OfferQueryOptions {
+  search?: string; // Search term, if needed
+  offerType?: string; // Optional filter for offer type
+  startDate?: string; // Optional filter for the start date
+  endDate?: string; // Optional filter for the end date
+  page?: number; // Optional pagination for current page
+  limit?: number; // Optional pagination for items per page
+}
+
+export interface CreateOfferInput {
+  title: string;
+  description: string;
+  discountPercentage: number;
+  startDate: string;
+  endDate: string;
+  offerType: string; // Adjust this as per the specific offer types (string or enum)
+  image?: string; // Optional image for the offer
+  slug: string; // You may generate a slug based on title or other criteria
+}
+
+
 export enum ProductStatus {
   Publish = 'publish',
   Draft = 'draft',

@@ -77,6 +77,15 @@ export const Routes = {
   staff: {
     ...routesFactory('/staffs'),
   },
+  offers : {
+    ...routesFactory("/offers")
+  },
+  sliders : {
+    ...routesFactory("/sliders")
+  },
+  offer : {
+    ...routesFactory("/offer")
+  },
   refund: {
     ...routesFactory('/refunds'),
   },

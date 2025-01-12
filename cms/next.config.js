@@ -23,7 +23,8 @@ module.exports = withPWA({
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
       'lh3.googleusercontent.com',
       'vdg-fashion.s3.eu-north-1.amazonaws.com',
-      'vdg-fashion-gfr6.onrender.com'
+      'vdg-fashion-gfr6.onrender.com',
+      "192.168.43.174"
     ],
   },
   ...(process.env.APPLICATION_MODE === 'production' && {

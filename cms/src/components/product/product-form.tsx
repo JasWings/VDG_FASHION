@@ -181,7 +181,7 @@ export default function CreateOrUpdateProductForm({
         //@ts-ignore
         updateProduct({
           ...inputValues,
-          id: initialValues.id!,
+          _id: initialValues._id!,
           shop_id: initialValues.shop_id!,
         });
       }

@@ -25,7 +25,7 @@ export const createProduct = async (req, res) => {
             length,
             unit,
             has_variants,
-            type_id,slug,unit
+            type_id,slug
         } = req.body;
 
         if (!name || !product_type) {

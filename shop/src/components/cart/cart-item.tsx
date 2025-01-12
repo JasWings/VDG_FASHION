@@ -21,7 +21,7 @@ const CartItem = ({ item }: CartItemProps) => {
   const { t } = useTranslation('common');
   const {
     isInStock,
-    clearItemFromCart,
+    clearItemFromCart,addItemsToCart,
     addItemToCart,
     removeItemFromCart,
     updateCartLanguage,
@@ -113,8 +113,8 @@ const CartItem = ({ item }: CartItemProps) => {
      
       <div className="relative  mr-4 flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden  sm:h-16 sm:w-16">
         <Image
-          src={ getImageURL(item?.product?.image?.file ) ?? siteSettings?.product?.placeholderImage}
-          alt={item.product.identity}
+          src={ getImageURL(item?.product?.image?.file ? item?.product?.image.file : item.image ) ?? siteSettings?.product?.placeholderImage}
+          alt={item?.product?.identity ?? item?.identity}
           fill
           sizes="(max-width: 768px) 100vw"
           className="object-contain"

@@ -22,7 +22,7 @@ Axios.interceptors.request.use((config) => {
   
   return config;
 });
-
+console.log(process.env.NEXT_PUBLIC_REST_API_ENDPOINT)
 // Change response data/error here
 Axios.interceptors.response.use(
   (response) => response,

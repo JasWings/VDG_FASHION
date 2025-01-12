@@ -11,7 +11,7 @@ import { showToast } from '../ui/toast/toast';
 
 const CartCounterButton = () => {
   const { t } = useTranslation();
-  const { Cart } = useCart();
+  const { Cart, totalUniqueItems, total } = useCart();
   const [_, setDisplayCart] = useAtom(drawerAtom);
   const [isAuthorize]=useAtom(authorizationAtom)
   const {openModal}=useModalAction()
@@ -21,12 +21,13 @@ const CartCounterButton = () => {
   });
 
   const handleCartOpen=()=>{
-        if(!isAuthorize){
-          showToast("Login to continue","warning")
-          openModal("LOGIN_VIEW")
-        }else if(isAuthorize){
-          setDisplayCart({ display: true, view: 'cart' })
-        }
+    setDisplayCart({ display: true, view: 'cart' })
+        // if(!isAuthorize){
+        //   showToast("Login to continue","warning")
+        //   openModal("LOGIN_VIEW")
+        // }else if(isAuthorize){
+        //   setDisplayCart({ display: true, view: 'cart' })
+        // }
   }
 
   const getText=(quantity)=>{
@@ -47,14 +48,14 @@ const CartCounterButton = () => {
         <span className="flex ltr:ml-2 rtl:mr-2">
           {/* {isAuthorize?cartList?cartList.length +" "+t('common:text-item'):formatString(totalUniqueItems, t('common:text-item')):0} */}
           {/* {formatString(totalUniqueItems, t('common:text-item'))} */}
-          {Cart.price_details.total_quantity+" "+getText(Cart.price_details.total_quantity)}
+          { isAuthorize ? Cart.price_details.total_quantity : totalUniqueItems +" "+getText(isAuthorize ? Cart.price_details.total_quantity : totalUniqueItems)}
 
         </span>
       </span>
       <span className="mt-3 w-full rounded bg-light px-2 py-2 text-accent">
         {/* {isAuthorize?currency_symbol+total_current_price:totalPrice} */}
         {/* {totalPrice} */}
-        &#8377;   {Cart.price_details.total_current_price}
+        &#8377;   { isAuthorize ? Cart.price_details.total_current_price : total }
       </span>
     </button>
   );

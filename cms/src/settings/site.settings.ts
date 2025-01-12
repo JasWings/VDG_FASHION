@@ -51,11 +51,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-products',
         icon: 'ProductsIcon',
       },
-      {
-        href: Routes.attribute.list,
-        label: 'sidebar-nav-item-attributes',
-        icon: 'AttributeIcon',
-      },
+      // {
+      //   href: Routes.attribute.list,
+      //   label: 'sidebar-nav-item-attributes',
+      //   icon: 'AttributeIcon',
+      // },
       {
         href: Routes.type.list,
         label: 'sidebar-nav-item-groups',

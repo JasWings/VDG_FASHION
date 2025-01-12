@@ -25,7 +25,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
         }}
       >
         <Image
-          src={ getImageURL(logo?.original) ?? siteSettings.logo.url}
+          src={ getImageURL(logo?.file) ?? siteSettings.logo.url}
           alt={siteTitle ?? siteSettings.logo.alt}
           fill
           sizes="(max-width: 768px) 100vw"

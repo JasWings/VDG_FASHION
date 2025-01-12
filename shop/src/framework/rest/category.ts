@@ -11,7 +11,7 @@ export function useCategories(options?: Partial<CategoryQueryOptions>) {
   const formattedOptions = {
     ...options,
   }
-  console.log(formattedOptions,"formateed",options)
+  
   const {
     data,
     isLoading,

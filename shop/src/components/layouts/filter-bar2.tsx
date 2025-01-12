@@ -66,7 +66,7 @@ const SidebarFilter: React.FC<{
   const { t } = useTranslation('common');
   const [_, closeSidebar] = useAtom(drawerAtom);
   const  { categories, isLoading, error } = useCategories({type_id:group})
-  console.log(group)
+  
   return (
     <div
       className={classNames(

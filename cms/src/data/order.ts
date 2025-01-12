@@ -31,7 +31,7 @@ export const useOrdersQuery = (
   console.log(data,"order_list")
   return {
     orders: data ?? [],
-    paginatorInfo: mapPaginatorData(data),
+    paginatorInfo: mapPaginatorData(data?.pagination),
     error,
     loading: isLoading,
   };

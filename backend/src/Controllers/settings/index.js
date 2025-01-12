@@ -20,3 +20,13 @@ export const getSettingsController = async (req,res) => {
       res.status(500).json({ status: "failed", message: error?.message })   
     }
 }
+
+export const updateSettingsController = async (req,res) => {
+  try {
+   const { _id } = req.body 
+   const updated_settings = await Settings.findByIdAndUpdate(_id,req.body,{ new: true })
+   res.status(200).json({ status:"success", message: "Settings retrived successfully",data: updated_settings})
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error?.message })
+  }
+}

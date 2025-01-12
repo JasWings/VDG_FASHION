@@ -97,8 +97,12 @@ app.get('/', (req, res) => {
 
 
 const PORT = process.env.PORT || 8081;
+const ADDRESS = process.env.environment === "ip" ? process.env.APP_URL : "localhost";
 
 
-app.listen(PORT, () => {
-  console.log(`Server Running on port ${PORT}`);
+
+
+console.log(`Server running on ${ADDRESS}:${PORT}`);
+app.listen(PORT, ADDRESS, () => {
+  console.log(`Server Running on http://${ADDRESS}:${PORT}`);
 });

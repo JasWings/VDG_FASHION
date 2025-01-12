@@ -27,17 +27,19 @@ interface Variation {
 export function generateCartItem(item: Item, variation: Variation) {
   const {
     id,
-    identity,
+    name,
     slug,
     images,
+    image,
     price,
+    quantity,
     product_prices,
     weight_in_grams,
     stock,
     unit,
     uuid,
     is_digital,
-    language
+    language,sale_price
   } = item;
   if (!isEmpty(variation)) {
     return {
@@ -61,17 +63,17 @@ export function generateCartItem(item: Item, variation: Variation) {
   }
   return {
     id,
-    identity,
+    name,
     slug,
     unit,
     is_digital,
-    image: images&&images[0]&&images[0].image.file,
+    image: image ? image.file : images&&images[0]&&images[0].image.file,
     weight:weight_in_grams,
-    stock: stock,
+    stock: quantity,
     uuid:uuid,
-    price: Number(product_prices&&product_prices[0]
- ? product_prices[0].actual_price
- : price),
+    price: sale_price
+ ? sale_price
+ : price,
     language
   };
 }

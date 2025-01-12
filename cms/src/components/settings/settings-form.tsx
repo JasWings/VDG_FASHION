@@ -144,56 +144,56 @@ export const chatbotAutoSuggestion1 = ({ name }: { name: string }) => {
 type FormValues = {
   siteTitle: string;
   siteSubtitle: string;
-  currency: any;
-  currencyOptions?: SettingCurrencyOptions;
-  minimumOrderAmount: number;
+  // currency: any;
+  // currencyOptions?: SettingCurrencyOptions;
+  // minimumOrderAmount: number;
   logo: any;
-  useOtp: boolean;
-  useAi: boolean;
-  defaultAi: any;
-  useGoogleMap: boolean;
-  useMustVerifyEmail: boolean;
+  // useOtp: boolean;
+  // useAi: boolean;
+  // defaultAi: any;
+  // useGoogleMap: boolean;
+  // useMustVerifyEmail: boolean;
   freeShipping: boolean;
   freeShippingAmount: number;
-  useCashOnDelivery: boolean;
-  defaultPaymentGateway: paymentGatewayOption;
-  useEnableGateway: boolean;
-  paymentGateway: paymentGatewayOption[];
-  taxClass: Tax;
+  // useCashOnDelivery: boolean;
+  // defaultPaymentGateway: paymentGatewayOption;
+  // useEnableGateway: boolean;
+  // paymentGateway: paymentGatewayOption[];
+  // taxClass: Tax;
   shippingClass: Shipping;
-  signupPoints: number;
-  maxShopDistance: number;
-  maximumQuestionLimit: number;
-  currencyToWalletRatio: number;
-  contactDetails: ContactDetailsInput;
-  deliveryTime: {
-    title: string;
-    description: string;
-  }[];
-  seo: {
-    metaTitle: string;
-    metaDescription: string;
-    ogTitle: string;
-    ogDescription: string;
-    ogImage?: AttachmentInput;
-    twitterHandle: string;
-    twitterCardType: string;
-    metaTags: string;
-    canonicalUrl: string;
-  };
-  google: {
-    isEnable: boolean;
-    tagManagerId: string;
-  };
-  facebook: {
-    isEnable: boolean;
-    appId: string;
-    pageId: string;
-  };
-  guestCheckout: boolean;
-  smsEvent: any;
-  emailEvent: any;
-  server_info: ServerInfo;
+  // signupPoints: number;
+  // maxShopDistance: number;
+  // maximumQuestionLimit: number;
+  // currencyToWalletRatio: number;
+  // contactDetails: ContactDetailsInput;
+  // deliveryTime: {
+  //   title: string;
+  //   description: string;
+  // }[];
+  // seo: {
+  //   metaTitle: string;
+  //   metaDescription: string;
+  //   ogTitle: string;
+  //   ogDescription: string;
+  //   ogImage?: AttachmentInput;
+  //   twitterHandle: string;
+  //   twitterCardType: string;
+  //   metaTags: string;
+  //   canonicalUrl: string;
+  // };
+  // google: {
+  //   isEnable: boolean;
+  //   tagManagerId: string;
+  // };
+  // facebook: {
+  //   isEnable: boolean;
+  //   appId: string;
+  //   pageId: string;
+  // };
+  // guestCheckout: boolean;
+  // smsEvent: any;
+  // emailEvent: any;
+  // server_info: ServerInfo;
 };
 
 type paymentGatewayOption = {
@@ -367,9 +367,9 @@ export default function SettingsForm({
   }, [generateName]);
 
   const enableFreeShipping = watch('freeShipping');
-  const currentCurrency = watch('currency');
-  const formation = watch('currencyOptions.formation');
-  const currentFractions = watch('currencyOptions.fractions') as number;
+  // const currentCurrency = watch('currency');
+  // const formation = watch('currencyOptions.formation');
+  // const currentFractions = watch('currencyOptions.fractions') as number;
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -390,62 +390,61 @@ export default function SettingsForm({
   async function onSubmit(values: FormValues) {
     const contactDetails = {
       ...values?.contactDetails,
-      location: { ...omit(values?.contactDetails?.location, '__typename') },
-      socials: values?.contactDetails?.socials
-        ? values?.contactDetails?.socials?.map((social: any) => ({
-          icon: social?.icon?.value,
-          url: social?.url,
-        }))
-        : [],
+      // location: { ...omit(values?.contactDetails?.location, '__typename') },
+      // socials: values?.contactDetails?.socials
+        // ? values?.contactDetails?.socials?.map((social: any) => ({
+          // icon: social?.icon?.value,
+          // url: social?.url,
+        // }))
+        // : [],
     };
-    const smsEvent = formatEventOptions(values.smsEvent);
-    const emailEvent = formatEventOptions(values.emailEvent);
+    // const smsEvent = formatEventOptions(values.smsEvent);
+    // const emailEvent = formatEventOptions(values.emailEvent);
+    console.log(values,contactDetails)
     updateSettingsMutation({
-      language: locale,
-      options: {
         ...values,
-        server_info: serverInfo,
-        signupPoints: Number(values.signupPoints),
-        maxShopDistance: Number(values.maxShopDistance),
-        currencyToWalletRatio: Number(values.currencyToWalletRatio),
-        minimumOrderAmount: Number(values.minimumOrderAmount),
+        _id : options?._id,
+        // signupPoints: Number(values.signupPoints),
+        // maxShopDistance: Number(values.maxShopDistance),
+        // currencyToWalletRatio: Number(values.currencyToWalletRatio),
+        // minimumOrderAmount: Number(values.minimumOrderAmount),
         freeShippingAmount: Number(values.freeShippingAmount),
-        currency: values.currency?.code,
-        defaultAi: values?.defaultAi?.value,
+        // currency: values.currency?.code,
+        // defaultAi: values?.defaultAi?.value,
         // paymentGateway: values.paymentGateway?.name,
-        defaultPaymentGateway: values.defaultPaymentGateway?.name,
-        paymentGateway:
-          values?.paymentGateway && values?.paymentGateway!.length
-            ? values?.paymentGateway?.map((gateway: any) => ({
-              name: gateway.name,
-              title: gateway.title,
-            }))
-            : PAYMENT_GATEWAY.filter((value: any, index: number) => index < 2),
-        useEnableGateway: values?.useEnableGateway,
-        guestCheckout: values?.guestCheckout,
-        taxClass: values?.taxClass?.id,
+        // defaultPaymentGateway: values.defaultPaymentGateway?.name,
+        // paymentGateway:
+        //   values?.paymentGateway && values?.paymentGateway!.length
+        //     ? values?.paymentGateway?.map((gateway: any) => ({
+        //       name: gateway.name,
+        //       title: gateway.title,
+        //     }))
+        //     : PAYMENT_GATEWAY.filter((value: any, index: number) => index < 2),
+        // useEnableGateway: values?.useEnableGateway,
+        // guestCheckout: values?.guestCheckout,
+        // taxClass: values?.taxClass?.id,
         shippingClass: values?.shippingClass?.id,
         logo: values?.logo,
-        smsEvent,
-        emailEvent,
-        contactDetails,
+        // smsEvent,
+        // emailEvent,
+        // contactDetails,
         //@ts-ignore
-        seo: {
-          ...values?.seo,
-          ogImage: values?.seo?.ogImage,
-        },
-        currencyOptions: {
-          ...values.currencyOptions,
-          //@ts-ignore
-          formation: values?.currencyOptions?.formation?.code,
-        },
-      },
+        // seo: {
+        //   ...values?.seo,
+        //   ogImage: values?.seo?.ogImage,
+        // },
+        // currencyOptions: {
+        //   ...values.currencyOptions,
+        //   //@ts-ignore
+        //   formation: values?.currencyOptions?.formation?.code,
+        // },
+      // },
     });
   }
-
-  let paymentGateway = watch('paymentGateway');
-  let defaultPaymentGateway = watch('defaultPaymentGateway');
-  let useEnableGateway = watch('useEnableGateway');
+  console.log(options,serverInfo)
+  // let paymentGateway = watch('paymentGateway');
+  // let defaultPaymentGateway = watch('defaultPaymentGateway');
+  // let useEnableGateway = watch('useEnableGateway');
   // let enableAi = watch('useAi');
 
   const upload_max_filesize = options?.server_info?.upload_max_filesize! / 1024;
@@ -466,11 +465,11 @@ export default function SettingsForm({
     </span>
   );
 
-  let checkAvailableDefaultGateway = paymentGateway?.some(
-    (item: any) => item?.name === defaultPaymentGateway?.name
-  );
-
-  const isStripeActive = paymentGateway?.some(payment => payment?.name === "stripe");
+  // let checkAvailableDefaultGateway = paymentGateway?.some(
+  //   (item: any) => item?.name === defaultPaymentGateway?.name
+  // );
+ 
+  // const isStripeActive = paymentGateway?.some(payment => payment?.name === "stripe");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -508,7 +507,7 @@ export default function SettingsForm({
             variant="outline"
             className="mb-5"
           />
-          <Input
+          {/* <Input
             label={`${t('form:input-label-min-order-amount')}`}
             {...register('minimumOrderAmount')}
             type="number"
@@ -568,9 +567,9 @@ export default function SettingsForm({
                 {t('form:input-label-use-must-verify-email')}
               </Label>
             </div>
-          </div>
+          </div> */}
 
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <div className="flex items-center gap-x-4">
               <SwitchInput
                 name="useAi"
@@ -604,7 +603,7 @@ export default function SettingsForm({
               options={taxClasses!}
               disabled={isNotDefaultSettingsPage}
             />
-          </div>
+          </div> */}
 
           <div className="mb-5">
             <Label>{t('form:input-label-shipping-class')}</Label>
@@ -617,7 +616,7 @@ export default function SettingsForm({
               disabled={isNotDefaultSettingsPage}
             />
           </div>
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <div className="flex items-center gap-x-4">
               <SwitchInput
                 name="guestCheckout"
@@ -628,7 +627,7 @@ export default function SettingsForm({
                 {t('form:input-label-enable-guest-checkout')}
               </Label>
             </div>
-          </div>
+          </div> */}
 
           <div className="flex items-center gap-x-4">
             <SwitchInput
@@ -808,7 +807,7 @@ export default function SettingsForm({
           )}
         </Card>
       </div> */}
-      <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+     {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title="SEO"
           details={t('form:tax-form-seo-info-help-text')}
@@ -890,7 +889,7 @@ export default function SettingsForm({
             placeholder="one of summary, summary_large_image, app, or player"
           />
         </Card>
-      </div>
+      </div> */}
       {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
           title={t('form:title-sms-event-settings')}
@@ -959,7 +958,7 @@ export default function SettingsForm({
         </Card>
       </div> */}
 
-      <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
         <Description
           title={t('form:text-delivery-schedule')}
           details={t('form:delivery-schedule-help-text')}
@@ -1012,11 +1011,10 @@ export default function SettingsForm({
             className="w-full sm:w-auto"
           >
             {t('form:button-label-add-delivery-time')}
-          </Button>
+          </Button>*/}
 
-          {
-            /*@ts-ignore*/
-            errors?.deliveryTime?.message ? (
+          
+          {/*  errors?.deliveryTime?.message ? (
               <Alert
                 // @ts-ignore
                 message={t(errors?.deliveryTime?.message)}
@@ -1026,9 +1024,9 @@ export default function SettingsForm({
             ) : null
           }
         </Card>
-      </div>
+      </div> */}
 
-      <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
+      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">
         <Description
           title={t('form:shop-settings')}
           details={t('form:shop-settings-helper-text')}
@@ -1104,7 +1102,7 @@ export default function SettingsForm({
           </div>
 
           {/* Social and Icon picker */}
-          <div>
+          {/* <div>
             {socialFields.map(
               (item: ShopSocialInput & { id: string }, index: number) => (
                 <div
@@ -1151,9 +1149,9 @@ export default function SettingsForm({
                 </div>
               )
             )}
-          </div>
+          </div> */}
 
-          {!isNotDefaultSettingsPage && (
+         {/* {!isNotDefaultSettingsPage && (
             <Button
               type="button"
               onClick={() => socialAppend({ icon: '', url: '' })}
@@ -1164,7 +1162,7 @@ export default function SettingsForm({
             </Button>
           )}
         </Card>
-      </div>
+      </div> */}
 
       <div className="mb-4 text-end">
         <Button loading={loading} disabled={loading}>

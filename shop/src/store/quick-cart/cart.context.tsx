@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { cartReducer, State, initialState } from './cart.reducer';
-import { Item, getItem, inStock, addItemWithQuantity } from './cart.utils';
+import { Item, getItem, inStock } from './cart.utils';
 import { useAtom } from 'jotai';
 import { verifiedResponseAtom } from '@/store/checkout';
 import client from '@/framework/client';
 import { authorizationAtom } from '@/store/authorization-atom';
 // import { useCountry } from '../country/country.context';
+import { useLocalStorage } from "@/lib/use-local-storage"
+import { CART_KEY } from '@/lib/constants';
 
 
 interface CartProviderState extends State {
@@ -41,9 +43,14 @@ export const useCart = () => {
 export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   props
 ) => {
-  const [state, dispatch] = React.useReducer(cartReducer, initialState);
+  const [savedCart, saveCart] = useLocalStorage(
+    CART_KEY,
+    JSON.stringify(initialState)
+  );
   const [, emptyVerifiedResponse] = useAtom(verifiedResponseAtom);
   const [isAuthorize]=useAtom(authorizationAtom)
+  const [state, dispatch] = React.useReducer(cartReducer, isAuthorize ? JSON.parse(savedCart) : initialState);
+
   // const {selectedCountry}=useCountry()
 
   const fetchCart = async () => {
@@ -62,29 +69,26 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
     }
   }, [emptyVerifiedResponse]);
 
-  const addItemsToCart = (items: Item[]) =>{
-    dispatch({ type: 'ADD_ITEMS_WITH_QUANTITY', items });
-  }
-  
-  const addItemToCartLocal = (item: Item, quantity: number) =>
+  React.useEffect(() => {
+    if(!isAuthorize){
+      saveCart(JSON.stringify(state));
+    }
+  }, [state, saveCart]);
+
+  const addItemsToCart = (item: Item, quantity: number) =>
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
 
-  const addItemToCart = async (id: string, quantity: number) => {
-  if (isAuthorize) {
-    const response = await client.cart.update({ product: id, quantity });
-    fetchCart();
-    return response;
-  } else {
-    console.log(item,"item")
-    const item = getItem(state.items, id) || { id, quantity: 0 };
-    const updatedItem = { ...item, quantity: item.quantity + quantity };
-    const updatedCart = addItemWithQuantity(state.items, updatedItem, quantity);
-    dispatch({ type: 'SET_CART', cartData: updatedCart });
-    saveCartToLocalStorage(updatedCart);
+  const addItemToCart = async(id: string, quantity: number) =>{
+    try {
+      const cartObject={product:id,quantity:quantity}
+      const response=await client.cart.update(cartObject)
+      fetchCart()
+      return response
+    } catch (error) {
+      return error.response.data
+    }
   }
-};
-
-  
+  console.log(state,"state")
   const removeItemFromCart = async(id: string,quantity:number) =>{
         const cartObject={product:id,quantity:quantity}
         const response=await client.cart.update(cartObject)
@@ -95,14 +99,16 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
 
   const clearItemFromCart = (id: Item['id']) =>
     dispatch({ type: 'REMOVE_ITEM', id });
+  const removesItemFromCart = (id: Item['id']) =>
+    dispatch({ type: 'REMOVE_ITEM_OR_QUANTITY', id });
 
   const isInCart = useCallback(
-    (id: Item['id']) => !!getItem(state.items, id),
+    (id: Item['id']) => !!getItem(state.items, id,isAuthorize),
     [state.items]
   );
 
   const getItemFromCart = useCallback(
-    (id: Item['id']) => getItem(state.items, id),
+    (id: Item['id']) => getItem(state.items, id,isAuthorize),
     [state.items]
   );
 
@@ -149,7 +155,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
       getCurrentCart,
       getCurrentLimit,
       fetchCart,
-      addItemToCartLocal
+      removesItemFromCart
     }),
     [getItemFromCart, isInCart, isInStock, state]
   );

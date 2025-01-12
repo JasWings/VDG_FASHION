@@ -32,7 +32,7 @@ export default function ProductGridHome({
   // Pass category and group as parameters to the useProducts hook
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
     useProducts(30, category, group,price,orderBy,sortedBy);
-  console.log(orderBy,sortedBy)
+  
   return (
     <Grid
       products={products}

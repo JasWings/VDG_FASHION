@@ -35,7 +35,7 @@ export default function HomeLayout({
       
       <div className="min-h-screen">{children}</div>
       {['compact'].includes(layout) && <Footer />}
-       <Footer />
+       {/* <Footer /> */}
 
       <MobileNavigation>
         <motion.button

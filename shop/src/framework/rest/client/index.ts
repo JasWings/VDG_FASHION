@@ -198,7 +198,7 @@ class Client {
     //     ...(type && { search: HttpClient.formatSearchParams({ type }) }),
     //   }
     // ),
-    HttpClient.get<CategoryPaginator>(API_ENDPOINTS.CATEGORIES),
+    HttpClient.get<CategoryPaginator>(API_ENDPOINTS.CATEGORIES,params),
   };
   groups = {
     all : () => HttpClient.get(API_ENDPOINTS.GROUPS)

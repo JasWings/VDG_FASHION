@@ -1,4 +1,5 @@
 import { useType } from '@/framework/type';
+import { banner1, banner2 } from '@/lib/placeholders';
 import dynamic from 'next/dynamic';
 const ErrorMessage = dynamic(() => import('@/components/ui/error-message'));
 const BannerWithSearch = dynamic(
@@ -84,11 +85,16 @@ const Banner: React.FC<{ layout: string; variables: any }> = ({
     ]
 }
   const { type, error } = useType(variables.type);
+
+  const group_images = [
+    { name: "first", file :  banner1},
+    { name: "second", file: banner2}
+  ]
   
   if (error) return <ErrorMessage message={error.message} />;
   const Component = MAP_BANNER_TO_GROUP[layout];
   return (
-    <Component banners={custom?.banners} layout={layout} slug={custom?.slug} />
+    <Component banners={group_images} layout={layout} slug={custom?.slug} />
   );
 };
 

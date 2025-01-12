@@ -17,7 +17,7 @@ export const categoryClient = {
     return HttpClient.get<CategoryPaginator>(API_ENDPOINTS.CATEGORIES, {
       searchJoin: 'and',
       ...params,
-      search: HttpClient.formatSearchParams({ type, name }),
+      search: HttpClient.formatSearchParams({ name }),
     });
   },
 };

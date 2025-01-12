@@ -5,7 +5,7 @@ import Validations from "../../../Validations/index.js";
 export const CreateGroup = async (req,res) => {
     try {
      const value = Validations.validateGroup(req.body)
-     const new_group = await Group.create({ name: value?.name,slug: value?.slug,icon: value?.icon})
+     const new_group = await Group.create({ name: value?.name,slug: value?.slug,icon: value?.icon,...value})
      res.status(200).json({ status: 'success', message: "New group created successfully",data: new_group})
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message })  
@@ -35,7 +35,7 @@ export const UpdateGroupDetails = async (req,res) => {
     try {
      const value = Validations.validateGroup(req.body)
      const { id } = req.params
-     const updated_group = await Group.findOneAndUpdate({ id: id},{ name: value.name,slug:value.slug,icon:value.icon},{ new: true } )
+     const updated_group = await Group.findOneAndUpdate({ _id: id},{ name: value.name,slug:value.slug,icon:value.icon,...value},{ new: true } )
      res.status(200).json({ status: "success", data: "Group Updated successfully",data: updated_group})   
     } catch (error) {
       res.status(500).json({ status: 'failed', message: error?.message }) 

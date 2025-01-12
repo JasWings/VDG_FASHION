@@ -72,8 +72,11 @@ export default function Uploader({
               //   setFiles(data);
               // }
               if(multiple){
-                 onChange([...files])
-              }else if (onChange) {
+                mergedData = files.concat(mergedData)
+                setFiles(files.concat(data?.data))
+                 onChange([...mergedData])
+              }else 
+              if (onChange) {
                 onChange(mergedData);
               }
             },
@@ -97,12 +100,18 @@ export default function Uploader({
   });
   
   const handleDelete = (image: string) => {
-    const images = files.filter((file) => file.thumbnail !== image);
+    const images = files.filter((file) => file.uuid !== image);
+    console.log(files,"files",image,images)
     setFiles(images);
     if (onChange) {
-      onChange(images);
+      if(multiple){
+        onChange([...images])
+      }else{
+        onChange(images);
+      }
     }
   };
+  
   
   const thumbs = files?.map((file: any, idx) => {
     const imgTypes = [
@@ -117,6 +126,7 @@ export default function Uploader({
       'eps',
       'raw',
     ];
+
 
     // let filename, fileType, isImage;
     if (file && file.id) {
@@ -187,7 +197,7 @@ export default function Uploader({
           {multiple ? (
             <button
               className="absolute top-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs text-light shadow-xl outline-none end-1"
-              onClick={() => handleDelete(file.thumbnail)}
+              onClick={() => handleDelete(file.uuid)}
             >
               <CloseIcon width={10} height={10} />
             </button>

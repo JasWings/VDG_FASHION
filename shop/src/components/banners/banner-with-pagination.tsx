@@ -4,6 +4,7 @@ import { productPlaceholder } from '@/lib/placeholders';
 import Link from '@/components/ui/link';
 import { Routes } from '@/config/routes';
 import type { Banner } from '@/types';
+import { Autoplay } from 'swiper'; // Import the Autoplay module
 
 interface BannerProps {
   banners: Banner[] | undefined;
@@ -19,11 +20,14 @@ const BannerWithPagination: React.FC<BannerProps> = ({ banners, slug }) => {
           <Swiper
             id="banner"
             loop={true}
-            modules={[Pagination]}
+            modules={[Pagination, Autoplay]} // Add Autoplay module
             resizeObserver={true}
             allowTouchMove={false}
             slidesPerView={1}
-            // pagination={true}
+            autoplay={{
+              delay: 3000, // Time in milliseconds (e.g., 3000ms = 3 seconds)
+              disableOnInteraction: false, // Keeps autoplay even after user interaction
+            }}
             pagination={{
               bulletClass:
                 'swiper-pagination-bullet !w-2.5 !h-2.5 !p-1 !rounded-full bg-gray-400 !border-0 !opacity-70',
@@ -38,7 +42,7 @@ const BannerWithPagination: React.FC<BannerProps> = ({ banners, slug }) => {
                   <div className="relative h-full max-h-[240px] w-full md:max-h-[610px]">
                     <Image
                       className="h-full w-full"
-                      src={banner.image?.original ?? productPlaceholder}
+                      src={banner.file ?? productPlaceholder}
                       alt={banner.title ?? ''}
                       width={1800}
                       height={610}

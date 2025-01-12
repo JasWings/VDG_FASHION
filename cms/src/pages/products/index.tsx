@@ -19,7 +19,7 @@ import LinkButton from '@/components/ui/link-button';
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [type, setType] = useState('');
+  const [type, setType] = useState(null);
   const [category, setCategory] = useState('');
   const [page, setPage] = useState(1);
   const { t } = useTranslation();
@@ -36,13 +36,13 @@ export default function ProductsPage() {
     language: locale,
     limit: 20,
     page,
-    type,
-    categories: category,
+    group:type,
+    categories: category ? category : null,
     name: searchTerm,
     orderBy,
     sortedBy,
   });
-  console.log(products,"products")
+  
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
@@ -109,11 +109,12 @@ export default function ProductsPage() {
               className="w-full"
               type={type}
               onCategoryFilter={(category: Category) => {
-                setCategory(category?.slug!);
+                console.log(category)
+                setCategory(category?._id!);
                 setPage(1);
               }}
               onTypeFilter={(type: Type) => {
-                setType(type?.slug!);
+                setType(type?._id!);
                 setPage(1);
               }}
             />

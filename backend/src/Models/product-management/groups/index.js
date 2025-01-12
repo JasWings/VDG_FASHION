@@ -16,9 +16,8 @@ const BannerSchema = new mongoose.Schema({
 });
 
 const PromotionalSliderSchema = new mongoose.Schema({
-  id: { type: String },
-  original: { type: String  },
-  thumbnail: { type: String },
+  id: { type: Number },
+  file: { type: String  },
 });
 
 const SettingsSchema = new mongoose.Schema({

@@ -24,15 +24,21 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export function useProducts(pageSize: number, category?: string, group?: string) {
+export function useProducts(pageSize: number, category?: string, group?: string,price:string,orderBy:string,sortBy:string) {
   const { locale } = useRouter();
   const [newPageSize, setNewPageSize] = useState(pageSize);
 
+  const handlePriceFilter = (price:string) => {
+    const [min, max] = price?.split(',').map(Number);
+    return { min_price: min, max_price: max };
+  };
+
+  const { max_price, min_price} = price ?  handlePriceFilter(price) : { max_price: null, min_price: null}
   const formattedOptions = {
     pageSize: newPageSize,
     language: locale,
     categories : category,  
-    group,  
+    group,  min_price,max_price,orderBy,sortBy
   };
 
   const {

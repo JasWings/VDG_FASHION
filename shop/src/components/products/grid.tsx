@@ -57,9 +57,6 @@ export function Grid({
     );
   }
   
-  // if(CountryList.length!==0&&selectedCountry===undefined&&isAuthorize){
-  //    window.location.reload()
-  // }
 
   return (
     <div className={cn('w-full', className)}>

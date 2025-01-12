@@ -47,27 +47,34 @@ export const sentOtpEmail=async(receiver,otp) => {
 
 
 export const DefaultFilterQuerys = {
-     product : { categories: '', group: ""}
+     product : { categories: '', group: ""},
+     category : { type_id:""}
   };
   
 
   export const FilterQuery = (filterName, query) => {
-
     const defaultQuery = DefaultFilterQuerys[filterName];
   
     if (!defaultQuery) {
       throw new Error(`Invalid filter name: ${filterName}`);
     }
   
-
     const filteredQuery = Object.keys(defaultQuery).reduce((acc, key) => {
-
       if (query.hasOwnProperty(key)) {
-        acc[key] = query[key];
+        if (key === 'categories' && typeof query[key] === 'string') {
+          const categoriesArray = query[key].split(',').filter(Boolean); // Split and remove empty values
+          if (categoriesArray.length > 0) {
+            acc[key] = categoriesArray;
+          }
+        } else {
+          acc[key] = query[key];
+        }
       }
       return acc;
     }, {});
   
     return filteredQuery;
   };
+  
+  
   

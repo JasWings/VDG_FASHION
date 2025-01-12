@@ -10,9 +10,8 @@ export function useCategories(options?: Partial<CategoryQueryOptions>) {
 
   const formattedOptions = {
     ...options,
-    language: locale
   }
-
+  console.log(formattedOptions,"formateed",options)
   const {
     data,
     isLoading,

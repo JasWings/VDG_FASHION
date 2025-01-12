@@ -21,7 +21,7 @@ export default function UpdateProductPage() {
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
   });
-  console.log(product)
+  
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error?.message as string} />;
   return (

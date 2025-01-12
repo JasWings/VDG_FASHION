@@ -25,9 +25,9 @@ export default function Categories() {
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const { categories, paginatorInfo, loading, error } = useCategoriesQuery({
-    limit: 20,
+    limit: 10,
     page,
-    type,
+    type_id: type ? type : null,
     name: searchTerm,
     orderBy,
     sortedBy,
@@ -66,7 +66,7 @@ export default function Categories() {
             <TypeFilter
               className="md:ms-6"
               onTypeFilter={(type: Type) => {
-                setType(type?.slug!);
+                setType(type?._id!);
                 setPage(1);
               }}
             />

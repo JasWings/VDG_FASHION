@@ -13,7 +13,7 @@ import { useTranslation } from 'next-i18next';
 import { useAttributesQuery } from '@/data/attributes';
 import FileInput from '@/components/ui/file-input';
 import ValidationError from '@/components/ui/form-validation-error';
-import { getCartesianProduct, filterAttributes } from './form-utils';
+import { getCartesianProduct, filterAttributes, getEditCartesianProduct } from './form-utils';
 import { useRouter } from 'next/router';
 import { Config } from '@/config';
 import { useSettingsQuery } from '@/data/settings';
@@ -59,7 +59,7 @@ export default function ProductVariableForm({
     name: 'variations',
   });
   const variations = watch('variations');
-  const cartesianProduct = getCartesianProduct(getValues('variations'));
+  const cartesianProduct = initialValues ? getEditCartesianProduct(getValues("variants")) : getCartesianProduct(getValues('variations'));
   console.log(cartesianProduct)
   return (
     <div className="my-5 flex flex-wrap sm:my-8">

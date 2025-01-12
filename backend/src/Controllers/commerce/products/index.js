@@ -56,7 +56,7 @@ export const createProduct = async (req, res) => {
                 unit,
                 is_active: true,
                 is_delete: false,
-                group: type_id
+                group: type_id,unit:unit
             });
 
             const savedProduct = await simpleProduct.save();
@@ -163,25 +163,165 @@ export const createProduct = async (req, res) => {
 };
 
 
-export const getProducts = async (req,res) => {
+export const getProducts = async (req, res) => {
     try {
-    const filterQuerys = FilterQuery("product",req.query)
-    console.log(filterQuerys)
-    const product_list = await ProductModel.find({...filterQuerys,is_delete: false})
-    .populate({ path: "group",model:"Group"}).populate({ path: "variants",populate: { path: "attributes"}})
-    res.status(200).json({ status: "success", message: "All products retrived successfully",data: product_list})    
-    } catch (error) {
-      res.status(500).json({ status: "failed", message: error?.message })  
+      const filterQuerys = FilterQuery("product", req.query);
+      const { orderBy = "created_at", sortedBy = "DESC" } = req.query;
+  
+      const sortOrder = sortedBy === "ASC" ? 1 : -1;
+      let sortQuery = {};
+      
+      if (orderBy === "min_price") {
+        sortQuery = { price: sortOrder };
+      } else if (orderBy === "max_price") {
+        sortQuery = { price: sortOrder };
+      } else {
+        sortQuery = { created_at: sortOrder };
+      }
+  
+      const priceFilter = {};
+      if (req.query.min_price) {
+        priceFilter.price = { $gte: parseFloat(req.query.min_price) };
+      }
+      if (req.query.max_price) {
+        if (!priceFilter.price) {
+          priceFilter.price = {};
+        }
+        priceFilter.price.$lte = parseFloat(req.query.max_price);
+      }
+    
+      const categoryFilter = {};
+    if (filterQuerys.categories) {
+      categoryFilter.categories = { $in: filterQuerys.categories }; // Use $in for array filtering
     }
-}
+    console.log(req.query,filterQuerys,filterQuerys,categoryFilter)
+
+      const product_list = await ProductModel.find({
+        ...filterQuerys,
+        ...priceFilter,
+        ...categoryFilter,
+        is_delete: false,
+      })
+        .populate({ path: "group", model: "Group" })
+        .populate({ path: "variants", populate: { path: "attributes" } })
+        .sort(sortQuery);
+  
+      res.status(200).json({
+        status: "success",
+        message: "All products retrieved successfully",
+        data: product_list,
+      });
+    } catch (error) {
+      res.status(500).json({ status: "failed", message: error?.message });
+    }
+  };
+  
 
 export const getProductWithUUID = async (req,res) => {
     try {
     const { id } = req.params
     const product_item = await ProductModel.findOne({ uuid: id })
-    .populate({ path: "categories", model: "category"}).populate({ path: "group", model: "Group"}).populate({ path: "tags", model:"Tag"})
+    .populate({ path: "categories", model: "category"})
+    .populate({ path: "group", model: "Group"}).populate({ path: "tags", model:"Tag"}).populate({ path: "variants",populate: { path: "attributes"}})
     res.status(200).json({ status: "failed", message: "Product details retrived successfully",data: product_item})     
     } catch (error) {
       res.status(500).json({ status: "failed", message: error?.message }) 
     }
 }
+
+
+import Joi from "joi";
+
+const updateProductSchema = Joi.object({
+   id : Joi.string().required(),
+   variations : Joi.any().optional(),
+    name: Joi.string().optional(),
+    description: Joi.string().optional(),
+    price: Joi.number().optional(),
+    sale_price: Joi.number().optional(),
+    language: Joi.any().optional(),
+    video: Joi.any().optional(),
+    is_external : Joi.any().optional(),
+    is_digital: Joi.any().optional(),
+    type_id : Joi.any().optional(),
+    status: Joi.string().valid("publish", "draft").optional(),
+    sku: Joi.string().optional(),
+    slug: Joi.string().optional(),
+    gender: Joi.string().optional(),
+    group: Joi.string().optional(),
+    tags: Joi.array().items(Joi.string()).optional(),
+    categories: Joi.array().items(Joi.string()).optional(),
+    product_type: Joi.string().valid("simple", "variable").optional(),
+    has_variants: Joi.boolean().optional(),
+    variants: Joi.any().optional(),
+    variation_options: Joi.any().optional(),
+    quantity: Joi.number().optional(),
+    min_price: Joi.any().optional(),
+    max_price: Joi.any().optional(),
+    unit: Joi.string().optional(),
+    width: Joi.string().optional().allow(null,''),
+    height: Joi.string().optional().allow(null,''),
+    length: Joi.string().optional().allow(null,''),
+    image: Joi.object({
+        uuid: Joi.string().required(),
+        is_active: Joi.boolean().optional(),
+        is_deleted: Joi.boolean().optional(),
+        file: Joi.string().required(),
+        id: Joi.number().optional(),
+    }).optional(),
+    gallery: Joi.array().items(
+        Joi.object({
+            uuid: Joi.string().required(),
+            is_active: Joi.boolean().optional(),
+            is_deleted: Joi.boolean().optional(),
+            file: Joi.string().required(),
+            id: Joi.number().optional(),
+            _id : Joi.any().optional(),
+            __v : Joi.any().optional()
+        })
+    ).optional(),
+    is_active: Joi.boolean().optional(),
+    is_delete: Joi.boolean().optional(),
+});
+
+export const updateProductById = async (req, res) => {
+    const { _id } = req.params;
+    const updates = req.body;
+
+    const { error, value } = updateProductSchema.validate(updates, { abortEarly: false });
+    if (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Validation failed",
+            errors: error.details.map((detail) => detail.message),
+        });
+    }
+
+    try {
+        const product = await ProductModel.findByIdAndUpdate(
+            _id,
+            { $set: value },
+            { new: true, runValidators: true }
+        );
+
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        res.status(200).json({ success: true, message: "Product updated successfully", data: product });
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Error updating product", error: error.message });
+    }
+};
+
+
+export const deleteProductwithId = async (req,res) => {
+    try {
+    const { id} = req.params
+    const delete_product = await ProductModel.findOneAndUpdate({_id: id},{ is_delete: true})   
+    res.status(200).json({ status: 'success', message: "product deleted successfully"}) 
+    } catch (error) {
+       res.status(500).json({ success: false, message: error.message}) 
+    }
+}
+

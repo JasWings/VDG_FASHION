@@ -6,24 +6,27 @@ import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useCategoryQuery } from '@/data/category';
+import { useOfferQuery } from '@/data/offer';
 import { Config } from '@/config';
+import CreateOrUpdateOfferForm from '@/components/offers/offer-form';
 
-export default function UpdateCategoriesPage() {
+export default function UpdateOfferPage() {
   const { query, locale } = useRouter();
+  console.log(query)
   const { t } = useTranslation();
   const {
-    category,
+    offer,
     isLoading: loading,
     error,
-  } = useCategoryQuery({
-    slug: query.categorySlug as string,
+  } = useOfferQuery({
+    slug: query.offerSlug as string,
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  
+  console.log(offer)
   return (
     <>
       <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">
@@ -32,19 +35,16 @@ export default function UpdateCategoriesPage() {
         </h1>
       </div>
 
-      <CreateOrUpdateCategoriesForm 
+      <CreateOrUpdateOfferForm 
       initialValues={
-        category ? 
-        {...category,image:{ file: category?.image, uuid:category?._id,id:1}}
-      :
-      category
+      offer
     }
       />
     </>
   );
 }
 
-UpdateCategoriesPage.Layout = Layout;
+UpdateOfferPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

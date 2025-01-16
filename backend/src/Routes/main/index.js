@@ -15,6 +15,7 @@ import TaxRouter from "../order-management/admin-operations/tax.js"
 import ShippingRouter from "../order-management/admin-operations/shipping.js"
 import couponrouter from "../product-management/coupons/index.js"
 import SliderRouter from "../marketing-&-promotions/promotions/index.js"
+import offerRouter from "../offer/index.js"
 
 
 const router = express.Router()
@@ -36,5 +37,6 @@ router.use("/taxes",TaxRouter)
 router.use("/shippings",ShippingRouter)
 router.use("/coupons",couponrouter)
 router.use("/slider",SliderRouter)
+router.use("/offers",offerRouter)
 
 export default router

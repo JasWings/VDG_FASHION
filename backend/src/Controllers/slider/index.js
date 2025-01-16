@@ -42,3 +42,50 @@ export const getActiveSliders = async (req, res) => {
     }
 }
 
+
+
+export const getAllSliders = async (req, res) => {
+    try {
+        const sliders = await Sliders.find().sort({ createdAt: -1 });
+        res.status(200).json({ status: "success", message: "Sliders retrive successfully" ,data:sliders});
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch sliders.', details: error.message });
+    }
+};
+
+
+export const getSliderById = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const slider = await Sliders.findById(id);
+        if (!slider) return res.status(404).json({ error: 'Slider not found.' });
+        res.status(200).json({status: "success", message: "Slider retrive successfully",data: slider});
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch slider.', details: error.message });
+    }
+};
+
+
+export const updateSlider = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updatedData = req.body;
+        const updatedSlider = await Sliders.findByIdAndUpdate(id, updatedData, { new: true });
+        if (!updatedSlider) return res.status(404).json({ error: 'Slider not found.' });
+        res.status(200).json({ message: 'Slider updated successfully.', slider: updatedSlider });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to update slider.', details: error.message });
+    }
+};
+
+
+export const deleteSlider = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedSlider = await Sliders.findByIdAndDelete(id);
+        if (!deletedSlider) return res.status(404).json({ error: 'Slider not found.' });
+        res.status(200).json({ message: 'Slider deleted successfully.' });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to delete slider.', details: error.message });
+    }
+};

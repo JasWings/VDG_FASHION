@@ -1,6 +1,5 @@
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Input from '@/components/ui/input';
 import TextArea from '@/components/ui/text-area';
@@ -10,9 +9,11 @@ import SwitchInput from '@/components/ui/switch-input';
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
-import { offerValidationSchema } from './category-validation-schema';
+import { offerValidationSchema } from './offer-validation-schema';
 import { useProductsQuery } from '@/data/product';
 import { useCreateOfferMutation, useUpdateOfferMutation } from "@/data/offer"
+import Label from '../ui/label';
+import { ValidationError } from 'yup';
 
 type FormValues = {
   title: string;
@@ -44,6 +45,13 @@ type IProps = {
 
 export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
   const router = useRouter();
+  const initialFormValues = initialValues
+  ? {
+      ...initialValues,
+      startDate: initialValues.startDate ? new Date(initialValues.startDate) : new Date(),
+      endDate: initialValues.endDate ? new Date(initialValues.endDate) : new Date(),
+    }
+  : defaultValues;
   const {
     register,
     handleSubmit,
@@ -51,22 +59,30 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
     setValue,
     formState: { errors },
   } = useForm<FormValues>({
-    defaultValues: initialValues || defaultValues,
+    defaultValues: initialFormValues,
     resolver: yupResolver(offerValidationSchema),
   });
 
-  const { data: products, isLoading: loadingProducts } = useProductsQuery();
+  const {  products, isLoading: loadingProducts } = useProductsQuery();
   const { mutate: createOffer, isLoading: creating } = useCreateOfferMutation();
   const { mutate: updateOffer, isLoading: updating } = useUpdateOfferMutation();
 
   const onSubmit = (values: FormValues) => {
+    const transformedValues = {
+      ...values,
+      offerType: values.offerType.value,
+      applicableProducts: values.applicableProducts.map((product) => product.value),
+      freeProducts: values.freeProducts?.map((product) => product.value),
+    };
+  
     if (initialValues) {
-      updateOffer({ ...values, id: initialValues.id });
+      updateOffer({ ...transformedValues, id: initialValues.id });
     } else {
-      createOffer(values);
+      createOffer(transformedValues);
     }
   };
-
+  
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
@@ -82,16 +98,18 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
             {...register('title')}
             error={errors.title?.message}
             variant="outline"
-            className="mb-5"
+            className="mb-5 p-3"
           />
           <TextArea
             label="Description"
             {...register('description')}
             error={errors.description?.message}
             variant="outline"
-            className="mb-5"
+            className="mb-5 p-3"
           />
-          <SelectInput
+          <div className="mb-5">
+            <Label>{'Offer Type'}</Label>
+            <SelectInput
             label="Offer Type"
             options={[
               { label: 'Buy One Get One', value: 'BOGO' },
@@ -100,70 +118,101 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
             name="offerType"
             control={control}
             error={errors.offerType?.message}
+            className="p-3 mb-5"
           />
-          <SelectInput
+          </div>
+          <div className="mb-5">
+            <Label>{'Applicable Products'}</Label>
+            <SelectInput
             label="Applicable Products"
             options={products?.map((product) => ({
               label: product.name,
-              value: product.id,
+              value: product._id,
             }))}
             name="applicableProducts"
             control={control}
             isMulti
             isLoading={loadingProducts}
             error={errors.applicableProducts?.message}
+            className="p-3 mb-5"
           />
-          <SelectInput
+          </div>
+          <div className="mb-5">
+            <Label>{'Free Products (Optional)'}</Label>
+            <SelectInput
             label="Free Products (Optional)"
             options={products?.map((product) => ({
               label: product.name,
-              value: product.id,
+              value: product._id,
             }))}
             name="freeProducts"
             control={control}
             isMulti
             isLoading={loadingProducts}
             error={errors.freeProducts?.message}
+            className="p-3 mb-5"
           />
+          </div>
+          
+          
           <Input
             label="Minimum Purchase Amount"
             type="number"
             {...register('minimumPurchaseAmount')}
             error={errors.minimumPurchaseAmount?.message}
             variant="outline"
-            className="mb-5"
+            className="mb-5 p-3"
           />
-          <div className="flex gap-5">
-            <Controller
-              name="startDate"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  {...field}
-                  label="Start Date"
-                  error={errors.startDate?.message}
-                />
-              )}
-            />
-            <Controller
-              name="endDate"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  {...field}
-                  label="End Date"
-                  error={errors.endDate?.message}
-                />
-              )}
-            />
+           <div className="flex flex-col sm:flex-row">
+            <div className="mb-5 w-full p-0 sm:mb-0 sm:w-1/2 sm:pe-2">
+              <Label>{'Start Date'}</Label>
+
+              <Controller
+                control={control}
+                name="startDate"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  //@ts-ignore
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    selected={value}
+                    selectsStart
+                    minDate={new Date()}
+                    className="border border-border-base"
+                  />
+                )}
+              />
+              {/* <ValidationError message={errors.startDate?.message} /> */}
+            </div>
+            <div className="w-full p-0 sm:w-1/2 sm:ps-2">
+              <Label>{'End Date'}</Label>
+
+              <Controller
+                control={control}
+                name="endDate"
+                render={({ field: { onChange, onBlur, value } }) => (
+                  //@ts-ignore
+                  <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    selected={value}
+                    selectsEnd
+                    className="border border-border-base"
+                  />
+                )}
+              />
+              {/* <ValidationError message={t(errors.expire_at?.message!)} /> */}
+            </div>
           </div>
-          <SwitchInput
+          {/* <SwitchInput
             name="isActive"
             control={control}
             label="Is Active"
             error={errors.isActive?.message}
-            className="mt-5"
-          />
+            className="mt-5 p-3"
+          /> */}
         </Card>
       </div>
 

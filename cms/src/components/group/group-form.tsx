@@ -112,8 +112,8 @@ type FormValues = {
   name: string;
   slug?: string | null;
   icon?: any;
-  promotional_sliders: AttachmentInput[];
-  banners: BannerInput[];
+  // promotional_sliders: AttachmentInput[];
+  // banners: BannerInput[];
   // settings: TypeSettingsInput;
 };
 
@@ -176,20 +176,20 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       //   productCard: values?.settings?.productCard,
       //   layoutType: values?.settings?.layoutType,
       // },
-      promotional_sliders: values.promotional_sliders?.map(
-        ({  file, id }: any) => ({
-          file,
-          id,
-        })
-      ),
-      banners: values?.banners?.map((banner) => ({
-        ...banner,
-        image: {
-          id: banner?.image?.id,
-          thumbnail: banner?.image?.thumbnail,
-          original: banner?.image?.original,
-        },
-      })),
+      // promotional_sliders: values.promotional_sliders?.map(
+      //   ({  file, id }: any) => ({
+      //     file,
+      //     id,
+      //   })
+      // ),
+      // banners: values?.banners?.map((banner) => ({
+      //   ...banner,
+      //   image: {
+      //     id: banner?.image?.id,
+      //     thumbnail: banner?.image?.thumbnail,
+      //     original: banner?.image?.original,
+      //   },
+      // })),
     };
    console.log(input,"input",values)
     if (
@@ -330,7 +330,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       </div> */}
 
       {/* {layoutType === 'classic' ? ( */}
-        <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+        {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
           <Description
             title={t('form:promotional-slider')}
             details={t('form:promotional-slider-help-text')}
@@ -339,10 +339,10 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
           <Card className="w-full sm:w-8/12 md:w-2/3">
             <FileInput name="promotional_sliders" control={control} multiple={true} />
           </Card>
-        </div>
+        </div> */}
       {/* ) : null} */}
 
-      <div className="my-5 flex flex-wrap sm:my-8">
+      {/* <div className="my-5 flex flex-wrap sm:my-8">
         <Description
           title={t('common:text-banner')}
           details={t('form:banner-slider-help-text')}
@@ -409,7 +409,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
           </Button>
 
           {/* @ts-ignore */}
-          {errors?.banners?.message ? (
+          {/* {errors?.banners?.message ? (
             <Alert
               message={
                 // @ts-ignore
@@ -420,7 +420,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
             />
           ) : null}
         </Card>
-      </div> 
+      </div>   */}
 
       <div className="mb-4 text-end">
         {initialValues && (

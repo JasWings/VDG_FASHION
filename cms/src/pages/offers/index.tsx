@@ -52,20 +52,20 @@ export default function Offers() {
         <div className="flex w-full flex-col items-center md:flex-row">
           <div className="mb-4 md:mb-0 md:w-1/4">
             <h1 className="text-xl font-semibold text-heading">
-              {t('form:input-label-offers')}
+              {'Offers'}
             </h1>
           </div>
 
-          <div className="flex w-full flex-col items-center space-y-4 ms-auto md:flex-row md:space-y-0 xl:w-3/4">
+          <div className="flex w-full flex-col items-center space-y-4 ms-auto md:flex-row justify-end md:space-y-0 xl:w-3/4">
 
 
             {locale === Config.defaultLanguage && (
               <LinkButton
-                href={`${Routes.offer.create}`}
+                href={`${Routes.offers.create}`}
                 className="h-12 w-full md:w-auto md:ms-6"
               >
                 <span className="block md:hidden xl:block">
-                  + {t('form:button-label-add-offers')}
+                  + {"Add Offers"}
                 </span>
                 <span className="hidden md:block xl:hidden">
                   + {t('form:button-label-add')}

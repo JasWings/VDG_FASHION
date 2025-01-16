@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
-import { useTypesQuery } from '@/data/type';
+import { useSlidersQuery } from '@/data/slider';
 import { Routes } from '@/config/routes';
 import { useRouter } from 'next/router';
 import { adminOnly } from '@/utils/auth-utils';
@@ -21,8 +21,7 @@ export default function SlidersPage() {
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
-  const { types, loading, error } = useTypesQuery({
-    name: searchTerm,
+  const { data , loading, error } = useSlidersQuery({
     language: locale,
     orderBy,
     sortedBy,
@@ -62,7 +61,7 @@ export default function SlidersPage() {
           )}
         </div>
       </Card>
-      <SliderList types={types} onOrder={setOrder} onSort={setColumn} />
+      <SliderList types={data} onOrder={setOrder} onSort={setColumn} />
     </>
   );
 }

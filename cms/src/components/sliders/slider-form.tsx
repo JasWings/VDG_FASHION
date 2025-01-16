@@ -4,122 +4,38 @@ import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
 import Card from '@/components/common/card';
 import { useRouter } from 'next/router';
-import { getIcon } from '@/utils/get-icon';
 import Label from '@/components/ui/label';
-import * as typeIcons from '@/components/icons/type';
-import { AttachmentInput, Type, TypeSettingsInput } from '@/types';
 import { typeIconList } from './group-icons';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { typeValidationSchema } from './group-validation-schema';
+import {  sliderValidationSchema } from './slider-validation-schema';
 import SelectInput from '@/components/ui/select-input';
 import FileInput from '@/components/ui/file-input';
-import Title from '@/components/ui/title';
-import Alert from '@/components/ui/alert';
-import TextArea from '@/components/ui/text-area';
-import RadioCard from '@/components/ui/radio-card/radio-card';
 import Checkbox from '@/components/ui/checkbox/checkbox';
 import { useCreateTypeMutation, useUpdateTypeMutation } from '@/data/type';
-import { EditIcon } from '@/components/icons/edit';
+import {  useCreateSliderMutation, useUpdateSliderMutation } from '@/data/slider';
 import { Config } from '@/config';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { join, split } from 'lodash';
-import { formatSlug } from '@/utils/use-slug';
+import { useState } from 'react';
+import { AttachmentInput } from '@/types';
 
-export const updatedIcons = typeIconList.map((item: any) => {
-  item.label = (
-    <div className="flex items-center space-s-5">
-      <span className="flex h-5 w-5 items-center justify-center">
-        {getIcon({
-          iconList: typeIcons,
-          iconName: item.value,
-          className: 'max-h-full max-w-full',
-        })}
-      </span>
-      <span>{item.label}</span>
-    </div>
-  );
-  return item;
-});
-
-const layoutTypes = [
-  {
-    label: 'Classic',
-    value: 'classic',
-    img: '/image/layout-classic.png',
-  },
-  {
-    label: 'Compact',
-    value: 'compact',
-    img: '/image/layout-compact.png',
-  },
-  {
-    label: 'Minimal',
-    value: 'minimal',
-    img: '/image/layout-minimal.png',
-  },
-  {
-    label: 'Modern',
-    value: 'modern',
-    img: '/image/layout-modern.png',
-  },
-  {
-    label: 'Standard',
-    value: 'standard',
-    img: '/image/layout-standard.png',
-  },
-];
-const productCards = [
-  {
-    label: 'Helium',
-    value: 'helium',
-    img: '/image/card-helium.png',
-  },
-  {
-    label: 'Neon',
-    value: 'neon',
-    img: '/image/card-neon.png',
-  },
-  {
-    label: 'Argon',
-    value: 'argon',
-    img: '/image/card-argon.png',
-  },
-  {
-    label: 'Krypton',
-    value: 'krypton',
-    img: '/image/card-krypton.png',
-  },
-  {
-    label: 'Xenon',
-    value: 'xenon',
-    img: '/image/card-xenon.png',
-  },
-  {
-    label: 'Radon',
-    value: 'radon',
-    img: '/image/card-radon.png',
-  },
-];
-
-type BannerInput = {
-  title: string;
-  description: string;
-  image: AttachmentInput;
-};
 
 type FormValues = {
   name: string;
   slug?: string | null;
-  icon?: any;
+  // icon?: any;
   promotional_sliders: AttachmentInput[];
-  banners: BannerInput[];
-  // settings: TypeSettingsInput;
+  // linkType?: 'product' | 'category' | 'external';
+  // linkTarget?: string;
+  // priority?: number;
+  isActive?: boolean;
+  // startDate?: Date;
+  // endDate?: Date;
 };
 
 type IProps = {
-  initialValues?: Type | null;
+  initialValues?: any | null;
 };
+
 export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -135,93 +51,53 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
-    resolver: yupResolver(typeValidationSchema),
+    resolver: yupResolver(sliderValidationSchema),
     defaultValues: {
       ...initialValues,
-      // @ts-ignore
-      // settings: {
-      //   ...initialValues?.settings,
-      //   layoutType: initialValues?.settings?.layoutType
-      //     ? initialValues?.settings?.layoutType
-      //     : layoutTypes[0].value,
-      //   productCard: initialValues?.settings?.productCard
-      //     ? initialValues?.settings?.productCard
-      //     : productCards[0].value,
-      // },
-      icon: initialValues?.icon
-        ? typeIconList.find(
-            (singleIcon) => singleIcon.value === initialValues?.icon
-          )
-        : '',
+      promotional_sliders: initialValues?.promotional_sliders || [],
+      // banners: initialValues?.banners || [],
+      // linkType: initialValues?.linkType || 'product',
+      // linkTarget: initialValues?.linkTarget || '',
+      // priority: initialValues?.priority || 0,
+      isActive: initialValues?.isActive ?? true,
+      // startDate: initialValues?.startDate || '',
+      // endDate: initialValues?.endDate || '',
     },
   });
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: 'banners',
-  });
-  // const layoutType = watch('settings.layoutType');
 
-  const { mutate: createType, isLoading: creating } = useCreateTypeMutation();
-  const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation();
-  const slugAutoSuggest = formatSlug(watch('name'));
+  const { mutate: createType, isLoading: creating } = useCreateSliderMutation();
+  const { mutate: updateType, isLoading: updating } = useUpdateSliderMutation();
+
   const onSubmit = (values: FormValues) => {
-    console.log(values,"values")
     const input = {
       language: router.locale,
       name: values.name!,
-      slug: values.slug? values?.slug : values?.name?.toLocaleLowerCase(),
-      icon: values.icon?.value,
-      // settings: {
-      //   isHome: values?.settings?.isHome,
-      //   productCard: values?.settings?.productCard,
-      //   layoutType: values?.settings?.layoutType,
-      // },
-      promotional_sliders: values.promotional_sliders?.map(
-        ({  file, id }: any) => ({
-          file,
-          id,
-        })
-      ),
-      banners: values?.banners?.map((banner) => ({
-        ...banner,
-        image: {
-          id: banner?.image?.id,
-          thumbnail: banner?.image?.thumbnail,
-          original: banner?.image?.original,
-        },
+      slug: values.slug ? values?.slug : values?.name?.toLocaleLowerCase(),
+      promotional_sliders: values.promotional_sliders?.map(({ file, id }: any) => ({
+        file,
+        id,
       })),
+      // linkType: values.linkType,
+      // linkTarget: values.linkTarget,
+      // priority: values.priority,
+      isActive: values.isActive,
+      // startDate: values.startDate,
+      // endDate: values.endDate,
     };
-   console.log(input,"input",values)
-    if (
-      !initialValues 
-      // ||
-      // !initialValues.translated_languages.includes(router.locale!)
-    ) {
-      createType({
-        ...input,
-        slug: slugAutoSuggest,
-        ...(initialValues?.slug && { slug: initialValues.slug }),
-      });
+
+    if (!initialValues) {
+      createType({ ...input });
     } else {
-      updateType({
-        ...input,
-        id: initialValues.id!,
-        _id: initialValues?._id
-      });
+      updateType({ ...input, id: initialValues.id, _id: initialValues?._id });
     }
   };
-  console.log(errors,"errors",initialValues)
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap sm:my-8">
         <Description
           title={t('form:item-description')}
-          details={`${
-            initialValues
-              ? "update"
-              : "add"
-          } 
-          `}
+          details={`${initialValues ? 'update' : 'add'} slider`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
 
@@ -232,213 +108,80 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
             error={t(errors.name?.message!)}
             variant="outline"
             className="mb-5"
-            // disabled={[].includes(Config.defaultLanguage)}
           />
-          {/* {isSlugEditable ? (
-            <div className="relative mb-5">
-              <Input
-                label={`${t('Slug')}`}
-                {...register('slug')}
-                error={t(errors.slug?.message!)}
-                variant="outline"
-                disabled={isSlugDisable}
-              />
-              <button
-                className="absolute top-[27px] right-px z-10 flex h-[46px] w-11 items-center justify-center rounded-tr rounded-br border-l border-solid border-border-base bg-white px-2 text-body transition duration-200 hover:text-heading focus:outline-none"
-                type="button"
-                title={t('common:text-edit')}
-                onClick={() => setIsSlugDisable(false)}
-              >
-                <EditIcon width={14} />
-              </button>
-            </div>
-          ) : (
-            <Input
-              label={`${t('Slug')}`}
-              {...register('slug')}
-              value={slugAutoSuggest}
-              variant="outline"
-              className="mb-5"
-              disabled
-            />
-          )} */}
 
-          {/* <div className="mb-5">
-            <Label>{t('form:input-label-select-icon')}</Label>
+          {/* <div className="my-5">
+            <Label>{t('form:input-label-link-type')}</Label>
             <SelectInput
-              name="icon"
+              name="linkType"
               control={control}
-              options={updatedIcons}
-              isClearable={true}
-              placeholder="Select Icon"
+              options={[
+                { value: 'product', label: t('form:link-type-product') },
+                { value: 'category', label: t('form:link-type-category') },
+                { value: 'external', label: t('form:link-type-external') },
+              ]}
+              isClearable={false}
             />
           </div> */}
+
+          {/* <Input
+            label={t('form:input-label-link-target')}
+            {...register('linkTarget')}
+            error={t(errors.linkTarget?.message!)}
+            variant="outline"
+            className="mb-5"
+          />
+
+          <Input
+            label={t('form:input-label-priority')}
+            type="number"
+            {...register('priority')}
+            error={t(errors.priority?.message!)}
+            variant="outline"
+            className="mb-5"
+          /> */}
+
+          <Checkbox
+            {...register('isActive')}
+            label={'active'}
+            className="mb-5"
+          />
+
+          {/* <Input
+            label={t('form:input-label-start-date')}
+            type="date"
+            {...register('startDate')}
+            error={t(errors.startDate?.message!)}
+            variant="outline"
+            className="mb-5"
+          />
+
+          <Input
+            label={t('form:input-label-end-date')}
+            type="date"
+            {...register('endDate')}
+            error={t(errors.endDate?.message!)}
+            variant="outline"
+            className="mb-5"
+          /> */}
         </Card>
       </div>
 
-      {/* <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
+      <div className="my-5 flex flex-wrap sm:my-8">
         <Description
-          title={t('form:group-settings')}
-          details={t('form:group-settings-help-text')}
+          title={t('form:promotional-slider')}
+          details={t('form:promotional-slider-help-text')}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
-          <Checkbox
-            {...register('settings.isHome')}
-            error={t(errors.settings?.isHome?.message!)}
-            label={t('form:input-label-is-home')}
-            className="mb-5"
-          />
-          <div className="mb-10">
-            <Label className="mb-5">{t('form:input-label-layout-type')}</Label>
-
-            <div className="grid grid-cols-3 gap-5">
-              {layoutTypes?.map((layout, index) => {
-                return (
-                  <RadioCard
-                    key={index}
-                    {...register('settings.layoutType')}
-                    label={t(layout.label)}
-                    value={layout.value}
-                    src={layout.img}
-                    id={layout?.value}
-                  />
-                );
-              })}
-            </div>
-          </div>
-          <div className="mb-5">
-            <Label className="mb-5">
-              {t('form:input-label-product-card-type')}
-            </Label>
-
-            <div className="grid grid-cols-3 gap-5">
-              {productCards?.map((productCard, index) => {
-                return (
-                  <RadioCard
-                    key={`product-card-${index}`}
-                    {...register('settings.productCard')}
-                    label={t(productCard.label)}
-                    value={productCard.value}
-                    src={productCard.img}
-                    id={`product-card-${index}`}
-                  />
-                );
-              })}
-            </div>
-          </div>
+          <FileInput name="promotional_sliders" control={control} multiple={true} />
         </Card>
-      </div> */}
+      </div>
 
-      {/* {layoutType === 'classic' ? ( */}
-        <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
-          <Description
-            title={t('form:promotional-slider')}
-            details={t('form:promotional-slider-help-text')}
-            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-          />
-          <Card className="w-full sm:w-8/12 md:w-2/3">
-            <FileInput name="promotional_sliders" control={control} multiple={true} />
-          </Card>
-        </div>
-      {/* ) : null} */}
 
-      {/* <div className="my-5 flex flex-wrap sm:my-8">
-        <Description
-          title={t('common:text-banner')}
-          details={t('form:banner-slider-help-text')}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-        />
-        <Card className="w-full sm:w-8/12 md:w-2/3">
-          <div>
-            {fields.map((item: any & { id: string }, index: number) => (
-              <div
-                className="border-b border-dashed border-border-200 py-5 first:pt-0 last:border-0 md:py-8"
-                key={item.id}
-              >
-                <div className="mb-5 flex items-center justify-between">
-                  <Title className="mb-0">
-                    {t('common:text-banner')} {index + 1}
-                  </Title>
-                  <button
-                    onClick={() => {
-                      remove(index);
-                    }}
-                    type="button"
-                    className="text-sm text-red-500 transition-colors duration-200 hover:text-red-700 focus:outline-none sm:col-span-1 sm:mt-4"
-                  >
-                    {t('form:button-label-remove')}
-                  </button>
-                </div>
-                <div className="grid grid-cols-1 gap-5">
-                  <Input
-                    label={t('form:input-title')}
-                    variant="outline"
-                    {...register(`banners.${index}.title` as const)}
-                    defaultValue={item?.title!} // make sure to set up defaultValue
-                    error={t(errors.banners?.[index]?.title?.message!)}
-                  />
-                  <TextArea
-                    label={t('form:input-description')}
-                    variant="outline"
-                    {...register(`banners.${index}.description` as const)}
-                    defaultValue={item.description!} // make sure to set up defaultValue
-                  />
-                </div>
-
-                <div className="mt-5 w-full">
-                  <Title>{t('form:input-gallery')}</Title>
-                  <FileInput
-                    name={`banners.${index}.image`}
-                    control={control}
-                    multiple={false}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* <Button
-            type="button"
-            onClick={() =>
-              // @ts-ignore
-              append({ title: '', description: '', image: {} })
-            }
-            className="w-full sm:w-auto"
-          >
-            {t('form:button-label-add-banner')}
-          </Button> */}
-
-          {/* @ts-ignore */}
-          {/* {errors?.banners?.message ? (
-            <Alert
-              message={
-                // @ts-ignore
-                t(errors?.banners?.message)
-              }
-              variant="error"
-              className="mt-5"
-            />
-          ) : null}
-        </Card>
-      </div>  */} 
-
-      <div className="mb-4 text-end">
-        {initialValues && (
-          <Button
-            variant="outline"
-            onClick={router.back}
-            className="me-4"
-            type="button"
-          >
-            {t('form:button-label-back')}
-          </Button>
-        )}
-
-        <Button loading={creating || updating}>
-          {initialValues
-            ? 'update slider'
-            : "create slider"}
+      <div className="mb-5 text-right">
+        <Button type="submit" loading={creating || updating}>
+          {initialValues ? t('Update') : t('Create')}
         </Button>
       </div>
     </form>

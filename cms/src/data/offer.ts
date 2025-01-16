@@ -20,7 +20,7 @@ export const useCreateOfferMutation = () => {
 
   return useMutation(offerClient.create, {
     onSuccess: () => {
-      Router.push(Routes.offer.list, undefined, {
+      Router.push(Routes.offers.list, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));

@@ -2,6 +2,7 @@ import { ChangePasswordValidation, createFeature, loginValidations, OtpValidatio
 import { ValidateCustomerAddress } from "./eCommerce/address.js";
 import { coupondetails } from "./eCommerce/coupon.js";
 import { validateAttribute, validateCategory, validateGroup, validateTag } from "./eCommerce/index.js";
+import { offerdetails } from "./eCommerce/offers.js";
 import { orderdetails } from "./eCommerce/order.js";
 import { Paymentdetails } from "./eCommerce/payment.js";
 import { reportdetails } from "./eCommerce/report.js";
@@ -28,7 +29,8 @@ const Validations = {
     coupondetails:coupondetails,
     reportdetails: reportdetails,
     validateTax,
-    validateShipping
+    validateShipping,
+    offerdetails: offerdetails
 }
 
 export default Validations

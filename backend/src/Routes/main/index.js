@@ -9,6 +9,7 @@ import AnalysisRouter from "../dev/analysis.js"
 import MeRouter from "../dev/me.js"
 import Paymentrouter from "../payment/index.js"
 import Ordersrouter from "../product-management/orders/index.js"
+import offerrouter from "../product-management/offers/index.js"
 
 
 const router = express.Router()
@@ -24,5 +25,6 @@ router.use("/analytics",AnalysisRouter)
 router.use("/me",MeRouter)
 router.use("/payment", Paymentrouter)
 router.use('/orders', Ordersrouter)
+router.use('/offer',offerrouter)
 
 export default router

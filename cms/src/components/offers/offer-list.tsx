@@ -1,22 +1,18 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { getIcon } from '@/utils/get-icon';
-import { SortOrder } from '@/types';
-import Image from 'next/image';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import { Offer, MappedPaginatorInfo } from '@/types';
+import { SortOrder } from '@/types';
+import { useIsRTL } from '@/utils/locals';
+import { useTranslation } from 'next-i18next';
 import { Config } from '@/config';
 import Link from '@/components/ui/link';
-import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { getImageURL } from '@/utils/image';
+import { Routes } from '@/config/routes';
 
 export type IProps = {
-  offers: Offer[] | undefined;
-  paginatorInfo: MappedPaginatorInfo | null;
+  offers: any[] | undefined; 
+  paginatorInfo: any | null; 
   onPagination: (key: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
@@ -30,7 +26,6 @@ const OfferList = ({
   onOrder,
 }: IProps) => {
   const { t } = useTranslation();
-  const rowExpandable = (record: any) => record.children?.length;
   const { alignLeft, alignRight } = useIsRTL();
 
   const [sortingObj, setSortingObj] = useState<{
@@ -67,73 +62,78 @@ const OfferList = ({
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-title')}
+          title={'Title'}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'offerTitle'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'offerTitle'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'title',
-      key: 'title',
+      dataIndex: 'offerTitle',
+      key: 'offerTitle',
       align: alignLeft,
       width: 150,
-      onHeaderCell: () => onHeaderClick('name'),
+      onHeaderCell: () => onHeaderClick('offerTitle'),
+    },
+    {
+      title: t('Discount Type'),
+      dataIndex: 'discountType',
+      key: 'discountType',
+      align: 'center',
+      width: 150,
+    },
+    {
+      title: t('buy quantity'),
+      dataIndex: 'buyQuantity',
+      key: 'buyQuantity',
+      align: 'center',
+      width: 100,
+    },
+    {
+      title: t('get quantity'),
+      dataIndex: 'getQuantity',
+      key: 'getQuantity',
+      align: 'center',
+      width: 100,
+    },
+    {
+      title: t('eligible products'),
+      dataIndex: 'eligibleProducts',
+      key: 'eligibleProducts',
+      align: alignLeft,
+      width: 180,
+      render: (products: any[]) =>
+        products?.map((product) => product.name || product.title || product._id).join(', ') || '—',
+    },
+    {
+      title: t('free products'),
+      dataIndex: 'freeProducts',
+      key: 'freeProducts',
+      align: alignLeft,
+      width: 180,
+      render: (products: any[]) =>
+        products?.map((product) => product.name || product.title || product._id).join(', ') || '—',
+    }
+    ,
+    {
+      title: t('minimum purchase'),
+      dataIndex: 'minimumPurchaseAmount',
+      key: 'minimumPurchaseAmount',
+      align: 'center',
+      width: 120,
+      render: (amount: number) =>
+        `${'₹'}${amount.toFixed(2)}`,
     },
     // {
-    //   title: t('table:table-item-image'),
-    //   dataIndex: 'image',
-    //   key: 'image',
+    //   title: t('usage restrictions'),
+    //   dataIndex: 'usageRestrictions',
+    //   key: 'usageRestrictions',
     //   align: 'center',
     //   width: 180,
-    //   render: (image: any, { name }: { name: string }) => {
-    //     if (!image) return null;
-
-    //     return (
-    //       <div className="relative mx-auto h-10 w-10">
-    //         <Image
-    //           src={getImageURL(image) ?? '/'}
-    //           alt={name}
-    //           fill
-    //           sizes="(max-width: 768px) 100vw"
-    //           className="overflow-hidden rounded object-fill"
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
-    {
-      title: (
-        <TitleWithSort
-          title={'offerType'}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'slug'
-          }
-          isActive={sortingObj.column === 'slug'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'offerType',
-      key: 'slug',
-      align: alignLeft,
-      width: 150,
-      onHeaderCell: () => onHeaderClick('slug'),
-    },
-    // {
-    //   title: t('table:table-item-group'),
-    //   dataIndex: 'type_id',
-    //   key: 'type',
-    //   align: 'center',
-    //   width: 120,
-    //   render: (type_id: any) => (
-    //     <div
-    //       className="overflow-hidden truncate whitespace-nowrap"
-    //       title={type_id?.name}
-    //     >
-    //       {type_id?.name}
-    //     </div>
-    //   ),
+    //   render: (restrictions: { perUser: number | null; globalLimit: number | null }) =>
+    //     `Per User: ${restrictions?.perUser || '—'}, Global: ${restrictions?.globalLimit || '—'}`,
     // },
     {
       title: t('table:table-item-actions'),
@@ -141,31 +141,26 @@ const OfferList = ({
       key: 'actions',
       align: alignRight,
       width: 290,
-      render: (_id: string, record: Offer) => (
+      render: (_id: string, record: any) => (
         <LanguageSwitcher
           slug={_id}
           record={record}
           deleteModalView="DELETE_OFFER"
-          routes={Routes?.offers}
+          routes={Routes.offers}
         />
       ),
     },
   ];
-  console.log(offers,"offers")
+
   return (
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
         <Table
-          //@ts-ignore
           columns={columns}
           emptyText={t('table:empty-table-data')}
           data={offers}
           rowKey="id"
           scroll={{ x: 1000 }}
-          expandable={{
-            expandedRowRender: () => ' ',
-            rowExpandable: rowExpandable,
-          }}
         />
       </div>
 

@@ -4,9 +4,9 @@ import { useTranslation } from 'next-i18next';
 
 const headerLinks = [
   // { href: Routes.shops, icon: null, label: 'nav-menu-shops' },
-  { href: Routes.coupons, icon: null, label: 'Offers' },
-  { href: Routes.help, label: 'FAQ' },
-  { href: Routes.contactUs, label: 'Contact' },
+  // { href: Routes.coupons, icon: null, label: 'Offers' },
+  // { href: Routes.help, label: 'FAQ' },
+  // { href: Routes.contactUs, label: 'Contact' },
 ];
 
 const StaticMenu = () => {
@@ -14,7 +14,7 @@ const StaticMenu = () => {
 
   return (
     <>
-      {headerLinks.map(({ href, label, icon }) => (
+      {headerLinks?.map(({ href, label, icon }) => (
         <li key={`${href}${label}`}>
           <Link
             href={href}

@@ -2,6 +2,7 @@ import { useProducts } from '@/framework/product';
 import { PRODUCTS_PER_PAGE } from '@/framework/client/variables';
 import { Grid } from '@/components/products/grid';
 import { useRouter } from 'next/router';
+import { useOffers } from '@/framework/offer';
 
 interface Props {
   className?: string;
@@ -30,6 +31,7 @@ export default function ProductGridHome({
   const orderBy = query.orderBy as string
 
   // Pass category and group as parameters to the useProducts hook
+  const { offers } = useOffers(999)
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
     useProducts(30, category, group,price,orderBy,sortedBy);
   
@@ -47,6 +49,7 @@ export default function ProductGridHome({
       column={column}
       filterLoading={filterLoading}
       setFilterLoading={setFilterLoading}
+      offers={offers}
     />
   );
 }

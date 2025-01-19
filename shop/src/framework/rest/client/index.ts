@@ -449,6 +449,47 @@ class Client {
   faq={
     get:()=>HttpClient.get(API_ENDPOINTS?.FAQ)
   }
+  offers = {
+    all: ({ pageSize, ...params }: Partial<any>) =>
+      HttpClient.get<any>(API_ENDPOINTS.OFFERS, { "page-size": pageSize, ...params }),
+  
+    active: ({ pageSize, ...params }: Partial<any>) =>
+      HttpClient.get<any>(API_ENDPOINTS.OFFERS, { "page-size": pageSize, ...params }),
+  
+    expired: ({ pageSize, ...params }: Partial<any>) =>
+      HttpClient.get<any>(API_ENDPOINTS.OFFERS, { "page-size": pageSize, ...params }),
+  
+    get: ({ id }: any) =>
+      HttpClient.get<any>(`${API_ENDPOINTS.OFFERS}${id}/`),
+  
+    create: (input: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.OFFERS, input),
+  
+    update: (id: string, input: any) =>
+      HttpClient.put<any>(`${API_ENDPOINTS.OFFERS}${id}/`, input),
+  
+    delete: (id: string) =>
+      HttpClient.delete(`${API_ENDPOINTS.OFFERS}${id}/`),
+  
+    apply: (offerId: string, data: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.OFFERS, { offerId, ...data }),
+  
+    getOfferQuestions: ({ offerId, ...params }: any) =>
+      HttpClient.get<any>(API_ENDPOINTS.OFFERS, {
+        searchJoin: 'and',
+        ...params,
+        search: HttpClient.formatSearchParams({
+          offerId,
+        }),
+      }),
+  
+    createOfferFeedback: (input: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.OFFERS, input),
+  
+    reportOfferAbuse: (input: any) =>
+      HttpClient.post<any>(API_ENDPOINTS.OFFERS, input),
+  };
+  
 }
 
 export default new Client();

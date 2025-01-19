@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   GETALLDETAILS:"/commerce/web/catalog/",
   PRODUCTS_POPULAR: '/popular-products',
   PRODUCTS_REVIEWS: '/reviews',
+  OFFERS: "/offers",
   PRODUCTS_REVIEWS_ABUSE_REPORT: '/abusive_reports',
   ADDRESS:"/commerce/customer-address/",
   ADD_CART:"/commerce/cart/add_product/",

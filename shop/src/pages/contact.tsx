@@ -60,10 +60,10 @@ export const ContactPage = () => {
                 </span>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-body">
-                    {"https://slr-front-end.netlify.app/"}
+                    {"https://vdg-fashion-stores.vercel.app/"}
                   </span>
                   <a
-                    href={"https://slr-front-end.netlify.app/" ?? '#'}
+                    href={"https://vdg-fashion-stores.vercel.app/"}
                     target="_blank"
                     rel="noreferrer"
                     className="text-sm font-semibold text-accent hover:text-accent-hover focus:text-blue-500 focus:outline-none"

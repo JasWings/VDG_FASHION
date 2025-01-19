@@ -8,6 +8,7 @@ import type { HomePageProps } from '@/types';
 import { useState,useEffect } from 'react';
 import SidebarFilter from "./filter-bar2";
 import StickyBox from 'react-sticky-box';
+import OffersGrid from '../products/offer-grid';
 
 export default function ClassicLayout({ variables }: HomePageProps) {
        const [filterLoading,setFilterLoading]=useState(false)
@@ -37,16 +38,23 @@ export default function ClassicLayout({ variables }: HomePageProps) {
         className="flex border-t border-solid border-border-200 border-opacity-70"
       >
        <div className=" w-80 shrink-0 lg:block pt-6 ">
-       <StickyBox offsetTop={140} offsetBottom={30}>
-        <SidebarFilter variables={variables.categories} />
-       </StickyBox>
+           <StickyBox offsetTop={140} offsetBottom={30}>
+            <SidebarFilter variables={variables.categories} />
+           </StickyBox>
        </div>
+       {/* <OffersGrid
+          className="px-4 pb-8 lg:p-8 h-auto"
+          // gridClassName="w-full"
+          filterLoading={filterLoading}
+          setFilterLoading={setFilterLoading}
+        /> */}
         <ProductGridHome
           className="px-4 pb-8 lg:p-8"
           variables={variables.products}
           filterLoading={filterLoading}
           setFilterLoading={setFilterLoading}
         />
+       
       </Element>
     </>
   );

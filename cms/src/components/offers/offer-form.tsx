@@ -2,42 +2,32 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 import Input from '@/components/ui/input';
-import TextArea from '@/components/ui/text-area';
 import SelectInput from '@/components/ui/select-input';
 import { DatePicker } from '@/components/ui/date-picker';
-import SwitchInput from '@/components/ui/switch-input';
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import { offerValidationSchema } from './offer-validation-schema';
 import { useProductsQuery } from '@/data/product';
-import { useCreateOfferMutation, useUpdateOfferMutation } from "@/data/offer"
+import { useCreateOfferMutation, useUpdateOfferMutation } from "@/data/offer";
 import Label from '../ui/label';
-import { ValidationError } from 'yup';
 
-type FormValues = {
-  title: string;
-  description?: string;
-  offerType: string;
-  applicableProducts: string[];
-  freeProducts?: string[];
-  minimumPurchaseAmount?: number;
-  startDate: Date;
-  endDate: Date;
-  isActive: boolean;
-};
-
-const defaultValues: FormValues = {
-  title: '',
-  description: '',
-  offerType: '',
-  applicableProducts: [],
+const defaultValues = {
+  offerTitle: '',
+  discountType: '',
+  buyQuantity: 1,
+  getQuantity: 1,
+  eligibleProducts: [],
   freeProducts: [],
-  minimumPurchaseAmount: 0,
   startDate: new Date(),
   endDate: new Date(),
+  minimumPurchaseAmount: 0,
+  perUserLimit: null,
+  globalLimit: null,
   isActive: true,
 };
+
+type FormValues = typeof defaultValues;
 
 type IProps = {
   initialValues?: FormValues;
@@ -46,115 +36,124 @@ type IProps = {
 export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
   const router = useRouter();
   const initialFormValues = initialValues
-  ? {
-      ...initialValues,
-      startDate: initialValues.startDate ? new Date(initialValues.startDate) : new Date(),
-      endDate: initialValues.endDate ? new Date(initialValues.endDate) : new Date(),
-    }
-  : defaultValues;
+    ? {
+        ...initialValues,
+        startDate: initialValues.startDate ? new Date(initialValues.startDate) : new Date(),
+        endDate: initialValues.endDate ? new Date(initialValues.endDate) : new Date(),
+      }
+    : defaultValues;
+
   const {
     register,
     handleSubmit,
     control,
-    setValue,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: initialFormValues,
     resolver: yupResolver(offerValidationSchema),
   });
 
-  const {  products, isLoading: loadingProducts } = useProductsQuery();
+  const { products, isLoading: loadingProducts } = useProductsQuery();
   const { mutate: createOffer, isLoading: creating } = useCreateOfferMutation();
   const { mutate: updateOffer, isLoading: updating } = useUpdateOfferMutation();
 
   const onSubmit = (values: FormValues) => {
     const transformedValues = {
       ...values,
-      offerType: values.offerType.value,
-      applicableProducts: values.applicableProducts.map((product) => product.value),
-      freeProducts: values.freeProducts?.map((product) => product.value),
+      eligibleProducts: values.eligibleProducts.map((product) => product.value),
+      freeProducts: values.freeProducts.map((product) => product.value),
+      discountType: values.discountType.value,
     };
-  
+
     if (initialValues) {
       updateOffer({ ...transformedValues, id: initialValues.id });
     } else {
       createOffer(transformedValues);
     }
   };
-  
-  
+console.log(errors,"errors")
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">
         <Description
-          title="Offer Details"
-          details="Provide the details of the offer including title, type, applicable products, and more."
+          title="BOGO Offer Details"
+          details="Set up the details for your Buy One Get One offer including quantities, applicable and free products, and more."
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <Input
-            label="Title"
-            {...register('title')}
-            error={errors.title?.message}
+            label="Offer Title"
+            {...register('offerTitle')}
+            error={errors.offerTitle?.message}
             variant="outline"
             className="mb-5 p-3"
           />
-          <TextArea
-            label="Description"
-            {...register('description')}
-            error={errors.description?.message}
+
+          <div className="mb-5">
+            <Label>{'Discount Type'}</Label>
+            <SelectInput
+              options={[
+                { label: 'Buy X Get Y', value: 'Buy X Get Y' },
+                { label: 'Buy X Get X', value: 'Buy X Get X' },
+              ]}
+              name="discountType"
+              control={control}
+              error={errors.discountType?.message}
+              className="p-3 mb-5"
+            />
+          </div>
+
+          <Input
+            label="Buy Quantity"
+            type="number"
+            {...register('buyQuantity')}
+            error={errors.buyQuantity?.message}
             variant="outline"
             className="mb-5 p-3"
           />
-          <div className="mb-5">
-            <Label>{'Offer Type'}</Label>
-            <SelectInput
-            label="Offer Type"
-            options={[
-              { label: 'Buy One Get One', value: 'BOGO' },
-              { label: 'Discount', value: 'DISCOUNT' },
-            ]}
-            name="offerType"
-            control={control}
-            error={errors.offerType?.message}
-            className="p-3 mb-5"
+
+          <Input
+            label="Get Quantity"
+            type="number"
+            {...register('getQuantity')}
+            error={errors.getQuantity?.message}
+            variant="outline"
+            className="mb-5 p-3"
           />
-          </div>
+
           <div className="mb-5">
-            <Label>{'Applicable Products'}</Label>
+            <Label>{'Eligible Products'}</Label>
             <SelectInput
-            label="Applicable Products"
-            options={products?.map((product) => ({
-              label: product.name,
-              value: product._id,
-            }))}
-            name="applicableProducts"
-            control={control}
-            isMulti
-            isLoading={loadingProducts}
-            error={errors.applicableProducts?.message}
-            className="p-3 mb-5"
-          />
+              options={products?.map((product) => ({
+                label: product.name,
+                value: product._id,
+              }))}
+              name="eligibleProducts"
+              control={control}
+              isMulti
+              isLoading={loadingProducts}
+              error={errors.eligibleProducts?.message}
+              className="p-3 mb-5"
+            />
           </div>
+
           <div className="mb-5">
-            <Label>{'Free Products (Optional)'}</Label>
+            <Label>{'Free Products'}</Label>
             <SelectInput
-            label="Free Products (Optional)"
-            options={products?.map((product) => ({
-              label: product.name,
-              value: product._id,
-            }))}
-            name="freeProducts"
-            control={control}
-            isMulti
-            isLoading={loadingProducts}
-            error={errors.freeProducts?.message}
-            className="p-3 mb-5"
-          />
+              options={products?.map((product) => ({
+                label: product.name,
+                value: product._id,
+              }))}
+              name="freeProducts"
+              control={control}
+              isMulti
+              isLoading={loadingProducts}
+              error={errors.freeProducts?.message}
+              className="p-3 mb-5"
+            />
           </div>
-          
-          
+
           <Input
             label="Minimum Purchase Amount"
             type="number"
@@ -163,10 +162,10 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
             variant="outline"
             className="mb-5 p-3"
           />
-           <div className="flex flex-col sm:flex-row">
+
+          <div className="flex flex-col sm:flex-row">
             <div className="mb-5 w-full p-0 sm:mb-0 sm:w-1/2 sm:pe-2">
               <Label>{'Start Date'}</Label>
-
               <Controller
                 control={control}
                 name="startDate"
@@ -183,11 +182,9 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
                   />
                 )}
               />
-              {/* <ValidationError message={errors.startDate?.message} /> */}
             </div>
             <div className="w-full p-0 sm:w-1/2 sm:ps-2">
               <Label>{'End Date'}</Label>
-
               <Controller
                 control={control}
                 name="endDate"
@@ -203,16 +200,26 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
                   />
                 )}
               />
-              {/* <ValidationError message={t(errors.expire_at?.message!)} /> */}
             </div>
           </div>
-          {/* <SwitchInput
-            name="isActive"
-            control={control}
-            label="Is Active"
-            error={errors.isActive?.message}
-            className="mt-5 p-3"
-          /> */}
+
+          <Input
+            label="Per User Limit (Optional)"
+            type="number"
+            {...register('perUserLimit')}
+            error={errors.perUserLimit?.message}
+            variant="outline"
+            className="mb-5 p-3"
+          />
+
+          <Input
+            label="Global Usage Limit (Optional)"
+            type="number"
+            {...register('globalLimit')}
+            error={errors.globalLimit?.message}
+            variant="outline"
+            className="mb-5 p-3"
+          />
         </Card>
       </div>
 

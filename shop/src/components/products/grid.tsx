@@ -11,6 +11,9 @@ import { PRODUCTS_PER_PAGE } from "@/framework/client/variables";
 import type { Product } from '@/types';
 import { authorizationAtom } from '@/store/authorization-atom';
 import { useAtom } from 'jotai';
+import { useOffers } from '@/framework/offer';
+import OfferCard from '@/components/products/cards/offer';
+
 
 interface Props {
   limit?: number;
@@ -27,7 +30,7 @@ interface Props {
   hasMore?: boolean;
   className?: string;
   filterLoading:any;
-  setFilterLoading:any
+  setFilterLoading:any;offers:any
 }
 
 export function Grid({
@@ -42,7 +45,7 @@ export function Grid({
   limit = PRODUCTS_PER_PAGE,
   column = 'auto',
   filterLoading,
-  setFilterLoading
+  setFilterLoading,offers
 }: Props) {
   const { t } = useTranslation('common');
   const [isAuthorize]=useAtom(authorizationAtom)
@@ -56,7 +59,7 @@ export function Grid({
       </div>
     );
   }
-  
+  console.log(offers)
 
   return (
     <div className={cn('w-full', className)}>
@@ -71,6 +74,12 @@ export function Grid({
           gridClassName
         )}
       >
+        {
+         !isLoading && offers && offers?.map((offer:any) => (
+            offer.eligibleProducts.map((product:any) => (
+              <OfferCard key={product.uuid} product={product} offers={offer} />
+            ))))
+        }
         {isLoading && !products?.length || filterLoading
           ? rangeMap(limit, (i) => (
               <ProductLoader key={i} uniqueKey={`product-${i}`} />
@@ -112,6 +121,9 @@ export default function ProductsGrid({
   const pageSize = 2;
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
     useProducts(30);
+    const { offers } =
+    useOffers(9999);
+    console.log(offers,"offers")
   const productsItem: any = products;
   console.log(productsItem,"product")
   return (
@@ -127,6 +139,7 @@ export default function ProductsGrid({
       column={column}
       filterLoading={filterLoading}
       setFilterLoading={setFilterLoading}
+      offers={offers}
     />
   );
 }

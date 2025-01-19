@@ -80,13 +80,13 @@ const OrderList = ({
   });
 
   const columns = [
-    {
-      title: t('table:table-item-tracking-number'),
-      dataIndex: 'tracking_number',
-      key: 'tracking_number',
-      align: 'center',
-      width: 150,
-    },
+    // {
+    //   title: t('table:table-item-tracking-number'),
+    //   dataIndex: 'tracking_number',
+    //   key: 'tracking_number',
+    //   align: 'center',
+    //   width: 150,
+    // },
     {
       title: t('table:table-item-delivery-fee'),
       dataIndex: 'delivery_fee',

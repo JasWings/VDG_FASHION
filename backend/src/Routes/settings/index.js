@@ -1,9 +1,9 @@
 import express from "express"
-import { createSettingsController, getSettingsController } from "../../Controllers/settings/index.js"
+import { createSettingsController, getSettingsController, updateSettingsController } from "../../Controllers/settings/index.js"
 
 const SettingsRouter = express.Router()
 
-SettingsRouter.post("/",createSettingsController)
+SettingsRouter.post("/",updateSettingsController)
 SettingsRouter.get("/",getSettingsController)
 
 export default SettingsRouter

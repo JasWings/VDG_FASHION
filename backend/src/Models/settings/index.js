@@ -14,8 +14,8 @@ const SeoSchema = new mongoose.Schema({
 
 const LogoSchema = new mongoose.Schema({
   id: String,
-  original: String,
-  thumbnail: String,
+  file: String,
+  uuid: String,
 });
 
 const ContactSchema = new mongoose.Schema({

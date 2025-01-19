@@ -21,8 +21,8 @@ const RecentOrders = ({ orders, title }: IProps) => {
 
   const columns = [
     {
-      title: t('table:table-item-tracking-number'),
-      dataIndex: 'tracking_number',
+      title: 'ID',
+      dataIndex: 'id',
       key: 'tracking_number',
       align: 'center',
       width: 150,

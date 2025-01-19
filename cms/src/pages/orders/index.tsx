@@ -79,7 +79,7 @@ export default function Orders() {
       a.click();
     }
   }
-   console.log(orders,"orders")
+   console.log(orders,"orders",paginatorInfo)
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">
@@ -89,14 +89,14 @@ export default function Orders() {
           </h1>
         </div>
 
-        <div className="flex w-full flex-col items-center ms-auto md:w-1/2 md:flex-row">
+        {/* <div className="flex w-full flex-col items-center ms-auto md:w-1/2 md:flex-row">
           <Search
             onSearch={handleSearch}
             placeholderText={t('form:input-placeholder-search-tracking-number')}
           />
-        </div>
+        </div> */}
 
-        <Menu
+        {/* <Menu
           as="div"
           className="relative inline-block ltr:text-left rtl:text-right"
         >
@@ -136,7 +136,7 @@ export default function Orders() {
               </Menu.Item>
             </Menu.Items>
           </Transition>
-        </Menu>
+        </Menu> */}
       </Card>
 
       <OrderList

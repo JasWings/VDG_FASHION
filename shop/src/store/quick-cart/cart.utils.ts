@@ -18,11 +18,11 @@ export function addItemWithQuantity(
   const existingItemIndex = items.findIndex(
     (existingItem) => existingItem.id === item.id
   );
-  
+   console.log(items,item,quantity,existingItemIndex, 0 > -1)
   if (existingItemIndex > -1) {
     const newItems = [...items];
     newItems[existingItemIndex].quantity! += quantity;
-    
+    console.log(newItems,"newItems")
     return newItems;
   }
   return [...items, { ...item, quantity }];
@@ -49,8 +49,8 @@ export function addItem(items: Item[], item: Item) {
   return [...items, item];
 }
 
-export function getItem(items: Item[], id: Item["id"]) {
-  return items.find((item) => item.product?.uuid === id);
+export function getItem(items: Item[], id: Item["id"],isAuthorize:Boolean) {
+  return isAuthorize ? items.find((item) => item.product?.uuid === id) : items.find((item) => item.uuid === id)
 }
 
 export function updateItem(

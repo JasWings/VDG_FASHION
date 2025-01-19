@@ -82,6 +82,8 @@ export interface State {
 
 export const initialState: State = {
   items: [],
+  totalUniqueItems: 0, 
+  total : 0,
   price_details:{
     total_actual_price: 0,
     total_current_price: 0,
@@ -134,7 +136,6 @@ uuid:""
 
 export function cartReducer(state: State, action: Action): State {
   console.log(state,action)
-
   switch (action.type) {
     case 'SET_CART':{
          const {cartData}=action

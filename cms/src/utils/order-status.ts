@@ -13,7 +13,7 @@ export const ORDER_STATUS = [
     status: 'order-out-for-delivery',
     serial: 4,
   },
-  { name: 'text-order-completed', status: 'order-completed', serial: 5 },
+  { name: 'text-order-completed', status: 'delivered', serial: 5 },
   { name: 'text-order-cancelled', status: 'order-cancelled', serial: 5 },
   { name: 'text-order-refunded', status: 'order-refunded', serial: 5 },
   { name: 'text-order-failed', status: 'order-failed', serial: 5 },

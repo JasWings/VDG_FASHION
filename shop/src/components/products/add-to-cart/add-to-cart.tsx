@@ -50,7 +50,7 @@ export const AddToCart = ({
     getItemFromCart,
     isInCart,
     Cart,
-    getCurrentLimit
+    getCurrentLimit,removesItemFromCart
   } = useCart();
   const [isAuthorize]=useAtom(authorizationAtom)
   const item:any = generateCartItem(data, variation);
@@ -77,30 +77,41 @@ export const AddToCart = ({
     e: React.MouseEvent<HTMLButtonElement | MouseEvent>
   ) => {
     setIsLoading(true)
-    const cart:any=Cart.items.filter((i)=>i.product.uuid===data.uuid)
-    const currentCount=cart&&cart[0]?cart[0].quantity+1:1
-   const response:any=await addItemToCart(item.uuid, currentCount);
-   
-    cartAnimation(e);
-    showToast(`${response.message}`,response.status==="failed"?"error":response.status)
-    const checkWeightValidation:any=getCurrentLimit(data)
-    if(checkWeightValidation){
-      return showToast("product weight limit reached","warning")
+    if(isAuthorize ){
+      const cart:any=Cart.items.filter((i)=>i.product.uuid===data.uuid)
+      const currentCount=cart&&cart[0]?cart[0].quantity+1:1
+     const response:any=await addItemToCart(item.uuid, currentCount);
+     
+      cartAnimation(e);
+      showToast(`${response.message}`,response.status==="failed"?"error":response.status)
+      const checkWeightValidation:any=getCurrentLimit(data)
+      if(checkWeightValidation){
+        return showToast("product weight limit reached","warning")
+      }
+    }else if(!isAuthorize){
+      addItemsToCart(item,1)
     }
+    
     // setIsLoading(false)
   };
   const handleRemoveClick = async(e: any) => {
     e.stopPropagation();
-    setIsLoading(true)
-    const currentCart:any=Cart.items.filter((i)=>i.product.uuid===data.uuid)
-    const currentQuantity=currentCart[0].quantity===1?0:currentCart[0].quantity-1
-    const response:any=await removeItemFromCart(item.uuid,currentQuantity);
-    showToast(`${response.message}`,response.status)
+    if(isAuthorize){
+      setIsLoading(true)
+      const currentCart:any=Cart.items.filter((i)=>i.product.uuid===data.uuid)
+      const currentQuantity=currentCart[0].quantity===1?0:currentCart[0].quantity-1
+      const response:any=await removeItemFromCart(item.uuid,currentQuantity);
+      showToast(`${response.message}`,response.status)
+    }else if(!isAuthorize){
+      removesItemFromCart(item.id)
+    }
+    
     // setIsLoading(false)
   };
   const outOfStock = isInCart(item?.id) && !isInStock(item.id);
 
   const handleAddCart=(item:any)=>{
+    console.log(item,"item",data)
         setIsLoading(true)
         if(isAuthorize){
           handleAddClick(item)
@@ -108,7 +119,7 @@ export const AddToCart = ({
           // setIsLoading(false)
           // openModal('LOGIN_VIEW')
           // showToast("Login to continue","warning")
-          addItemsToCart(item,isAuthorize)
+          addItemsToCart(item,1)
         }
   }
   

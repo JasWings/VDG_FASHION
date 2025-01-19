@@ -115,7 +115,7 @@ export const useProductsQuery = (
       ...options,
     }
   );
-
+  
   return {
     products: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),

@@ -51,11 +51,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-products',
         icon: 'ProductsIcon',
       },
-      {
-        href: Routes.attribute.list,
-        label: 'sidebar-nav-item-attributes',
-        icon: 'AttributeIcon',
-      },
+      // {
+      //   href: Routes.attribute.list,
+      //   label: 'sidebar-nav-item-attributes',
+      //   icon: 'AttributeIcon',
+      // },
       {
         href: Routes.type.list,
         label: 'sidebar-nav-item-groups',
@@ -81,6 +81,16 @@ export const siteSettings = {
       //   label: 'sidebar-nav-item-authors',
       //   icon: 'FountainPenIcon',
       // },
+      {
+        href: Routes.sliders.list,
+        label: 'sidebar-nav-item-sliders',
+        icon: 'AttributeIcon',
+      },
+      {
+        href: Routes.offers.list,
+        label: 'sidebar-nav-item-offers',
+        icon: 'CouponsIcon',
+      },
       {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',

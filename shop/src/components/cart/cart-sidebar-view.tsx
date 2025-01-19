@@ -40,12 +40,13 @@ const CartSidebarView = () => {
 
     closeSidebar({ display: false, view: '' });
   }
+
   const { price: totalPrice } = usePrice({
     amount: Cart.price_details.total_actual_price,
     currencyCode: "INR"
   }); 
   
-  
+  console.log(items,"items")
   return (
     <section className="relative flex h-full flex-col">
       <header className="fixed top-0 z-10 flex w-full max-w-md flex-col justify-between border-b border-border-200 border-opacity-75 bg-light px-6 py-4">

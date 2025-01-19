@@ -38,6 +38,8 @@ import VariantWeightBadges from './weights';
 import ImageLoader from '@/components/ui/loaders/imageLoader';
 import { productPlaceholder } from '@/lib/placeholders';
 import { getImageURL } from '@/lib/image';
+import ShareMenu from './share';
+import ShareButton from './share';
 
 const FavoriteButton = dynamic(
   () => import('@/components/products/details/favorite-button'),
@@ -254,6 +256,7 @@ const Details: React.FC<Props> = ({
                   className={classNames({ 'mr-1': isModal })}
                 />
               </div>
+              {/* <ShareButton message={identity} imageUrl={getImageURL(product.image.file)} /> */}
             </div>
             <div className=' flex w-full items-start justify-start space-x-8 rtl:space-x-reverse'>
                 <p className=' font-medium text-lg leading-8'>SKU:  {sku}</p>

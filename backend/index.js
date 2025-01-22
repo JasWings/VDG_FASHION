@@ -102,7 +102,7 @@ const ADDRESS = process.env.environment === "ip" ? process.env.APP_URL : "localh
 
 
 
-console.log(`Server running on ${ADDRESS}:${PORT}`);
+console.log(`Server running on http://localhost:${PORT}`);
 app.listen(PORT, () => {
-  console.log(`Server Running on http://${ADDRESS}:${PORT}`);
+  console.log(`Server Running on http://localhost:${PORT}`);
 });

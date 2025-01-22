@@ -16,7 +16,7 @@ export const API_ENDPOINTS = {
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',
   SETTINGS: 'settings',
-  SLIDER : "slider",
+  SLIDER: "slider/",
   CATEGORIES: '/commerce/category/',
   TAGS: '/commerce/tags',
   TYPES: '/commerce/group',

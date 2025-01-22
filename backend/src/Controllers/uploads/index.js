@@ -6,6 +6,9 @@ import Upload from "../../Models/uploads/index.js";
 export const fileUplaodController = async (req, res) => {
   try {
     const file = req.file;
+    if (!file) {
+      return res.status(400).json({ status: 'failed', message: 'No file uploaded' });
+    }
     console.log(file,"file")
     const uuid = await Helpers.generateUUID();
     const file_name = uuid + "." + file.originalname.split(".").slice(-1)[0];

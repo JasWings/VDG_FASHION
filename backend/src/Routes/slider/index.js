@@ -1,21 +1,21 @@
 // routes/sliderRoutes.js
 import express from 'express';
 import multer from 'multer';
-import { getSliderImages } from '../../Controllers/slider';
-import { fileUplaodController, MutiplefileUplaodController } from '../../Controllers/uploads';
+import { createMultipleSliders, createSliders, getAllSliders } from '../../Controllers/slider/index.js';
+import { fileUplaodController, MutiplefileUplaodController } from '../../Controllers/uploads/index.js';
 
-const router = express.Router();
+const Sliderrouter = express.Router();
 
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-router.post('/upload', upload.single('image'), fileUplaodController);
+Sliderrouter.post('/', createSliders);
 
 
-router.post('/multiple-upload', upload.array('images', 10), MutiplefileUplaodController);
+Sliderrouter.post('/multiple-upload', createMultipleSliders);
 
 
-router.get('/images', getSliderImages);
+Sliderrouter.get('/', getAllSliders);
 
-export default router;
+export default Sliderrouter;

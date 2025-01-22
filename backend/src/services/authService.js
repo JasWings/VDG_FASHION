@@ -23,11 +23,15 @@ export const comparePassword = async (password,hashedPassword) => {
 
 export const generateToken = async (user) => {
     try {
-     const token = await  jwt.sign({ email: user.email, role: user.role, uuid: user?.uuid, user_type: "customer"},process.env.JWT_SECRET,{ expiresIn: "24h"}) 
+        const token = await jwt.sign({ _id: user?._id, email: user.email, role: user.role, uuid: user?.uuid, user_type: "customer"},process.env.JWT_SECRET,{ expiresIn: "24h"}) 
+        
      return token  
+    
     } catch (error) {
       throw new Error(error)  
     }
+
+    
 }
 
 export const decodeToken = (token) => {

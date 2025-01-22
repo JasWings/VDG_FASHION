@@ -14,6 +14,8 @@ import WithdrawalsRouter from "../dev/withdrawls.js"
 import TaxRouter from "../order-management/admin-operations/tax.js"
 import ShippingRouter from "../order-management/admin-operations/shipping.js"
 import couponrouter from "../product-management/coupons/index.js"
+import wishlistrouter from "../product-management/wishlist/index.js"
+import Sliderrouter from "../slider/index.js"
 
 
 const router = express.Router()
@@ -34,5 +36,7 @@ router.use("/withdraws",WithdrawalsRouter)
 router.use("/taxes",TaxRouter)
 router.use("/shippings",ShippingRouter)
 router.use("/coupons",couponrouter)
+router.use('/wishlist', wishlistrouter)
+router.use('/slider', Sliderrouter)
 
 export default router

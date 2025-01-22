@@ -7,7 +7,7 @@ export const createSliders = async (req, res) => {
         const newSlider = new Sliders({
             title,
             description,
-            images, // Accept array of image URLs
+            images, 
             linkType,
             linkTarget,
             priority,
@@ -46,7 +46,7 @@ export const getActiveSliders = async (req, res) => {
 
 export const getAllSliders = async (req, res) => {
     try {
-        const sliders = await Sliders.find().sort({ createdAt: -1 });
+        const sliders = await Sliders.find();
         res.status(200).json({ status: "success", message: "Sliders retrive successfully" ,data:sliders});
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch sliders.', details: error.message });
@@ -89,3 +89,18 @@ export const deleteSlider = async (req, res) => {
         res.status(500).json({ error: 'Failed to delete slider.', details: error.message });
     }
 };
+
+export const createMultipleSliders = async (req, res) => {
+    try {
+        const sliders = req.body.sliders; // Expect an array of slider objects in req.body
+        if (!Array.isArray(sliders) || sliders.length === 0) {
+            return res.status(400).json({ error: 'Invalid input. Expected an array of sliders.' });
+        }
+
+        const newSliders = await Sliders.insertMany(sliders);
+        res.status(201).json({ message: 'Sliders created successfully.', sliders: newSliders });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to create sliders.', details: error.message });
+    }
+};
+

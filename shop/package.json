@@ -3,7 +3,7 @@
   "version": "10.2.0",
   "private": true,
   "scripts": {
-    "clean": "rimraf \"{.next,node_modules,__generated__,.cache,src/framework/graphql/**/*.d.ts}\"",
+    "clean": "rimraf \"{.next,node_modules,__generated__,.cache}\"",
     "gql-clean": "rimraf \"{__generated__,.next,.cache,src/framework/graphql/**/*.d.ts}\"",
     "dev": "next dev -p 3004",
     "build": "next build",

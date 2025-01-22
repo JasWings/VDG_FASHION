@@ -54,7 +54,7 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
     resolver: yupResolver(sliderValidationSchema),
     defaultValues: {
       ...initialValues,
-      promotional_sliders: initialValues?.promotional_sliders || [],
+      images: initialValues?.images || [],
       // banners: initialValues?.banners || [],
       // linkType: initialValues?.linkType || 'product',
       // linkTarget: initialValues?.linkTarget || '',
@@ -64,16 +64,18 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
       // endDate: initialValues?.endDate || '',
     },
   });
+  console.log(errors,"errrrr")
 
   const { mutate: createType, isLoading: creating } = useCreateSliderMutation();
   const { mutate: updateType, isLoading: updating } = useUpdateSliderMutation();
 
   const onSubmit = (values: FormValues) => {
+    console.log(values,"values")
     const input = {
       language: router.locale,
       name: values.name!,
       slug: values.slug ? values?.slug : values?.name?.toLocaleLowerCase(),
-      promotional_sliders: values.promotional_sliders?.map(({ file, id }: any) => ({
+      images: values.promotional_sliders?.map(({ file, id }: any) => ({
         file,
         id,
       })),

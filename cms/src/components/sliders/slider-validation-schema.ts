@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const sliderValidationSchema = yup.object().shape({
-  title: yup.string().trim().required('form:error-title-required'),
+  name: yup.string().trim().required('form:error-title-required'),
   description: yup.string().trim(),
   images: yup
     .array()

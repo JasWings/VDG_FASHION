@@ -57,13 +57,13 @@ function WishlistItem({ product }: { product: Product }) {
 
       <div className="flex w-full flex-col items-start sm:flex-row sm:justify-between sm:space-x-4 rtl:sm:space-x-reverse xl:items-center">
         <div className="flex w-full flex-col sm:items-start">
-          <Link
-            href={`${Routes.products}/${product?._id}`}
+          <p
+            // href={`${Routes.products}/${product?._id}`}
             className="text-lg font-semibold text-heading transition-colors hover:text-accent"
-            locale={product?.language}
+            // locale={product?.language}
           >
             {product?.name}
-          </Link>
+          </p>
 
           {/* <p className="mt-3 space-y-2 space-x-3.5 sm:space-y-0 rtl:sm:space-x-reverse"> */}
           {/* <p className="mt-1.5 flex flex-col items-start space-y-3">

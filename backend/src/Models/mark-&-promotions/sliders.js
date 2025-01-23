@@ -5,7 +5,7 @@ import { generateUUID } from "../../utils/helpers.js"
 const sliderSchema = new mongoose.Schema({
     id : { type: Number },
     uuid : { type: String },
-    title: { type: String, trim: true },
+    name: { type: String, trim: true },
     description: { type: String, trim: true },
     images: [{ type: String, required: true }], 
     linkType: { type: String, enum: ['product', 'category', 'external'] },

@@ -13,7 +13,7 @@ import { Routes } from '@/config/routes';
 import { useRouter } from 'next/router';
 import { adminOnly } from '@/utils/auth-utils';
 import { Config } from '@/config';
-import SliderList from '@/components/sliders/group-list';
+import SliderList from '@/components/sliders/slider-list';
 
 export default function SlidersPage() {
   const { locale } = useRouter();
@@ -21,11 +21,12 @@ export default function SlidersPage() {
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
-  const { data , loading, error } = useSlidersQuery({
+  const { types , loading, error } = useSlidersQuery({
     language: locale,
     orderBy,
     sortedBy,
   });
+  console.log(types,"data")
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
@@ -61,7 +62,7 @@ export default function SlidersPage() {
           )}
         </div>
       </Card>
-      <SliderList types={data} onOrder={setOrder} onSort={setColumn} />
+      <SliderList types={types} onOrder={setOrder} onSort={setColumn} />
     </>
   );
 }

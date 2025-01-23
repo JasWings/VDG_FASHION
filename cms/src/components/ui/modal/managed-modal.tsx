@@ -106,12 +106,18 @@ const ComposerMessage = dynamic(
   () => import('@/components/message/compose-message')
 );
 
+const DeleteSlider = dynamic(
+  () => import('@/components/sliders/slider-delete-view')
+);
+
 function renderModal(view: MODAL_VIEWS | undefined, data: any) {
   switch (view) {
     case 'DELETE_PRODUCT':
       return <ProductDeleteView />;
     case 'DELETE_TYPE':
       return <TypeDeleteView />;
+    case 'DELETE_SLIDER':
+      return <DeleteSlider />;
     case 'DELETE_ATTRIBUTE':
       return <AttributeDeleteView />;
     case 'DELETE_CATEGORY':

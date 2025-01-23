@@ -96,8 +96,8 @@ const SliderList = ({ types, onSort, onOrder }: IProps) => {
         <LanguageSwitcher
           slug={slug}
           record={record}
-          deleteModalView="DELETE_TYPE"
-          routes={Routes?.type}
+          deleteModalView="DELETE_SLIDER"
+          routes={Routes?.sliders}
         />
       ),
     },

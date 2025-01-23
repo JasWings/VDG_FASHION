@@ -36,7 +36,7 @@ router.use("/withdraws",WithdrawalsRouter)
 router.use("/taxes",TaxRouter)
 router.use("/shippings",ShippingRouter)
 router.use("/coupons",couponrouter)
-router.use('/wishlist', wishlistrouter)
+router.use('/my-wishlists', wishlistrouter)
 router.use('/slider', Sliderrouter)
 
 export default router

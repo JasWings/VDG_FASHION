@@ -29,7 +29,7 @@ export const useDeleteSliderMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation(sliderClient.create, {
+  return useMutation(sliderClient.delete, {
     onSuccess: () => {
       toast.success(t('common:successfully-deleted'));
     },

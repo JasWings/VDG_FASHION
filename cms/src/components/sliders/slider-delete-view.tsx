@@ -3,10 +3,10 @@ import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
-import { useDeleteTypeMutation } from '@/data/type';
+import { useDeleteSliderMutation } from '@/data/slider';
 
 const SliderDeleteView = () => {
-  const { mutate: deleteType, isLoading: loading } = useDeleteTypeMutation();
+  const { mutate: deleteType, isLoading: loading } = useDeleteSliderMutation();
 
   const { data } = useModalState();
   const { closeModal } = useModalAction();
@@ -17,6 +17,8 @@ const SliderDeleteView = () => {
     });
     closeModal();
   }
+
+  console.log(data,"sliderdata")
 
   return (
     <ConfirmationCard

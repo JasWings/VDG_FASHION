@@ -54,7 +54,7 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
     resolver: yupResolver(sliderValidationSchema),
     defaultValues: {
       ...initialValues,
-      images: initialValues?.images || [],
+      images: initialValues?.promotional_sliders || [],
       // banners: initialValues?.banners || [],
       // linkType: initialValues?.linkType || 'product',
       // linkTarget: initialValues?.linkTarget || '',
@@ -75,7 +75,7 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
       language: router.locale,
       name: values.name!,
       slug: values.slug ? values?.slug : values?.name?.toLocaleLowerCase(),
-      images: values.promotional_sliders?.map(({ file, id }: any) => ({
+      images: values.data?.images?.map(({ file, id }: any) => ({
         file,
         id,
       })),

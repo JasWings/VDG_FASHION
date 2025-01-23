@@ -87,8 +87,9 @@ export function useWishlist(options?: WishlistQueryOptions) {
   function handleLoadMore() {
     fetchNextPage();
   }
+  console.log(data,"data")
   return {
-    wishlists: data?.pages?.flatMap((page) => page.data) ?? [],
+    wishlists: data?.pages?.flatMap((page) => page) ?? [],
     paginatorInfo: Array.isArray(data?.pages)
       ? mapPaginatorData(data?.pages[data.pages.length - 1])
       : null,

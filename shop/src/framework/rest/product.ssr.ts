@@ -34,7 +34,7 @@ export const getStaticProps: GetStaticProps<
   ParsedQueryParams
 > = async ({ params, locale }) => {
   const { slug } = params!; //* we know it's required because of getStaticPaths
-
+ console.log(slug,params,"slug")
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery(

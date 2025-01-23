@@ -16,6 +16,7 @@ import { useModalAction } from '@/components/ui/modal/modal.context';
 import rangeMap from '@/lib/range-map';
 import AddToCartBtn from './add-to-cart/add-to-cart-btn';
 import { DEFAULT_LANGUAGE } from '@/lib/constants';
+import { getImageURL } from '@/lib/image';
 
 function WishlistItem({ product }: { product: Product }) {
   const { t } = useTranslation('common');
@@ -48,7 +49,7 @@ function WishlistItem({ product }: { product: Product }) {
     <div className="flex w-full items-start space-x-4 border-b border-gray-200 py-5 first:pt-0 last:border-0 last:pb-0 rtl:space-x-reverse sm:space-x-5 xl:items-center">
       <div className="relative flex h-16 w-16 shrink-0 items-center justify-center border border-gray-200 sm:h-[74px] sm:w-[74px]">
         <Image
-          src={product?.image?.thumbnail ?? productPlaceholder}
+          src={ getImageURL(product?.image?.file) ?? productPlaceholder}
           alt="text"
           layout="fill"
         />
@@ -57,7 +58,7 @@ function WishlistItem({ product }: { product: Product }) {
       <div className="flex w-full flex-col items-start sm:flex-row sm:justify-between sm:space-x-4 rtl:sm:space-x-reverse xl:items-center">
         <div className="flex w-full flex-col sm:items-start">
           <Link
-            href={`${Routes.products}/${product?.slug}`}
+            href={`${Routes.products}/${product?._id}`}
             className="text-lg font-semibold text-heading transition-colors hover:text-accent"
             locale={product?.language}
           >
@@ -65,7 +66,7 @@ function WishlistItem({ product }: { product: Product }) {
           </Link>
 
           {/* <p className="mt-3 space-y-2 space-x-3.5 sm:space-y-0 rtl:sm:space-x-reverse"> */}
-          <p className="mt-1.5 flex flex-col items-start space-y-3">
+          {/* <p className="mt-1.5 flex flex-col items-start space-y-3">
             <Link
               href={Routes.shop(product?.shop?.slug)}
               className="inline-block w-auto text-sm font-semibold text-body-dark transition-colors hover:text-accent"
@@ -73,7 +74,7 @@ function WishlistItem({ product }: { product: Product }) {
               {product?.shop?.name}
             </Link>
             <Rating rating={product?.ratings} variant="xs" boxed />
-          </p>
+          </p> */}
         </div>
 
         <div className="mt-4 flex w-full flex-col justify-between space-y-3 xs:flex-row xs:space-y-0 sm:w-auto sm:flex-col sm:justify-end sm:space-y-3 md:mt-0">
@@ -140,7 +141,7 @@ const WishlistProducts: React.FC = () => {
     useWishlist();
 
   if (error) return <ErrorMessage message={error.message} />;
-
+  console.log(wishlists,"wishlists")
   // loader
   if (!wishlists.length && isLoading) {
     return (
@@ -182,7 +183,7 @@ const WishlistProducts: React.FC = () => {
           </h1>
         </div>
         {wishlists?.map((item: any, index: number) => (
-          <WishlistItem key={index} product={item} />
+          <WishlistItem key={index} product={item?.productId} />
         ))}
       </div>
 

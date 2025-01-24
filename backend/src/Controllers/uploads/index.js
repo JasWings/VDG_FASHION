@@ -25,6 +25,7 @@ export const fileUplaodController = async (req, res) => {
     await save_file_name.save();
     res.status(200).json({ status: "success", message: "file upload successfully", data: save_file_name });
   } catch (error) {
+    console.log(error,"error")
     res.status(500).json({ status: "failed", message: error.message, data: null });
   }
 };

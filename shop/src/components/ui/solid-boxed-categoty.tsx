@@ -17,11 +17,11 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ item }) => {
   const router = useRouter();
 
   const { pathname, query } = router;
-  const selectedQueries = query.category;
+  const selectedQueries = query.parent;
 
   const onCategoryClick = (slug: string) => {
     if (selectedQueries === slug) {
-      const { category, ...rest } = query;
+      const { parent, ...rest } = query;
       router.push(
         {
           pathname,
@@ -37,7 +37,7 @@ const CategoryItem: React.FC<CategoryItemProps> = ({ item }) => {
     router.push(
       {
         pathname,
-        query: { ...query, category: slug },
+        query: { ...query, parent: slug },
       },
       undefined,
       {

@@ -16,6 +16,7 @@ const CategoryFilterView = ({ categories }: Props) => {
   const { t } = useTranslation('common');
 
   const router = useRouter();
+  const category = router.query.parent as string
   const selectedValues = useMemo(
     () =>
       router.query.category ? (router.query.category as string).split(',') : [],
@@ -35,25 +36,28 @@ const CategoryFilterView = ({ categories }: Props) => {
       },
     });
   }
-
+ console.log(category)
   return (
     <div className="relative -mb-5 after:absolute after:bottom-0 after:flex after:h-6 after:w-full after:bg-gradient-to-t after:from-white ltr:after:left-0 rtl:after:right-0">
       <Scrollbar style={{ maxHeight: '400px' }} className="pb-6">
         <span className="sr-only">{t('text-categories')}</span>
         <div className="grid grid-cols-1 gap-4">
           <CheckboxGroup values={state} onChange={handleChange}>
-            {categories.map((plan) => (
-              plan.parent === null ?
-             null
-              :
-              <Checkbox
-                key={plan.id}
-                label={plan.identity}
-                name={plan.slug}
-                value={plan._id}
-                theme="secondary"
-              />
-            ))}
+          {categories.map(plan => {
+             if (plan.parent === null) return null; 
+             if (category && category !== plan.parent) return null;
+           
+             return (
+               <Checkbox
+                 key={plan.id}
+                 label={plan.identity}
+                 name={plan.slug}
+                 value={plan._id}
+                 theme="secondary"
+               />
+             );
+           })}
+           
           </CheckboxGroup>
         </div>
       </Scrollbar>

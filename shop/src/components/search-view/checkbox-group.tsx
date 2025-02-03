@@ -11,16 +11,13 @@ interface EnrichedChildren {
   value: string;
   children?: React.ReactNode;
 }
-const CheckboxGroup: React.FC<Props> = ({ children, values, onChange }) => {
+const CheckboxGroup: React.FC<Props> = ({ children, value, onChange }) => {
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = e.target;
-      const newValues = values.includes(value)
-        ? values.filter((v) => v !== value)
-        : [...values, value];
-      onChange(newValues);
+      onChange(value); // Directly pass the single value
     },
-    [values, onChange]
+    [onChange]
   );
 
   return (
@@ -31,11 +28,12 @@ const CheckboxGroup: React.FC<Props> = ({ children, values, onChange }) => {
         }
         return React.cloneElement(child, {
           onChange: onChangeHandler,
-          checked: values.includes(child.props.value),
+          checked: value === child.props.value, // Single selection check
         });
       })}
     </>
   );
 };
+
 
 export default CheckboxGroup;

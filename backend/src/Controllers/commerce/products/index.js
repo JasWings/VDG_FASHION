@@ -1,5 +1,6 @@
 import Attribute from "../../../Models/product-management/attributes/index.js";
 import ProductModel from "../../../Models/product-management/product/index.js";
+import CategoryModel from "../../../Models/product-management/category/index.js"
 import { FilterQuery, generateUUID } from "../../../utils/helpers.js";
 
 export const createProduct = async (req, res) => {
@@ -194,6 +195,20 @@ export const getProducts = async (req, res) => {
     if (filterQuerys.categories) {
       categoryFilter.categories = { $in: filterQuerys.categories }; // Use $in for array filtering
     }
+    if (req.query.parent) {
+        const parentId = req.query.parent;
+  
+        // Fetch categories with the specified parent ID
+        const matchingCategories = await CategoryModel.find({ parent: parentId }).select("_id");
+  
+        if (matchingCategories.length > 0) {
+          const categoryIds = matchingCategories.map((category) => category._id.toString());
+          categoryFilter.categories = { $in: categoryIds };
+        } else {
+          categoryFilter.categories = { $in: [] }; // No matching categories, ensure no products are returned
+        }
+      }
+
     console.log(req.query,filterQuerys,filterQuerys,categoryFilter)
 
       const product_list = await ProductModel.find({

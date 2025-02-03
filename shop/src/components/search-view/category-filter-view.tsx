@@ -16,48 +16,47 @@ const CategoryFilterView = ({ categories }: Props) => {
   const { t } = useTranslation('common');
 
   const router = useRouter();
-  const category = router.query.parent as string
-  const selectedValues = useMemo(
-    () =>
-      router.query.category ? (router.query.category as string).split(',') : [],
+  const category = router.query.parent as string;
+  const selectedValue = useMemo(
+    () => (router.query.category as string) || '',
     [router.query.category]
   );
-  const [state, setState] = useState<string[]>(() => selectedValues);
-  useEffect(() => {
-    setState(selectedValues);
-  }, [selectedValues]);
+  const [state, setState] = useState<string>(selectedValue);
 
-  function handleChange(values: string[]) {
+  useEffect(() => {
+    setState(selectedValue);
+  }, [selectedValue]);
+
+  function handleChange(value: string) {
     router.push({
       pathname: router.pathname,
       query: {
         ...router.query,
-        category: values.join(','),
+        category: value,
       },
     });
   }
- console.log(category)
+
   return (
     <div className="relative -mb-5 after:absolute after:bottom-0 after:flex after:h-6 after:w-full after:bg-gradient-to-t after:from-white ltr:after:left-0 rtl:after:right-0">
       <Scrollbar style={{ maxHeight: '400px' }} className="pb-6">
         <span className="sr-only">{t('text-categories')}</span>
         <div className="grid grid-cols-1 gap-4">
-          <CheckboxGroup values={state} onChange={handleChange}>
-          {categories.map(plan => {
-             if (plan.parent === null) return null; 
-             if (category && category !== plan.parent) return null;
-           
-             return (
-               <Checkbox
-                 key={plan.id}
-                 label={plan.identity}
-                 name={plan.slug}
-                 value={plan._id}
-                 theme="secondary"
-               />
-             );
-           })}
-           
+          <CheckboxGroup value={state} onChange={handleChange}>
+            {categories.map((plan) => {
+              if (plan.parent === null) return null;
+              if (category && category !== plan.parent) return null;
+
+              return (
+                <Checkbox
+                  key={plan.id}
+                  label={plan.identity}
+                  name={plan.slug}
+                  value={plan._id}
+                  theme="secondary"
+                />
+              );
+            })}
           </CheckboxGroup>
         </div>
       </Scrollbar>
@@ -68,10 +67,10 @@ const CategoryFilterView = ({ categories }: Props) => {
 const CategoryFilter: React.FC<{ type?: any }> = ({ type }) => {
   const { query, locale } = useRouter();
 
-  // @ts-ignore
   const { categories, isLoading, error } = useCategories({
     ...(type ? { type } : { type: query.searchType }),
-    limit: 1000, type_id: query.group
+    limit: 1000,
+    type_id: query.group,
   });
 
   if (error) return <ErrorMessage message={error.message} />;

@@ -188,6 +188,16 @@ const Details: React.FC<Props> = ({
                 {discount}
               </div>
             )}
+          { gallery?.length===0&& product?.image && 
+          <div className="relative h-full w-full">
+          <Image
+            src={getImageURL(product?.image?.file) ?? productPlaceholder}
+            alt={`Product thumb gallery ${product?.id}`}
+            fill
+            className="object-cover"
+          />
+        </div>
+        }
           {/* </div> */}
           { gallery?.length===0&& !product?.image ?
            <Image 
@@ -261,6 +271,24 @@ const Details: React.FC<Props> = ({
             <div className=' flex w-full items-start justify-start space-x-8 rtl:space-x-reverse'>
                 <p className=' font-medium text-lg leading-8'>SKU:  {sku}</p>
             </div>
+            <div className="mt-3 flex w-full items-start justify-start space-x-8 rtl:space-x-reverse">
+  {product?.width && (
+    <p className="font-medium text-sm text-body">
+      <strong>Width:</strong> {product?.width} cm
+    </p>
+  )}
+  {product?.height && (
+    <p className="font-medium text-sm text-body">
+      <strong>Height:</strong> {product?.height} cm
+    </p>
+  )}
+  {product?.length && (
+    <p className="font-medium text-sm text-body">
+      <strong>Length:</strong> {product?.length} cm
+    </p>
+  )}
+</div>
+
             <div className="mt-2 flex items-center justify-between">
               {unit && !hasVariations && (
                 <span className="block text-sm font-normal text-body">

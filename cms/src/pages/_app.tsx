@@ -45,6 +45,11 @@ const CustomApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 
   const { locale } = useRouter();
   const dir = Config.getDirection(locale);
+
+  if(process.env.NEXT_PUBLIC_WEBVISIBLE_STATUS){
+     return
+  }
+
   return (
     <div dir={dir}>
       <QueryClientProvider client={queryClient}>

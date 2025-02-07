@@ -40,6 +40,10 @@ function CustomApp({
   const { locale } = useRouter();
   const dir = getDirection(locale);
 
+  if(process.env.NEXT_PUBLIC_WEBVISIBLE_STATUS){
+    return 
+  }
+
   return (
     <>
       <div dir={dir}>

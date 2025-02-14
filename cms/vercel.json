@@ -22,13 +22,6 @@
       "NEXT_PUBLIC_ENABLE_MULTI_LANG": "false",
       "NEXT_PUBLIC_AVAILABLE_LANGUAGES": "en"
     }
-  },
-    "redirects": [
-      {
-        "source": "/(.*)",
-        "destination": "http://admin.vdgfashion.in/$1",
-        "permanent": true
-      }
-    ]
+  }
   
 }

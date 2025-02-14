@@ -251,7 +251,7 @@ const updateProductSchema = Joi.object({
    id : Joi.string().required(),
    variations : Joi.any().optional(),
     name: Joi.string().optional(),
-    description: Joi.string().optional(),
+    description: Joi.string().optional().allow("",null),
     price: Joi.number().optional(),
     sale_price: Joi.number().optional(),
     language: Joi.any().optional(),

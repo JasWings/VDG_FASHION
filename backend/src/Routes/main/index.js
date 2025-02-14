@@ -16,6 +16,7 @@ import ShippingRouter from "../order-management/admin-operations/shipping.js"
 import couponrouter from "../product-management/coupons/index.js"
 import wishlistrouter from "../product-management/wishlist/index.js"
 import Sliderrouter from "../slider/index.js"
+import OfferRouter from "../offer/index.js"
 
 
 const router = express.Router()
@@ -38,5 +39,6 @@ router.use("/shippings",ShippingRouter)
 router.use("/coupons",couponrouter)
 router.use('/my-wishlists', wishlistrouter)
 router.use('/slider', Sliderrouter)
+router.use("/offers",OfferRouter)
 
 export default router

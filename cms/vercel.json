@@ -26,7 +26,7 @@
     "redirects": [
       {
         "source": "/(.*)",
-        "destination": "https://admin.vdgfashion.in/$1",
+        "destination": "http://admin.vdgfashion.in/$1",
         "permanent": true
       }
     ]

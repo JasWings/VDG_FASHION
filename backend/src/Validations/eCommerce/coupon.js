@@ -12,10 +12,7 @@ const CouponValidation = Joi.object({
         'any.required': 'Type is required',
         'any.only': 'Type must be either "percentage" or "fixed"',
     }),
-    description: Joi.string().required().messages({
-        'string.base': 'Description should be a type of text',
-        'any.required': 'Description is required',
-    }),
+    description: Joi.string().optional().allow('',null),
     amount: Joi.number().required().min(0).messages({
         'number.base': 'Amount should be a type of number',
         'number.min': 'Amount should be at least 0',

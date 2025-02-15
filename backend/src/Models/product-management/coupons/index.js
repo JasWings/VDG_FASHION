@@ -8,7 +8,7 @@ const couponSchema = new mongoose.Schema({
     uuid : { type: String, unique: true },
     code:{type:String,required:true,unique:true},
     type: { type: String, enum: ['fixed', 'percentage'], required: true},
-    description:{type:String,required:true},
+    description:{type:String},
     amount:{type:Number,required:true},
     minimum_cart_amount:{type:Number,requird:true},
     image:{type:String,required:true},

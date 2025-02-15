@@ -226,12 +226,12 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
           />
 
           <div className="relative">
-            {options?.useAi && (
+            {/* {options?.useAi && (
               <OpenAIButton
                 title="Generate Description With AI"
                 onClick={handleGenerateDescription}
               />
-            )}
+            )} */}
             <TextArea
               label={t('form:input-label-description')}
               {...register('description')}

@@ -126,14 +126,14 @@ const SidebarFilter: React.FC<{
           </FieldWrapper>
         )} */}
       </div>
-      <div className="sticky bottom-0 z-10 mt-auto border-t border-gray-200 bg-white p-5 lg:hidden">
+      {/* <div className="sticky bottom-0 z-10 mt-auto border-t border-gray-200 bg-white p-5 lg:hidden">
         <Button
           className="w-full"
           onClick={() => closeSidebar({ display: false, view: '' })}
         >
           Show Products
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

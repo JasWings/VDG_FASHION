@@ -15,7 +15,7 @@ const SlidingVerticalRectangleCategories: React.FC<
   if (loading) {
     return (
       <div className="hidden xl:block">
-        <div className="mt-8 flex h-52 w-full justify-center px-2">
+        <div className="mt-8  flex h-52 w-full justify-center px-2">
           <BakeryCategoryLoader />
         </div>
       </div>

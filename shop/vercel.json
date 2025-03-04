@@ -9,7 +9,7 @@
     "NEXT_PUBLIC_PAYPAL_CLIENT_TOKEN": "",
     "NEXT_PUBLIC_RAZORPAY_KEY": "",
     "NEXTAUTH_URL": "https://vdg-fashion-eta.vercel.app/",
-    "SECRET": "",
+    "SECRET": " ",
     "GOOGLE_CLIENT_ID": "",
     "GOOGLE_CLIENT_SECRET": "",
     "NEXT_PUBLIC_ADMIN_URL": "",

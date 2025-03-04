@@ -19,6 +19,7 @@ module.exports = withPWA({
       '127.0.0.1',
       'i.pravatar.cc',
       'vdg-fashion-gfr6.onrender.com',
+      'vdg-fashion-kjks.onrender.com',
       '192.168.43.174'
     ],
   },

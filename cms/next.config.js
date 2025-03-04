@@ -11,6 +11,7 @@ module.exports = withPWA({
   reactStrictMode: true,
   i18n,
   images: {
+    unoptimized: true,
     domains: [
       'via.placeholder.com',
       'res.cloudinary.com',

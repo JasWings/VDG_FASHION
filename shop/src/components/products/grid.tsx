@@ -54,6 +54,7 @@ export function Grid({
   const category = query.category as string;
   const group = query.group as string;
   const text = query.text as string
+  const parent = query.parent as string
 
 
   if (error) return <ErrorMessage message={error.message} />;
@@ -81,7 +82,7 @@ export function Grid({
         )}
       >
         {
-         !isLoading && offers && !category && !group && !text && offers?.map((offer:any) => (
+         !isLoading && offers && !category && !group && !text && !parent && offers?.map((offer:any) => (
             offer.eligibleProducts.map((product:any) => (
               <OfferCard key={product.uuid} product={product} offers={offer} />
             ))))
@@ -126,7 +127,7 @@ export default function ProductsGrid({
 }: ProductsGridProps) {
   const pageSize = 2;
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-    useProducts(30);
+    useProducts(10);
     const { offers } =
     useOffers(9999);
     console.log(offers,"offers")

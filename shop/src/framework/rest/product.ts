@@ -35,7 +35,7 @@ export function useProducts(pageSize: number, category?: string, group?: string,
 
   const { max_price, min_price} = price ?  handlePriceFilter(price) : { max_price: null, min_price: null}
   const formattedOptions = {
-    pageSize: newPageSize,
+    limit: newPageSize,
     language: locale,
     categories : category,  
     group,  min_price,max_price,orderBy,sortBy,parent,text
@@ -59,8 +59,10 @@ export function useProducts(pageSize: number, category?: string, group?: string,
     setNewPageSize(pageSize + newPageSize);
   }
 
-  const load = data?.pages[0]?.count > 30 && newPageSize < data?.pages[0]?.count;
+  const pagination = data?.pages[0]?.pagination;
 
+  const load = pagination?.page < pagination?.totalPages && newPageSize <= pagination?.total;  
+  console.log(data?.pages[0],"0",load,pagination?.page < pagination?.totalPages , newPageSize <= pagination?.total)
   return {
     products: data?.pages[0]?.data ?? [],
     paginatorInfo: Array.isArray(data?.pages)

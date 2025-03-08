@@ -219,6 +219,7 @@ export default function CreateOrUpdateAddressForm() {
         pin_code: values?.address?.pin_code || "000000",
        remarks:"remarks",
      };
+     console.log(formattedInput,"formattedInput")
      updateProfile(formattedInput);
     }
   };

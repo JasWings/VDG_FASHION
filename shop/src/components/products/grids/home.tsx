@@ -30,11 +30,12 @@ export default function ProductGridHome({
   const sortedBy = query.sortedBy as string
   const orderBy = query.orderBy as string
   const parent = query.parent as string
+  const text = query.text as string
 
   // Pass category and group as parameters to the useProducts hook
   const { offers } = useOffers(999)
   const { products, loadMore, isLoadingMore, isLoading, hasMore, error } =
-    useProducts(30, category, group,price,orderBy,sortedBy,parent);
+    useProducts(30, category, group,price,orderBy,sortedBy,parent,text);
   
   return (
     <Grid

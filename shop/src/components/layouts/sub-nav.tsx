@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
 
   return (
     <header
-      className={`sticky top-0 z-10 transition-all duration-300 bg-white border-b-2 border-t-2 border-gray-200 ${
+      className={`sticky top-0 xl:top-22 z-10 transition-all duration-300 bg-white border-b-2 border-t-2 border-gray-200 ${
         isScrolled ? 'shadow-md' : ''
       }`}
     >

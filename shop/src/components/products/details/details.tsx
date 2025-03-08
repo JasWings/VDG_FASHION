@@ -254,9 +254,9 @@ const Details: React.FC<Props> = ({
                       isModal,
                   }
                 )}
-                {...(isModal && {
-                  onClick: () => navigate(Routes.product(slug)),
-                })}
+                // {...(isModal && {
+                //   onClick: () => navigate(Routes.product(slug)),
+                // })}
               >
                 {name}
               </h1>

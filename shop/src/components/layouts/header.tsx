@@ -272,7 +272,7 @@ const Header = ({ layout }: { layout?: string }) => {
         </div>
       </div>
     </header>
-          <Navbar />
+          { isHomePage && <Navbar /> }
 </>
   );
 };

@@ -208,6 +208,15 @@ export const getProducts = async (req, res) => {
           categoryFilter.categories = { $in: [] }; // No matching categories, ensure no products are returned
         }
       }
+    
+      const textFilter = {};
+      if (req.query.text) {
+        const words = req.query.text.split(" ").filter(Boolean);
+        const regexParts = words.map(word => `(?=.*${word})`);
+        const regex = new RegExp(regexParts.join(""), "i");
+        textFilter.name = { $regex: regex };
+      }
+      
 
     console.log(req.query,filterQuerys,filterQuerys,categoryFilter)
 
@@ -215,6 +224,7 @@ export const getProducts = async (req, res) => {
         ...filterQuerys,
         ...priceFilter,
         ...categoryFilter,
+        ...textFilter,
         is_delete: false,
       })
         .populate({ path: "group", model: "Group" })

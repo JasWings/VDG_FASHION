@@ -24,7 +24,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-export function useProducts(pageSize: number, category?: string, group?: string,price:string,orderBy:string,sortBy:string,parent:string) {
+export function useProducts(pageSize: number, category?: string, group?: string,price:string,orderBy:string,sortBy:string,parent:string,text:string) {
   const { locale } = useRouter();
   const [newPageSize, setNewPageSize] = useState(pageSize);
 
@@ -38,7 +38,7 @@ export function useProducts(pageSize: number, category?: string, group?: string,
     pageSize: newPageSize,
     language: locale,
     categories : category,  
-    group,  min_price,max_price,orderBy,sortBy,parent
+    group,  min_price,max_price,orderBy,sortBy,parent,text
   };
 
   const {

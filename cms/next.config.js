@@ -11,6 +11,7 @@ module.exports = withPWA({
   reactStrictMode: true,
   i18n,
   images: {
+    unoptimized: true,
     domains: [
       'via.placeholder.com',
       'res.cloudinary.com',
@@ -24,6 +25,7 @@ module.exports = withPWA({
       'lh3.googleusercontent.com',
       'vdg-fashion.s3.eu-north-1.amazonaws.com',
       'vdg-fashion-gfr6.onrender.com',
+      'vdg-fashion-kjks.onrender.com',
       "192.168.43.174"
     ],
   },

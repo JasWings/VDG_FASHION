@@ -1,15 +1,15 @@
 {
   "env": {
     "FRAMEWORK_PROVIDER": "rest",
-    "NEXT_PUBLIC_REST_API_ENDPOINT": "https://vdg-fashion-gfr6.onrender.com/api/v1",
-    "NEXT_PUBLIC_BASIC_END_POINT" : "https://vdg-fashion-gfr6.onrender.com",
+    "NEXT_PUBLIC_REST_API_ENDPOINT": "https://vdg-fashion-kjks.onrender.com/api/v1",
+    "NEXT_PUBLIC_BASIC_END_POINT" : "https://vdg-fashion-kjks.onrender.com",
     "NEXT_PUBLIC_GRAPHQL_API_ENDPOINT": "",
     "NEXT_PUBLIC_SITE_URL": "",
     "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "",
     "NEXT_PUBLIC_PAYPAL_CLIENT_TOKEN": "",
     "NEXT_PUBLIC_RAZORPAY_KEY": "",
     "NEXTAUTH_URL": "https://vdg-fashion-eta.vercel.app/",
-    "SECRET": "",
+    "SECRET": " ",
     "GOOGLE_CLIENT_ID": "",
     "GOOGLE_CLIENT_SECRET": "",
     "NEXT_PUBLIC_ADMIN_URL": "",
@@ -23,8 +23,8 @@
   "build": {
     "env": {
       "FRAMEWORK_PROVIDER": "rest",
-      "NEXT_PUBLIC_REST_API_ENDPOINT": "https://vdg-fashion-gfr6.onrender.com/api/v1",
-      "NEXT_PUBLIC_BASIC_END_POINT" : "https://vdg-fashion-gfr6.onrender.com",
+      "NEXT_PUBLIC_REST_API_ENDPOINT": "https://vdg-fashion-kjks.onrender.com/api/v1",
+      "NEXT_PUBLIC_BASIC_END_POINT" : "https://vdg-fashion-kjks.onrender.com",
       "NEXT_PUBLIC_GRAPHQL_API_ENDPOINT": "",
       "NEXT_PUBLIC_SITE_URL": "",
       "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "",

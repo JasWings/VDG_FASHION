@@ -11,6 +11,7 @@ module.exports = withPWA({
   reactStrictMode: true,
   i18n,
   images: {
+    unoptimized: true,
     domains: [
       'pickbazarlaravel.s3.ap-southeast-1.amazonaws.com',
       'pixarlaravel.s3.ap-southeast-1.amazonaws.com',
@@ -19,6 +20,7 @@ module.exports = withPWA({
       '127.0.0.1',
       'i.pravatar.cc',
       'vdg-fashion-gfr6.onrender.com',
+      'vdg-fashion-kjks.onrender.com',
       '192.168.43.174'
     ],
   },

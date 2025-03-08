@@ -165,81 +165,99 @@ export const createProduct = async (req, res) => {
 
 
 export const getProducts = async (req, res) => {
-    try {
-      const filterQuerys = FilterQuery("product", req.query);
-      const { orderBy = "created_at", sortedBy = "DESC" } = req.query;
-  
-      const sortOrder = sortedBy === "ASC" ? 1 : -1;
-      let sortQuery = {};
-      
-      if (orderBy === "min_price") {
-        sortQuery = { price: sortOrder };
-      } else if (orderBy === "max_price") {
-        sortQuery = { price: sortOrder };
-      } else {
-        sortQuery = { created_at: sortOrder };
+  try {
+    const filterQuerys = FilterQuery("product", req.query);
+    const { orderBy = "created_at", sortedBy = "DESC", page = 1, limit = 10 } = req.query;
+
+    const sortOrder = sortedBy === "ASC" ? 1 : -1;
+    let sortQuery = {};
+
+    if (orderBy === "min_price") {
+      sortQuery = { price: sortOrder };
+    } else if (orderBy === "max_price") {
+      sortQuery = { price: sortOrder };
+    } else {
+      sortQuery = { created_at: sortOrder };
+    }
+
+    const priceFilter = {};
+    if (req.query.min_price) {
+      priceFilter.price = { $gte: parseFloat(req.query.min_price) };
+    }
+    if (req.query.max_price) {
+      if (!priceFilter.price) {
+        priceFilter.price = {};
       }
-  
-      const priceFilter = {};
-      if (req.query.min_price) {
-        priceFilter.price = { $gte: parseFloat(req.query.min_price) };
-      }
-      if (req.query.max_price) {
-        if (!priceFilter.price) {
-          priceFilter.price = {};
-        }
-        priceFilter.price.$lte = parseFloat(req.query.max_price);
-      }
-    
-      const categoryFilter = {};
+      priceFilter.price.$lte = parseFloat(req.query.max_price);
+    }
+
+    const categoryFilter = {};
     if (filterQuerys.categories) {
-      categoryFilter.categories = { $in: filterQuerys.categories }; // Use $in for array filtering
+      categoryFilter.categories = { $in: filterQuerys.categories };
     }
     if (req.query.parent) {
-        const parentId = req.query.parent;
-  
-        // Fetch categories with the specified parent ID
-        const matchingCategories = await CategoryModel.find({ parent: parentId }).select("_id");
-  
-        if (matchingCategories.length > 0) {
-          const categoryIds = matchingCategories.map((category) => category._id.toString());
-          categoryFilter.categories = { $in: categoryIds };
-        } else {
-          categoryFilter.categories = { $in: [] }; // No matching categories, ensure no products are returned
-        }
-      }
-    
-      const textFilter = {};
-      if (req.query.text) {
-        const words = req.query.text.split(" ").filter(Boolean);
-        const regexParts = words.map(word => `(?=.*${word})`);
-        const regex = new RegExp(regexParts.join(""), "i");
-        textFilter.name = { $regex: regex };
-      }
-      
+      const parentId = req.query.parent;
 
-    console.log(req.query,filterQuerys,filterQuerys,categoryFilter)
+      const matchingCategories = await CategoryModel.find({ parent: parentId }).select("_id");
 
-      const product_list = await ProductModel.find({
-        ...filterQuerys,
-        ...priceFilter,
-        ...categoryFilter,
-        ...textFilter,
-        is_delete: false,
-      })
-        .populate({ path: "group", model: "Group" })
-        .populate({ path: "variants", populate: { path: "attributes" } })
-        .sort(sortQuery);
-  
-      res.status(200).json({
-        status: "success",
-        message: "All products retrieved successfully",
-        data: product_list,
-      });
-    } catch (error) {
-      res.status(500).json({ status: "failed", message: error?.message });
+      if (matchingCategories.length > 0) {
+        const categoryIds = matchingCategories.map((category) => category._id.toString());
+        categoryFilter.categories = { $in: categoryIds };
+      } else {
+        categoryFilter.categories = { $in: [] };
+      }
     }
-  };
+
+    const textFilter = {};
+    if (req.query.text) {
+      const words = req.query.text.split(" ").filter(Boolean);
+      const regexParts = words.map((word) => `(?=.*${word})`);
+      const regex = new RegExp(regexParts.join(""), "i");
+      textFilter.name = { $regex: regex };
+    }
+
+    console.log(req.query, filterQuerys, categoryFilter);
+
+    const pageNumber = parseInt(page, 10);
+    const pageSize = parseInt(limit, 10);
+
+    const product_list = await ProductModel.find({
+      ...filterQuerys,
+      ...priceFilter,
+      ...categoryFilter,
+      ...textFilter,
+      is_delete: false,
+    })
+      .populate({ path: "group", model: "Group" })
+      .populate({ path: "variants", populate: { path: "attributes" } })
+      .sort(sortQuery)
+      .skip((pageNumber - 1) * pageSize)
+      .limit(pageSize);
+
+    const totalProducts = await ProductModel.countDocuments({
+      ...filterQuerys,
+      ...priceFilter,
+      ...categoryFilter,
+      ...textFilter,
+      is_delete: false,
+    });
+
+    res.status(200).json({
+      status: "success",
+      message: "All products retrieved successfully",
+      data: product_list,
+      pagination: {
+        total: totalProducts,
+        page: pageNumber,
+        pageSize: pageSize,
+        totalPages: Math.ceil(totalProducts / pageSize),
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error?.message });
+  }
+};
+
   
 
 export const getProductWithUUID = async (req,res) => {

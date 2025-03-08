@@ -3,7 +3,7 @@ import { AUTH_TOKEN_KEY, EMAIL_VERIFIED } from '@/lib/constants';
 export function useToken() {
   return {
     setToken(token: string) {
-      Cookies.set(AUTH_TOKEN_KEY, token, { expires: 1 });
+     const token_set =  Cookies.set(AUTH_TOKEN_KEY, token);
     },
     getToken() {
       return Cookies.get(AUTH_TOKEN_KEY);

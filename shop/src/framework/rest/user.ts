@@ -32,6 +32,10 @@ import { Routes } from '@/config/routes';
 import { showToast } from '@/components/ui/toast/toast';
 import { RegisterAtom } from '@/components/otp/registerAtom';
 import { getErrorMessage } from '@/lib/error';
+import Cookies from 'js-cookie';
+import { AUTH_TOKEN_KEY, EMAIL_VERIFIED } from '@/lib/constants';
+
+
 
 export function useUser() {
   const [isAuthorized] = useAtom(authorizationAtom);
@@ -340,8 +344,9 @@ export function useOtpLogin() {
       //   return;
       // }
       // setToken(data.token!);
+      setToken(data.data.new_token)
       showToast(data.message,"success")
-      setAuthorized(true);
+      // setAuthorized(true);
       setOtpState({
         ...initialOtpState,
       });
@@ -380,10 +385,12 @@ export function useRegister() {
 
   const { mutate, isLoading } = useMutation(client.users.register, {
     onSuccess: (data:any) => {
+      console.log(data,"data")
       if (data?.data?.token) {
         setToken(data.data.token)
-        setAuthorized(true);
+        Cookies.set(AUTH_TOKEN_KEY, data.data.token);
         showToast(data.message,"success")
+        // setAuthorized(true);
         setRegisterState({step:"OtpForm"})
         // window.location.reload()
         // closeModal();

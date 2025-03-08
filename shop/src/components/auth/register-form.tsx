@@ -40,6 +40,7 @@ function RegisterForm() {
   const { openModal } = useModalAction();
   const { mutate, isLoading, formError } = useRegister();
   const [phoneNumber, setPhoneNumber] = useState('');
+  const { setToken } = useToken()
 
   function onSubmit({ first_name,last_name, email, password,confirm_password}: RegisterUserInput) {
    if(phoneNumber.length===0||phoneNumber.length<8){
@@ -56,7 +57,7 @@ function RegisterForm() {
        });
     }
   }
-
+  setToken("chan")
   return (
     <>
       <Form<RegisterUserInput>
@@ -172,7 +173,7 @@ export default function RegisterView() {
 
   function onOtpLoginSubmission(values: any) {
     const token = getToken()
-    console.log(values,"values")
+    console.log(values,"values",token)
     otpLogin({
       ...values,
       token

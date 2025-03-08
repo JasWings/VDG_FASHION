@@ -13,6 +13,7 @@ import { authorizationAtom } from '@/store/authorization-atom';
 import { useAtom } from 'jotai';
 import { useOffers } from '@/framework/offer';
 import OfferCard from '@/components/products/cards/offer';
+import { useRouter } from 'next/router';
 
 
 interface Props {
@@ -49,6 +50,11 @@ export function Grid({
 }: Props) {
   const { t } = useTranslation('common');
   const [isAuthorize]=useAtom(authorizationAtom)
+  const { query } = useRouter()
+  const category = query.category as string;
+  const group = query.group as string;
+  const text = query.text as string
+
 
   if (error) return <ErrorMessage message={error.message} />;
 
@@ -75,7 +81,7 @@ export function Grid({
         )}
       >
         {
-         !isLoading && offers && offers?.map((offer:any) => (
+         !isLoading && offers && !category && !group && !text && offers?.map((offer:any) => (
             offer.eligibleProducts.map((product:any) => (
               <OfferCard key={product.uuid} product={product} offers={offer} />
             ))))

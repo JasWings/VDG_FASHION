@@ -14,10 +14,13 @@ interface EnrichedChildren {
 const CheckboxGroup: React.FC<Props> = ({ children, value, onChange }) => {
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const { value } = e.target;
-      onChange(value); // Directly pass the single value
+      const newValue = e.target.value; // Get the current checkbox value
+      console.log("Clicked value:", newValue,children);
+      if (value !== newValue) {
+        onChange(newValue); // Update only if the value changes
+      }
     },
-    [onChange]
+    [onChange, value] // Ensure the callback reflects the latest `value`
   );
 
   return (
@@ -26,14 +29,22 @@ const CheckboxGroup: React.FC<Props> = ({ children, value, onChange }) => {
         if (!React.isValidElement<EnrichedChildren>(child)) {
           return child;
         }
+        const isChecked = value === child.props.value;
+        // console.log(
+        //   "Rendering child:",
+        //   child.props.value,
+        //   "Checked:",
+        //   isChecked
+        // );
         return React.cloneElement(child, {
           onChange: onChangeHandler,
-          checked: value === child.props.value, // Single selection check
+          checked: isChecked,
         });
       })}
     </>
   );
 };
+
 
 
 export default CheckboxGroup;

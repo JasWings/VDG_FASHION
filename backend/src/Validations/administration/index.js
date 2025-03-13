@@ -113,3 +113,50 @@ export const ChangePasswordValidation = (data) => {
     return value
 }
 
+
+const forgetPasswordValidationSchema = Joi.object({
+    email: Joi.string().email().required()
+});
+
+export const validateForgotPassword = async (data) => {
+    const { error, value } = forgetPasswordValidationSchema.validate(data, { abortEarly: false });
+    if (error) {
+        throw new Error(error?.details.map((detail) => detail.message).join(", "));
+    }
+    return value;
+};
+
+
+const otpValidationSchema = Joi.object({
+  otp: Joi.string().required(),
+  token: Joi.string().required(),
+  email: Joi.string().optional()
+});
+
+export const validateOtp = async (data) => {
+  const { error, value } = otpValidationSchema.validate(data, { abortEarly: false });
+  if (error) {
+    throw new Error(error?.details.map((detail) => detail.message).join(", "));
+  }
+  return value;
+};
+
+const resetPasswordValidationSchema = Joi.object({
+  email: Joi.string().email().required(),
+  new_password: Joi.string().min(6).required(),
+  confirm_password: Joi.string()
+    .min(6)
+    .required()
+    .valid(Joi.ref('new_password'))
+    .messages({ 'any.only': 'Confirm password must match the new password' }),
+});
+
+export const validateResetPassword = async (data) => {
+  const { error, value } = resetPasswordValidationSchema.validate(data, { abortEarly: false });
+  if (error) {
+    throw new Error(error?.details.map((detail) => detail.message).join(", "));
+  }
+  return value;
+};
+
+

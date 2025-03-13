@@ -1,4 +1,4 @@
-import { ChangePasswordValidation, createFeature, loginValidations, OtpValidation, RoleValidation, updateFeature, validateUser } from "./administration/index.js";
+import { ChangePasswordValidation, createFeature, loginValidations, OtpValidation, RoleValidation, updateFeature, validateUser,validateOtp ,validateResetPassword,validateForgotPassword } from "./administration/index.js";
 import { ValidateCustomerAddress } from "./eCommerce/address.js";
 import { coupondetails } from "./eCommerce/coupon.js";
 import { validateAttribute, validateCategory, validateGroup, validateTag } from "./eCommerce/index.js";
@@ -30,7 +30,7 @@ const Validations = {
     reportdetails: reportdetails,
     validateTax,
     validateShipping,
-    offerdetails: offerdetails
+    offerdetails: offerdetails,validateOtp :validateOtp ,validateForgotPassword,validateResetPassword
 }
 
 export default Validations

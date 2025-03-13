@@ -2,12 +2,12 @@ import { Routes } from '@/config/routes';
 import { PaymentGateway } from '@/types';
 
 export const siteSettings = {
-  name: 'PickBazar',
+  name: 'VDG FASHION',
   description: '',
   logo: {
-    url: '/logo.svg',
-    alt: 'PickBazar',
-    href: '/grocery',
+    url: '/logo.png',
+    alt: 'VDG FASHION',
+    href: '/',
     width: 128,
     height: 40,
   },
@@ -81,10 +81,10 @@ export const siteSettings = {
     //   // MultiPayment: Make it dynamic or from mapper
     //   cardsPayment: [PaymentGateway.STRIPE],
     // },
-    {
-      href: Routes.help,
-      label: 'profile-sidebar-help',
-    },
+    // {
+    //   href: Routes.help,
+    //   label: 'profile-sidebar-help',
+    // },
     {
       href: Routes.logout,
       label: 'profile-sidebar-logout',

@@ -34,13 +34,13 @@ export const createUser = async (req, res) => {
 
     if(find_otp && !find_otp.validated){
       await sentOtpEmail(find_otp.email,find_otp.otp)
-      return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token : find_otp?.token, otp: find_otp.otp, email }})
+      return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token : find_otp?.token, email }})
     }else {
       const { otp , token } = await generateOtp()
       const save_otp = new Otps({ token: token, otp: otp, email})
       await save_otp.save()
       await sentOtpEmail(email,otp)
-     return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token, otp, email }})
+     return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token,  email }})
     }
 
     
@@ -64,8 +64,8 @@ export const loginUser = async (req,res) => {
         throw new Error("User not found with this credentials")
     }
 
-    const checkPassword = comparePassword(password,user?.password)
-
+    const checkPassword = await comparePassword(password,user?.password)
+    
     if(checkPassword){
         const token = await Tokens.findOne({ email: email })
         
@@ -119,8 +119,11 @@ export const getUserInfo = async (req,res) => {
 export const ChangePassword = async (req,res) => {
   try {
   const value = await Validations.ChangePasswordValidation(req.body)
-  const user = req.user 
-  const isMatch = await comparePassword(value.old_password,user.password)
+  const user = req.user
+  const userDetails = await User.findOne({ email: user?.email })
+  
+  const isMatch = await comparePassword(value.old_password,userDetails?.password)
+  
   if(!isMatch){
     throw new Error("old password dosent match")
   }
@@ -131,3 +134,96 @@ export const ChangePassword = async (req,res) => {
     res.status(500).json({ status: 'failed', message: error?.message })
   }
 }
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const value = await Validations.validateForgotPassword(req.body);
+    const { email } = value
+    console.log(email,"email",value)
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found with this email");
+    }
+
+    const existingOtp = await Otps.findOne({ email, validated: false });
+
+    if (existingOtp) {
+      await sentOtpEmail(existingOtp.email, existingOtp.otp);
+      return res.status(200).json({
+        status: "success",
+        message: "OTP already sent to your email",
+        data: { token: existingOtp.token ,email},
+      });
+    }
+
+    const { otp, token } = await generateOtp();
+    const newOtp = new Otps({ email, otp, token });
+    await newOtp.save();
+
+    await sentOtpEmail(email, otp);
+
+    res.status(200).json({
+      status: "success",
+      message: "OTP sent successfully",
+      data: { token, email},
+    });
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error.message });
+  }
+};
+
+export const verifyForgotPasswordOtp = async (req, res) => {
+  try {
+    const value = await Validations.validateOtp(req.body);
+
+    const { otp, token } = value 
+
+    const otpDetails = await Otps.findOne({ otp, token, validated: false });
+   
+    if (!otpDetails) {
+      throw new Error("Invalid or expired OTP");
+    }
+
+    await Otps.findOneAndUpdate(
+      { email: otpDetails.email },
+      { validated: true }
+    );
+
+    res.status(200).json({
+      status: "success",
+      message: "OTP verified successfully",
+      data: { email: otpDetails.email },
+    });
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const value = await Validations.validateResetPassword(req.body);
+
+      const { email, new_password, confirm_password } = value
+
+    if (new_password !== confirm_password) {
+      throw new Error("Passwords do not match");
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      throw new Error("User not found with this email");
+    }
+
+    const hashedPassword = await hashPassword(new_password);
+    await User.findOneAndUpdate({ email }, { password: hashedPassword });
+
+    res.status(200).json({
+      status: "success",
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    res.status(500).json({ status: "failed", message: error.message });
+  }
+};

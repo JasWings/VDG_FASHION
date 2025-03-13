@@ -278,7 +278,7 @@ function RenderFormSteps() {
   const emailFormHandle: SubmitHandler<
     Pick<ForgotPasswordUserInput, 'email'>
   > = ({ email }) => {
-    forgotPassword({ username:email });
+    forgotPassword({ email });
   };
 
   const passwordFormHandle: SubmitHandler<
@@ -297,7 +297,7 @@ function RenderFormSteps() {
   }
   const otpHandler=(values:otp)=>{
    const otp=values.otp
-    verifyForgotPasswordToken({otp,username:state.email})
+    verifyForgotPasswordToken({otp,email:state.email,token:state.token})
   }
   function backToPreviousStep(step: GlobalState['step']) {
     actions.updateFormState({

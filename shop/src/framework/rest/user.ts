@@ -520,8 +520,10 @@ export function useForgotPassword() {
       }
       showToast(data?.message,"success")
       setMessage(data?.message!);
+      console.log(data,"data")
       actions.updateFormState({
-        email: variables.username,
+        email: data.data.email,
+        token:data.data.token,
         step: 'Token',
       });
     },

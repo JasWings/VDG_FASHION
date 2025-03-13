@@ -21,13 +21,12 @@ const CartCounterButton = () => {
   });
 
   const handleCartOpen=()=>{
-    setDisplayCart({ display: true, view: 'cart' })
-        // if(!isAuthorize){
-        //   showToast("Login to continue","warning")
-        //   openModal("LOGIN_VIEW")
-        // }else if(isAuthorize){
-        //   setDisplayCart({ display: true, view: 'cart' })
-        // }
+        if(!isAuthorize){
+          showToast("Login to continue","warning")
+          openModal("LOGIN_VIEW")
+        }else if(isAuthorize){
+          setDisplayCart({ display: true, view: 'cart' })
+        }
   }
 
   const getText=(quantity)=>{

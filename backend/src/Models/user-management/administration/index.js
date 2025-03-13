@@ -54,10 +54,11 @@ const OtpSchema = new mongoose.Schema({
     is_active : {type : Boolean ,default : true},
     is_delete : {type : Boolean , default : false},
     type : { type: String ,default : null},
-    // createdAt:{type : Date,expires:360000,default:Date.now}
+    createdAt:{type : Date,expires:600,default:Date.now}
+
 })
 
-OtpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 360000 });
+// OtpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 360000 });
 
 export const Otps = mongoose.model("Otps",OtpSchema)
 

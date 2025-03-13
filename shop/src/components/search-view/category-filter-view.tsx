@@ -14,27 +14,31 @@ interface Props {
 
 const CategoryFilterView = ({ categories }: Props) => {
   const { t } = useTranslation('common');
-
   const router = useRouter();
   const category = router.query.parent as string;
   const selectedValue = useMemo(
-    () => (router.query.category as string) || '',
+    () => router.query.category || '',
     [router.query.category]
   );
   const [state, setState] = useState<string>(selectedValue);
 
   useEffect(() => {
-    setState(selectedValue);
+    if (selectedValue !== state) {
+      setState(selectedValue);
+    }
   }, [selectedValue]);
 
   function handleChange(value: string) {
-    router.push({
-      pathname: router.pathname,
-      query: {
-        ...router.query,
-        category: value,
-      },
-    });
+    if (value !== state) {
+      setState(value); // Update state to reflect selection
+      router.push({
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          category: value,
+        },
+      });
+    }
   }
 
   return (
@@ -46,12 +50,11 @@ const CategoryFilterView = ({ categories }: Props) => {
             {categories.map((plan) => {
               if (plan.parent === null) return null;
               if (category && category !== plan.parent) return null;
-
               return (
                 <Checkbox
-                  key={plan.id}
+                  key={plan._id}
                   label={plan.identity}
-                  name={plan.slug}
+                  name={plan.identity}
                   value={plan._id}
                   theme="secondary"
                 />
@@ -63,6 +66,7 @@ const CategoryFilterView = ({ categories }: Props) => {
     </div>
   );
 };
+
 
 const CategoryFilter: React.FC<{ type?: any }> = ({ type }) => {
   const { query, locale } = useRouter();

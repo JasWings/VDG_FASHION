@@ -23,21 +23,25 @@ const Navbar: React.FC = () => {
   const router = useRouter();
 
   const handleCategoryClick = (category: string) => {
+    if (selectedCategory === category) {
+      return; // Do nothing if the selected category is clicked again
+    }
+  
     setSelectedCategory(category);
+  
     const slug = category.toLowerCase().replace(/\s+/g, '-');
     const selectedGroup = groups?.filter((group: any) => group.slug === slug);
-    const currentQuery = { ...router.query };
-
+  
     const updatedQuery = {
-      ...currentQuery,
       group: selectedGroup?.[0]?._id,
     };
-
+  
     router.push({
       pathname: '/',
       query: updatedQuery,
     });
   };
+  
 
   useEffect(() => {
     const handleScroll = () => {

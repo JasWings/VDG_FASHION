@@ -13,6 +13,7 @@ import OrderViewHeader from './order-view-header';
 import OrderStatusProgressBox from '@/components/orders/order-status-progress-box';
 import { OrderStatus, PaymentStatus } from '@/types';
 import Button from '../ui/button';
+import { useUser } from '@/framework/user';
 
 interface Props {
   order: Order;
@@ -69,7 +70,7 @@ function RefundView({
 }) {
   const { t } = useTranslation('common');
   const { openModal } = useModalAction();
-
+  
   return (
     <>
       {status ? (
@@ -100,7 +101,7 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
   }: any = order ?? {};
   const {    shipping_address,
     billing_address,price_details,items}:any=order
-  console.log(order,"order_details")
+  
   const { price: amount } = usePrice({
     amount: price_details?.total_actual_price,
     currencyCode: "INR"
@@ -121,6 +122,8 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
     amount: order?.sales_tax,
     currencyCode: "INR"
   });
+  const {  me } = useUser()
+ 
 
   const handleCancelOrder=(order:any)=>{
         openModal("CANCEL_ORDER",order)  
@@ -163,6 +166,17 @@ const OrderDetails = ({ order, loadingStatus }: Props) => {
           loading={loadingStatus}
         />
       </div>
+      {me && (
+  <div className="flex flex-row p-[10px] gap-2 md:gap-0 items-center md:p-[20px] border-b border-border-200 border-t">
+    <span className="mb-2 block text-xs md:text-lg sm:font-normal font-semibold xs:text-base lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4">
+      Customer Name:
+    </span>
+    <span className="mb-2 block text-xs md:text-lg sm:font-normal font-semibold xs:text-base lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4">
+      {me.first_name + " " + me.last_name}
+    </span>
+  </div>
+)}
+
       {order?.status!=="initiated"&&<div className=' flex flex-row p-[10px] gap-2 md:gap-0 items-center md:p-[20px] border-b border-border-200 border-t '>
       <span className="mb-2 block text-xs md:text-lg sm:font-normal font-normal  md:font-semibold xs:text-base  lg:mb-0 lg:inline-block lg:ltr:mr-4 lg:rtl:ml-4">
         Payment Id :

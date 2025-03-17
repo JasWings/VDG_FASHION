@@ -70,6 +70,7 @@ export function useUser() {
       },
     }
   );
+  
   //TODO: do some improvement here
   return { me: data, isLoading, error, isAuthorized };
 }

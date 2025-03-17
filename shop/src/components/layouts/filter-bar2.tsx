@@ -14,12 +14,19 @@ import ArrowNarrowLeft from '@/components/icons/arrow-narrow-left';
 import { useIsRTL } from '@/lib/locals';
 import Button from '@/components/ui/button';
 import { useCategories } from '@/framework/category';
+import dynamic from 'next/dynamic';
 
-const FieldWrapper = ({ children, title }: any) => (
+const isMobile = dynamic(() => import("react-device-detect").then((mod) => mod.isMobile), { ssr: false });
+
+
+const FieldWrapper = ({ children, title, defaultOpen = true }: any) => (
   <div className="border-b border-gray-200 py-7 last:border-0">
-    <CustomDisclosure title={title}>{children}</CustomDisclosure>
+    <CustomDisclosure title={title} defaultOpen={defaultOpen}>
+      {children}
+    </CustomDisclosure>
   </div>
 );
+
 
 function ClearFiltersButton() {
   const { t } = useTranslation('common');
@@ -58,15 +65,15 @@ const SidebarFilter: React.FC<{
   type?: string;
   showManufacturers?: boolean;
   className?: string;
-  variables :any
-}> = ({ type, showManufacturers = true, className,variables }) => {
+  variables: any;
+}> = ({ type, showManufacturers = true, className, variables }) => {
   const router = useRouter();
-  const { group } = router.query
+  const { group } = router.query;
   const { isRTL } = useIsRTL();
   const { t } = useTranslation('common');
   const [_, closeSidebar] = useAtom(drawerAtom);
-  const  { categories, isLoading, error } = useCategories({type_id:group})
-  
+  const { categories, isLoading, error } = useCategories({ type_id: group });
+
   return (
     <div
       className={classNames(
@@ -77,7 +84,7 @@ const SidebarFilter: React.FC<{
       <div className="sticky top-0 z-10 flex items-center justify-between rounded-tl-xl rounded-tr-xl border-b border-gray-200 bg-white px-5 py-6 lg:static">
         <div className="flex items-center space-x-3 rtl:space-x-reverse lg:space-x-0">
           <button
-            className="text-body focus:outline-0 lg:hidden"
+            className="text-body focus:outline-0 hidden"
             onClick={() => closeSidebar({ display: false, view: '' })}
           >
             <ArrowNarrowLeft
@@ -93,49 +100,40 @@ const SidebarFilter: React.FC<{
             {t('text-filter')}
           </h3>
         </div>
-
-        <ClearFiltersButton />
       </div>
 
       <div className="flex-1 px-5">
-        <FieldWrapper title="text-search">
-          <Search variant="minimal" label="search" />
-        </FieldWrapper>
-
-        {router.route !== '/[searchType]/search' && (
-          <FieldWrapper title="text-sort">
-            <Sorting />
+        {/* Hiding Search in Mobile */}
+        {/* <div className="hidden lg:block">
+          <FieldWrapper title="text-search">
+            <Search variant="minimal" label="search" />
           </FieldWrapper>
+        </div> */}
+
+        {/* Hiding Sorting in Mobile */}
+        {router.route !== '/[searchType]/search' && (
+          <div className="hidden lg:block">
+            <FieldWrapper title="text-sort">
+              <Sorting />
+            </FieldWrapper>
+          </div>
         )}
 
-        <FieldWrapper title="text-categories">
+        <FieldWrapper title="text-categories" defaultOpen={!isMobile} >
           <CategoryFilter type={categories} />
         </FieldWrapper>
 
-        <FieldWrapper title="text-sort-by-price">
-          <PriceFilter />
-        </FieldWrapper>
-
-        {/* <FieldWrapper title="text-tags">
-          <TagFilter />
-        </FieldWrapper> */}
-
-        {/* {showManufacturers && (
-          <FieldWrapper title="text-manufacturers">
-            <ManufacturerFilter />
+        {/* Hiding Price Filter in Mobile */}
+        <div className="hidden lg:block">
+          <FieldWrapper title="text-sort-by-price">
+            <PriceFilter />
           </FieldWrapper>
-        )} */}
+        </div>
       </div>
-      {/* <div className="sticky bottom-0 z-10 mt-auto border-t border-gray-200 bg-white p-5 lg:hidden">
-        <Button
-          className="w-full"
-          onClick={() => closeSidebar({ display: false, view: '' })}
-        >
-          Show Products
-        </Button>
-      </div> */}
     </div>
   );
 };
+
+
 
 export default SidebarFilter;

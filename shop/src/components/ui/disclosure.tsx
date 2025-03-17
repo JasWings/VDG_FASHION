@@ -7,14 +7,15 @@ type DisclosureProps = {
   children: React.ReactNode;
 };
 
-export const CustomDisclosure: React.FC<DisclosureProps> = ({
+export const CustomDisclosure: React.FC<DisclosureProps & { defaultOpen?: boolean }> = ({
   title,
   children,
+  defaultOpen = true, // Default is open unless specified
   ...props
 }) => {
   const { t } = useTranslation('common');
   return (
-    <HeadlessDisclosure defaultOpen={true} {...props}>
+    <HeadlessDisclosure defaultOpen={defaultOpen} {...props}>
       {({ open }) => (
         <>
           <HeadlessDisclosure.Button className="flex w-full items-center justify-between focus:outline-0 focus:ring-1 focus:ring-accent focus:ring-opacity-40">
@@ -31,3 +32,4 @@ export const CustomDisclosure: React.FC<DisclosureProps> = ({
     </HeadlessDisclosure>
   );
 };
+

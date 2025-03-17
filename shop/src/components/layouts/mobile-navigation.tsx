@@ -25,7 +25,11 @@ export default function MobileNavigation({
   const { totalUniqueItems } = useCart();
 
   function handleSidebar(view: string) {
-    setDrawerView({ display: true, view });
+    if(isAuthorize){
+      setDrawerView({ display: true, view });
+    }else {
+      openModal('LOGIN_VIEW')
+    }
   }
 
   function handleJoin() {

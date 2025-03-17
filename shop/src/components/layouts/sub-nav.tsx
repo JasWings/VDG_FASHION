@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useGroups } from '@/framework/group';
+import { FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 
 interface Category {
   name: string;
@@ -21,27 +22,20 @@ const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const { groups } = useGroups();
   const router = useRouter();
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
   const handleCategoryClick = (category: string) => {
-    if (selectedCategory === category) {
-      return; // Do nothing if the selected category is clicked again
-    }
-  
+    if (selectedCategory === category) return;
     setSelectedCategory(category);
-  
+
     const slug = category.toLowerCase().replace(/\s+/g, '-');
-    const selectedGroup = groups?.filter((group: any) => group.slug === slug);
-  
-    const updatedQuery = {
-      group: selectedGroup?.[0]?._id,
-    };
-  
+    const selectedGroup = groups?.find((group: any) => group.slug === slug);
+
     router.push({
       pathname: '/',
-      query: updatedQuery,
+      query: { group: selectedGroup?._id },
     });
   };
-  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,26 +46,45 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -100, behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 100, behavior: 'smooth' });
+    }
+  };
+
   return (
-    <header
-      className={`sticky top-0 xl:top-22 z-10 transition-all duration-300 bg-white border-b-2 border-t-2 border-gray-200 ${
-        isScrolled ? 'shadow-md' : ''
-      }`}
-    >
-      <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-8 px-4 py-2">
-        {categories.map((category, index) => (
-          <div
-            key={index}
-            onClick={() => handleCategoryClick(category.name)}
-            className={`relative text-gray-600 p-2 sm:p-4 text-sm sm:text-base font-medium cursor-pointer group hover:text-rose-600 hover:border-b-2 border-rose-600 ${
-              selectedCategory === category.name ? 'text-rose-600 border-b-2 border-rose-600' : ''
-            }`}
-          >
-            <span className="px-1 sm:px-2 transition-all duration-300">
-              {category.name}
-            </span>
-          </div>
-        ))}
+    <header className={`sticky top-0 xl:top-22 z-10 transition-all duration-300 bg-white border-b-2 border-gray-200 ${isScrolled ? 'shadow-md' : ''}`}>
+      <div className="relative flex  justify-center items-center bg-white px-4 py-2">
+        {/* Left Scroll Button for Mobile */}
+        {/* <button onClick={scrollLeft} className="hidden sm:flex items-center justify-center p-2 text-gray-600 hover:text-rose-600">
+          <FiChevronLeft size={20} />
+        </button> */}
+
+        {/* Scrollable Categories */}
+        <div ref={scrollRef} className="flex xl:justify-center overflow-x-auto scrollbar-hide gap-4 sm:gap-6 whitespace-nowrap w-full px-2">
+          {categories.map((category, index) => (
+            <div
+              key={index}
+              onClick={() => handleCategoryClick(category.name)}
+              className={`relative text-gray-600 p-2 text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ${
+                selectedCategory === category.name ? 'text-rose-600 border-b-2 border-rose-600' : 'hover:text-rose-600'
+              }`}
+            >
+              <span className="px-2">{category.name}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Right Scroll Button for Mobile */}
+        {/* <button onClick={scrollRight} className="hidden sm:flex items-center justify-center p-2 text-gray-600 hover:text-rose-600">
+          <FiChevronRight size={20} />
+        </button> */}
       </div>
     </header>
   );

@@ -273,8 +273,8 @@ const ProductList = ({
         <div className="flex items-center justify-end">
           <Pagination
             total={paginatorInfo.total}
-            current={paginatorInfo.currentPage}
-            pageSize={paginatorInfo.perPage}
+            current={paginatorInfo.page}
+            pageSize={paginatorInfo.pageSize}
             onChange={onPagination}
             showLessItems
           />

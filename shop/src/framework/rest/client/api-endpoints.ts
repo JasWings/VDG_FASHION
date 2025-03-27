@@ -29,6 +29,7 @@ export const API_ENDPOINTS = {
   GET_ADDRESS:'/commerce/customer-address/',
   PLACE_ORDER:'/commerce/cart/place_order/',
   ORDERS: '/orders/',
+  USER_ORDER : '/orders/users',
   NOTE:'/commerce/cart/update_note/',
   ORDERS_REFUNDS: '/refunds',
   ORDERS_PAYMENT: '/make_payment/',

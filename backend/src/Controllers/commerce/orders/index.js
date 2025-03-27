@@ -64,6 +64,40 @@ const getAllOrders = async (req, res) => {
     }
 };
 
+const getAllCustomerOrders = async (req, res) => {
+    try {
+        const { page = 1, limit = 10 } = req.query; 
+
+        const user = req.user
+
+        const total = await Order.countDocuments({ customer_id: user?._id});
+        const orders = await Order.find({ customer_id: user?._id})
+            .populate({ path: "shipping_address" })
+            .populate({ path: "billing_address" })
+            .populate({ path: 'data', populate: { path: "items.product" }, strictPopulate: false })
+            .limit(parseInt(limit))
+            .skip((page - 1) * limit);
+
+        const totalPages = Math.ceil(total / limit);
+        const nextPage = page < totalPages ? parseInt(page) + 1 : null;
+
+        res.status(200).json({
+            status: "success",
+            message: "Orders retrieved successfully",
+            data: orders,
+            pagination: {
+                currentPage: parseInt(page),
+                lastPage : totalPages,
+                next_page_url: nextPage ? `${req.protocol}://${req.get('host')}${req.originalUrl.split('?')[0]}?page=${nextPage}&limit=${limit}` : null,
+                total,
+                perPage : limit
+            },
+        });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+    }
+};
+
 
 export const updateOrder = async (req, res) => {
     try {
@@ -114,5 +148,5 @@ export const deleteOrder = async (req, res) => {
     }
 };
 
-export { createOrder, getOrderById, getAllOrders};
+export { createOrder, getOrderById, getAllOrders,getAllCustomerOrders};
 

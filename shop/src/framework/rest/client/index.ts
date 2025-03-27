@@ -291,7 +291,7 @@ class Client {
   orders = {
     cancelOrder:(id:any,data:any)=>HttpClient.Update(`${API_ENDPOINTS.ORDERS}${id}/cancel/`,data),
     all: () =>
-      HttpClient.get<OrderPaginator>(API_ENDPOINTS.ORDERS),
+      HttpClient.get<OrderPaginator>(API_ENDPOINTS.USER_ORDER),
     get: (tracking_number: string) =>
       HttpClient.get<Order>(`${API_ENDPOINTS.ORDERS}${tracking_number}`),
     create: (input: CreateOrderInput) =>

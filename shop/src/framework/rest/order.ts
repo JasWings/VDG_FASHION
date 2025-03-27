@@ -46,7 +46,7 @@ export function useOrders(options?: Partial<OrderQueryOptions>) {
     isFetching,
     isFetchingNextPage,
   } = useInfiniteQuery<OrderPaginator, Error>(
-    [API_ENDPOINTS.ORDERS, formattedOptions],
+    [API_ENDPOINTS.USER_ORDER, formattedOptions],
     ({ queryKey, pageParam }) =>
       client.orders.all()
   );

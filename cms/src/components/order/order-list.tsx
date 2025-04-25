@@ -38,7 +38,6 @@ const OrderList = ({
   onSort,
   onOrder,
 }: IProps) => {
-  // const { data, paginatorInfo } = orders! ?? {};
   const router = useRouter();
   const { t } = useTranslation();
   const rowExpandable = (record: any) => record.children?.length;
@@ -58,7 +57,6 @@ const OrderList = ({
   const onSubmit = async (shop_id: string | undefined) => {
     setLoading(shop_id);
     createConversations({
-      // @ts-ignore
       shop_id,
       via: 'admin',
     });
@@ -80,13 +78,13 @@ const OrderList = ({
   });
 
   const columns = [
-    // {
-    //   title: t('table:table-item-tracking-number'),
-    //   dataIndex: 'tracking_number',
-    //   key: 'tracking_number',
-    //   align: 'center',
-    //   width: 150,
-    // },
+    {
+      title: 'User Name',
+      dataIndex: 'customer_id',
+      key: 'customer_id',
+      align: alignLeft,
+      render: (user_name: string) => <span>{user_name.first_name + user_name?.last_name}</span>,
+    },
     {
       title: t('table:table-item-delivery-fee'),
       dataIndex: 'delivery_fee',
@@ -96,13 +94,12 @@ const OrderList = ({
         const delivery_fee = value ? value : 0;
         const { price } = usePrice({
           amount: delivery_fee,
-          currencyCode : "INR"
+          currencyCode: 'INR',
         });
         return <span>{price}</span>;
       },
     },
     {
-      // title: t('table:table-item-total'),
       title: (
         <TitleWithSort
           title={t('table:table-item-total')}
@@ -122,13 +119,12 @@ const OrderList = ({
       render: function Render(value: any) {
         const { price } = usePrice({
           amount: value,
-          currencyCode : "INR"
+          currencyCode: 'INR',
         });
         return <span className="whitespace-nowrap">{price}</span>;
       },
     },
     {
-      // title: t('table:table-item-order-date'),
       title: (
         <TitleWithSort
           title={t('table:table-item-order-date')}
@@ -183,7 +179,6 @@ const OrderList = ({
         const currentButtonLoading = !!loading && loading === order?.shop_id;
         return (
           <>
-            {/* @ts-ignore */}
             {order?.children?.length ? (
               ''
             ) : (
@@ -216,7 +211,6 @@ const OrderList = ({
     <>
       <div className="mb-6 overflow-hidden rounded shadow">
         <Table
-          //@ts-ignore
           columns={columns}
           emptyText={t('table:empty-table-data')}
           data={orders}

@@ -1,7 +1,6 @@
 import ActionButtons from '@/components/common/action-buttons';
 import { Config } from '@/config';
 import LanguageAction from './language-switcher';
-import shop from '@/components/layouts/shop';
 import { useRouter } from 'next/router';
 
 export type LanguageSwitcherProps = {
@@ -10,6 +9,7 @@ export type LanguageSwitcherProps = {
   deleteModalView?: string | any;
   routes: any;
   className?: string | undefined;
+  showEditIcon?: boolean; // Add this prop
 };
 
 export default function LanguageSwitcher({
@@ -18,6 +18,7 @@ export default function LanguageSwitcher({
   deleteModalView,
   routes,
   className,
+  showEditIcon = true, // Default to true
 }: LanguageSwitcherProps) {
   const { enableMultiLang } = Config;
   const {
@@ -36,7 +37,7 @@ export default function LanguageSwitcher({
       ) : (
         <ActionButtons
           id={record?._id}
-          editUrl={routes.editWithoutLang(slug, shop)}
+          editUrl={showEditIcon ? routes.editWithoutLang(slug, shop) : undefined} // Conditionally pass editUrl
           deleteModalView={deleteModalView}
         />
       )}

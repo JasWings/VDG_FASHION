@@ -98,6 +98,7 @@ const SliderList = ({ types, onSort, onOrder }: IProps) => {
           record={record}
           deleteModalView="DELETE_SLIDER"
           routes={Routes?.sliders}
+          showEditIcon={false}
         />
       ),
     },

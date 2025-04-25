@@ -33,6 +33,10 @@ const AttributeDeleteView = dynamic(
   () => import('@/components/attribute/attribute-delete-view')
 );
 
+const OfferDeleteView = dynamic(
+  () => import("@/components/offers/offer-delete-view")
+)
+
 const ApproveShopView = dynamic(
   () => import('@/components/shop/approve-shop-view')
 );
@@ -118,6 +122,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <TypeDeleteView />;
     case 'DELETE_SLIDER':
       return <DeleteSlider />;
+    case 'DELETE_OFFER':
+      return <OfferDeleteView />
     case 'DELETE_ATTRIBUTE':
       return <AttributeDeleteView />;
     case 'DELETE_CATEGORY':

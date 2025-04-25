@@ -98,7 +98,7 @@ const ProductList = ({
       dataIndex: 'name',
       key: 'name',
       align: alignLeft,
-      width: 300,
+      width: 500,
       ellipsis: true,
       onHeaderCell: () => onHeaderClick('name'),
     },

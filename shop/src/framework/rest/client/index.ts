@@ -213,6 +213,9 @@ class Client {
     get: ({ slug, language }: { slug: string; language: string }) =>findAllTypesRoute(`${API_ENDPOINTS.TYPES}/${slug}`, { language }),
       // HttpClient.get<Type>(`${API_ENDPOINTS.TYPES}/${slug}`, { language }),
   };
+  sliders = {
+    all: (params?: Partial<TypeQueryOptions>) => HttpClient.get(API_ENDPOINTS.SLIDERS+"/active"),
+  };
   shops = {
     all: (params: Partial<ShopQueryOptions>) =>
       HttpClient.get<ShopPaginator>(API_ENDPOINTS.SHOPS, {

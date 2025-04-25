@@ -39,7 +39,7 @@ const getAllOrders = async (req, res) => {
         const total = await Order.countDocuments();
         const orders = await Order.find()
             .populate({ path: "shipping_address" })
-            .populate({ path: "billing_address" })
+            .populate({ path: "billing_address" }).populate({path: "customer_id"})
             .populate({ path: 'data', populate: { path: "items.product" }, strictPopulate: false })
             .limit(parseInt(limit))
             .skip((page - 1) * limit);

@@ -79,8 +79,6 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
   //   return <Spinner />
   // }
 
-
-
   return (
       <>
         {!is_variant&&

@@ -7,6 +7,7 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTypeQuery } from '@/data/type';
 import { Config } from '@/config';
+import CreateOrUpdateSliderForm from '@/components/sliders/slider-form';
 
 export default function UpdateTypePage() {
   const { query, locale } = useRouter();
@@ -30,7 +31,7 @@ export default function UpdateTypePage() {
           {t('form:form-title-edit-type')}
         </h1>
       </div>
-      <CreateOrUpdateTypeForm initialValues={data?.data} />
+      <CreateOrUpdateSliderForm initialValues={data?.data} />
     </>
   );
 }

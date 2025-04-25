@@ -174,7 +174,7 @@ export const getProducts = async (req, res) => {
     if (orderBy === "min_price" || orderBy === "max_price") {
       sortQuery = { price: sortOrder };
     } else {
-      sortQuery = { created_at: sortOrder };
+      sortQuery = { created_at: sortOrder, _id: 1 }; // Added _id for deterministic sorting
     }
 
     const priceFilter = {};
@@ -226,11 +226,13 @@ export const getProducts = async (req, res) => {
     const pageNumber = parseInt(page, 10);
     const pageSize = parseInt(limit, 10);
 
+    const skipCount = (pageNumber - 1) * pageSize;
+
     const product_list = await ProductModel.find(productFilter)
       .populate({ path: "group", model: "Group" })
       .populate({ path: "variants", populate: { path: "attributes" } })
       .sort(sortQuery)
-      .skip((pageNumber - 1) * pageSize)
+      .skip(skipCount)
       .limit(pageSize);
 
     const totalProducts = await ProductModel.countDocuments(productFilter);
@@ -250,6 +252,7 @@ export const getProducts = async (req, res) => {
     res.status(500).json({ status: "failed", message: error?.message });
   }
 };
+
 
 
 // export const getProducts = async (req, res) => {

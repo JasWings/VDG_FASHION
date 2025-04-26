@@ -74,7 +74,7 @@ const RazorpayPaymentModal: React.FC<Props> = ({
         },
       },
     };
-    console.log(options,process.env,"list")
+    console.log(options,process.env,"list",process.env.NEXT_PUBLIC_REST_API_ENDPOINT,process.env.NEXT_PUBLIC_RAZORPAY_KEY)
     const razorpay = (window as any).Razorpay(options);
     return razorpay.open();
   }, [isLoading, isSettingsLoading]);

@@ -78,12 +78,12 @@ export const updateCoupon = async (req, res) => {
 
 export const deleteCoupon = async (req, res) => {
     try {
-        const coupon = await Coupons.findById(req.params.id);
+        const coupon = await Coupons.findOneAndDelete({ uuid: req.params.id});
         if (!coupon) {
             return res.status(404).json({ error: 'Coupon not found' });
         }
 
-        await coupon.remove();
+        // await coupon.remove();
         res.status(200).json({ message: 'Coupon deleted successfully' });
     } catch (err) {
         res.status(400).json({ error: err.message });

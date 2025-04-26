@@ -36,7 +36,7 @@ export default function LanguageSwitcher({
         />
       ) : (
         <ActionButtons
-          id={record?._id}
+          id={record?.uuid}
           editUrl={showEditIcon ? routes.editWithoutLang(slug, shop) : undefined} // Conditionally pass editUrl
           deleteModalView={deleteModalView}
         />

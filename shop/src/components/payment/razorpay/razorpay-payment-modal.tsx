@@ -40,7 +40,7 @@ const RazorpayPaymentModal: React.FC<Props> = ({
       await loadRazorpayScript();
     }
     const options: RazorpayOptions = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY,
       amount: paymentIntentInfo?.amount!,
       currency: paymentIntentInfo?.currency!,
       name: customer_name!,

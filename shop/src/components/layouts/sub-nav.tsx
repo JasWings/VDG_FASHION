@@ -24,13 +24,13 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  const handleCategoryClick = (category: string) => {
+  const handleCategoryClick = (category: string,cate:any) => {
     if (selectedCategory === category) return;
     setSelectedCategory(category);
 
     const slug = category.toLowerCase().replace(/\s+/g, '-');
-    const selectedGroup = groups?.find((group: any) => group.slug === slug);
-
+    const selectedGroup = cate
+    console.log(selectedCategory,category,"category")
     router.push({
       pathname: '/',
       query: { group: selectedGroup?._id },
@@ -68,10 +68,10 @@ const Navbar: React.FC = () => {
 
         {/* Scrollable Categories */}
         <div ref={scrollRef} className="flex xl:justify-center overflow-x-auto scrollbar-hide gap-4 sm:gap-6 whitespace-nowrap w-full px-2">
-          {categories.map((category, index) => (
+          {groups?.map((category, index) => (
             <div
               key={index}
-              onClick={() => handleCategoryClick(category.name)}
+              onClick={() => handleCategoryClick(category.name,category)}
               className={`relative text-gray-600 p-2 text-sm sm:text-base font-medium cursor-pointer transition-all duration-300 ${
                 selectedCategory === category.name ? 'text-rose-600 border-b-2 border-rose-600' : 'hover:text-rose-600'
               }`}

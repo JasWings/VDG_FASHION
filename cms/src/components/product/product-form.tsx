@@ -182,7 +182,7 @@ export default function CreateOrUpdateProductForm({
         
         updateProduct({
           ...inputValues,
-          group : initialValues?.type_id,
+          group : inputValues?.type_id,
           _id: initialValues._id!,
           id : initialValues?.id,
           variants : initialValues?.variants,

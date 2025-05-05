@@ -402,6 +402,8 @@ const updateProductSchema = Joi.object({
         is_deleted: Joi.boolean().optional(),
         file: Joi.string().required(),
         id: Joi.number().optional(),
+        _id: Joi.any().optional(),
+        __v : Joi.any().optional()
     }).optional(),
     gallery: Joi.array().items(
         Joi.object({

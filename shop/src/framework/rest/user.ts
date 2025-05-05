@@ -161,8 +161,8 @@ export const useUpdateAddress = () => {
   return useMutation(client.users.address, {
     onSuccess: async(data:any) => {
       console.log(data,"address_data")
-      await client.cart.updateAddress({address_uuid:data.uuid,type:data.address_type})
-      if (data?.id) {
+      await client.cart.updateAddress({address_uuid:data.data.uuid,type:data.data.address_type})
+      if (data?.data?.id) {
         toast.success(`${t('Address-Added-successful')}`);
         window.location.reload()
         closeModal();

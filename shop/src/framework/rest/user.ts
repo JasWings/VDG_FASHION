@@ -387,14 +387,14 @@ export function useRegister() {
   const { mutate, isLoading } = useMutation(client.users.register, {
     onSuccess: (data:any) => {
       console.log(data,"data")
-      if (data?.data?.token) {
-        setToken(data.data.token)
-        Cookies.set(AUTH_TOKEN_KEY, data.data.token);
+      if (data.data.new_token) {
+        setToken(data.data.new_token)
+        Cookies.set(AUTH_TOKEN_KEY, data.data.new_token);
         showToast(data.message,"success")
         // setAuthorized(true);
-        setRegisterState({step:"OtpForm"})
-        // window.location.reload()
-        // closeModal();
+        // setRegisterState({step:"OtpForm"})
+        window.location.reload()
+        closeModal();
         return;
       }
       if (!data.token) {

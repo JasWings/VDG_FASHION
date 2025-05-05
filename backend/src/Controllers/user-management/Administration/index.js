@@ -32,16 +32,11 @@ export const createUser = async (req, res) => {
 
     const find_otp = await Otps.findOne({ email: email })
 
-    if(find_otp && !find_otp.validated){
-      await sentOtpEmail(find_otp.email,find_otp.otp)
-      return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token : find_otp?.token, email }})
-    }else {
-      const { otp , token } = await generateOtp()
-      const save_otp = new Otps({ token: token, otp: otp, email})
-      await save_otp.save()
-      await sentOtpEmail(email,otp)
-     return res.status(200).json({ status: "success", message: "Otp send successfully",data: { token,  email }})
-    }
+
+    const new_token = await generateToken(user)
+    const save_token = new Tokens({ token: new_token, email: user?.email})
+    await save_token.save()
+    res.status(201).json({ status: 'sucess', message: "User created successfully", data: { new_token , uuid: user?._id} });
 
     
     // const new_token = await generateToken(user)

@@ -9,6 +9,7 @@ export type LanguageSwitcherProps = {
   deleteModalView?: string | any;
   routes: any;
   className?: string | undefined;
+  id:any
   showEditIcon?: boolean; // Add this prop
 };
 
@@ -17,6 +18,7 @@ export default function LanguageSwitcher({
   slug,
   deleteModalView,
   routes,
+  id,
   className,
   showEditIcon = true, // Default to true
 }: LanguageSwitcherProps) {
@@ -36,7 +38,7 @@ export default function LanguageSwitcher({
         />
       ) : (
         <ActionButtons
-          id={record?.uuid}
+          id={id ? id : record?.uuid}
           editUrl={showEditIcon ? routes.editWithoutLang(slug, shop) : undefined} // Conditionally pass editUrl
           deleteModalView={deleteModalView}
         />

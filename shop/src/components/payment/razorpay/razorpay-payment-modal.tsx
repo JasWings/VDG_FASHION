@@ -9,6 +9,7 @@ import { useOrder, useOrderPayment } from '@/framework/order';
 import Spinner from '@/components/ui/loaders/spinner/spinner';
 import client from '@/framework/client';
 import { useRouter } from 'next/router';
+import { getImageURL } from '@/lib/image';
 
 interface Props {
   paymentIntentInfo: PaymentIntentInfo;
@@ -45,7 +46,7 @@ const RazorpayPaymentModal: React.FC<Props> = ({
       currency: paymentIntentInfo?.currency!,
       name: customer_name!,
       description: `${t('text-order')}#${trackingNumber}`,
-      image: settings?.logo?.original!,
+      image: getImageURL(settings?.logo?.file)!,
       order_id: paymentIntentInfo?.payment_id!,
       handler: async (response : any) => {
         console.log(response,"response")

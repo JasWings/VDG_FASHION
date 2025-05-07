@@ -111,7 +111,7 @@ export const AddToCart = ({
   const outOfStock = isInCart(item?.id) && !isInStock(item.id);
 
   const handleAddCart=(item:any)=>{
-    console.log(item,"item",data)
+    
         setIsLoading(true)
         if(isAuthorize){
           handleAddClick(item)

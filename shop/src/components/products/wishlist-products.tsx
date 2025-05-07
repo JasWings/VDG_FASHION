@@ -141,7 +141,7 @@ const WishlistProducts: React.FC = () => {
     useWishlist();
 
   if (error) return <ErrorMessage message={error.message} />;
-  console.log(wishlists,"wishlists")
+  
   // loader
   if (!wishlists.length && isLoading) {
     return (

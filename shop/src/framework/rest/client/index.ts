@@ -425,8 +425,9 @@ class Client {
       ),
   };
   settings = {
-    all: (params?: SettingsQueryOptions) =>findAllSettings(),
-      // HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
+    all: (params?: SettingsQueryOptions) =>
+      // findAllSettings(),
+      HttpClient.get<Settings>(API_ENDPOINTS.SETTINGS, { ...params }),
     upload: (input: File[]) => {
       let formData = new FormData();
       input.forEach((attachment) => {

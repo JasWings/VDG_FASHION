@@ -62,7 +62,7 @@ export function useProducts(pageSize: number, category?: string, group?: string,
   const pagination = data?.pages[0]?.pagination;
 
   const load = pagination?.page < pagination?.totalPages && newPageSize <= pagination?.total;  
-  console.log(data?.pages[0],"0",load,pagination?.page < pagination?.totalPages , newPageSize <= pagination?.total)
+
   return {
     products: data?.pages[0]?.data ?? [],
     paginatorInfo: Array.isArray(data?.pages)

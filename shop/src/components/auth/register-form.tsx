@@ -173,7 +173,7 @@ export default function RegisterView() {
 
   function onOtpLoginSubmission(values: any) {
     const token = getToken()
-    console.log(values,"values",token)
+
     otpLogin({
       ...values,
       token

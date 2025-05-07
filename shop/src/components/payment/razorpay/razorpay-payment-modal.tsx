@@ -49,11 +49,10 @@ const RazorpayPaymentModal: React.FC<Props> = ({
       image: getImageURL(settings?.logo?.file)!,
       order_id: paymentIntentInfo?.payment_id!,
       handler: async (response : any) => {
-        console.log(response,"response")
         closeModal();
 
        const res= await client.orders.RefreshPayment(response.razorpay_payment_id,response)
-       console.log(res,"res")
+       
       //  router.push("/orders")
         createOrderPayment({
           tracking_number: trackingNumber!,
@@ -75,7 +74,7 @@ const RazorpayPaymentModal: React.FC<Props> = ({
         },
       },
     };
-    console.log(options,process.env,"list",process.env.NEXT_PUBLIC_REST_API_ENDPOINT,process.env.NEXT_PUBLIC_RAZORPAY_KEY)
+
     const razorpay = (window as any).Razorpay(options);
     return razorpay.open();
   }, [isLoading, isSettingsLoading]);

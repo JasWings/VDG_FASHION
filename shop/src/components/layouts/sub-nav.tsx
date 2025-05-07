@@ -30,7 +30,7 @@ const Navbar: React.FC = () => {
 
     const slug = category.toLowerCase().replace(/\s+/g, '-');
     const selectedGroup = cate
-    console.log(selectedCategory,category,"category")
+
     router.push({
       pathname: '/',
       query: { group: selectedGroup?._id },

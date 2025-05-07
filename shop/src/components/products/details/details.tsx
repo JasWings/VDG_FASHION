@@ -146,7 +146,7 @@ const Details: React.FC<Props> = ({
       )
     );
   }
-  console.log(variations,product,isSelected,selectedVariation,attributes)
+
   const scrollDetails = () => {
     scroller.scrollTo('details', {
       smooth: true,

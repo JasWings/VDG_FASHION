@@ -135,7 +135,7 @@ uuid:""
 };
 
 export function cartReducer(state: State, action: Action): State {
-  console.log(state,action)
+  
   switch (action.type) {
     case 'SET_CART':{
          const {cartData}=action

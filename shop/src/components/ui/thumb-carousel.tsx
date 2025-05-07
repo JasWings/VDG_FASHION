@@ -53,7 +53,7 @@ export const ThumbsCarousel: React.FC<Props> = ({
   const { isRTL } = useIsRTL();
   const prevRef = useRef<HTMLDivElement>(null);
   const nextRef = useRef<HTMLDivElement>(null);
-  console.log(gallery,"gallery")
+  
   return (
     <div>
       <div className="relative">

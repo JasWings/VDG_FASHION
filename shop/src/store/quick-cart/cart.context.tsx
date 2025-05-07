@@ -88,7 +88,7 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
       return error.response.data
     }
   }
-  console.log(state,"state")
+
   const removeItemFromCart = async(id: string,quantity:number) =>{
         const cartObject={product:id,quantity:quantity}
         const response=await client.cart.update(cartObject)

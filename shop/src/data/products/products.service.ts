@@ -56,7 +56,7 @@ export function getProducts({ limit, page, search }: GetProductsDto): ProductPag
   }
 
   const results = data.slice(startIndex, endIndex);
-  console.log(results,"results",results[0])
+  
   const url = `/products?search=${search}&limit=${limit}`;
   return {
     data: results,

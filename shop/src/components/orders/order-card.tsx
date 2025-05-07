@@ -23,7 +23,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ onClick, order, isActive }) => {
     currencyCode: "INR"
   });
 
-  console.log(order,"order")
+
   
   return (
     <>

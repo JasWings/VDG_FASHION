@@ -27,7 +27,7 @@ const Helium: React.FC<HeliumProps> = ({ product, className }) => {
   const { price: maxPrice } = usePrice({
     amount: max_price,
   });
-  console.log(product,"product")
+
   const { openModal } = useModalAction();
 
   function handleProductQuickView() {

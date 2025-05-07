@@ -24,7 +24,7 @@ export default function OrderPage() {
     const getPayment = async () => {
       try {
         const resp: any = await client.orders.makePayment(tracking_number);
-        console.log(resp)
+        
         if (resp) {
           setPaymentIntentInfo(resp?.data); // Store the payment intent info for the modal
           setPaymentModalVisible(true); // Trigger modal visibility

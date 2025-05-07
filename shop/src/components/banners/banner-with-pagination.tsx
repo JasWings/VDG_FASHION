@@ -16,7 +16,7 @@ interface BannerProps {
 }
 
 const BannerWithPagination: React.FC<BannerProps> = ({ banners }) => {
-  console.log(banners,"banners")
+  
   return (
     <div className="compact relative">
       <div className="-z-1 overflow-hidden rounded-xl">

@@ -66,7 +66,7 @@ export function Grid({
       </div>
     );
   }
-  console.log(offers)
+
 
   return (
     <div className={cn('w-full', className)}>
@@ -130,9 +130,9 @@ export default function ProductsGrid({
     useProducts(10);
     const { offers } =
     useOffers(9999);
-    console.log(offers,"offers")
+
   const productsItem: any = products;
-  console.log(productsItem,"product")
+
   return (
     <Grid
       products={productsItem}

@@ -103,7 +103,7 @@ export function useGetAddress() {
       },
     }
   );
-  console.log(data)
+  
   //TODO: do some improvement here
   return { data: data?.data ?? [], isLoading, error, isAuthorized };
 }
@@ -160,7 +160,7 @@ export const useUpdateAddress = () => {
   
   return useMutation(client.users.address, {
     onSuccess: async(data:any) => {
-      console.log(data,"address_data")
+      
       await client.cart.updateAddress({address_uuid:data.data.uuid,type:data.data.address_type})
       if (data?.data?.id) {
         toast.success(`${t('Address-Added-successful')}`);
@@ -170,7 +170,7 @@ export const useUpdateAddress = () => {
     },
     onError: (error) => {
       const error_message = getErrorMessage(error)
-      console.log(error)
+      
       toast.error(error_message);
     },
     onSettled: () => {
@@ -386,7 +386,6 @@ export function useRegister() {
 
   const { mutate, isLoading } = useMutation(client.users.register, {
     onSuccess: (data:any) => {
-      console.log(data,"data")
       if (data.data.new_token) {
         setToken(data.data.new_token)
         Cookies.set(AUTH_TOKEN_KEY, data.data.new_token);
@@ -521,7 +520,7 @@ export function useForgotPassword() {
       }
       showToast(data?.message,"success")
       setMessage(data?.message!);
-      console.log(data,"data")
+    
       actions.updateFormState({
         email: data.data.email,
         token:data.data.token,

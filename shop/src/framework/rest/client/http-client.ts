@@ -22,7 +22,7 @@ Axios.interceptors.request.use((config) => {
   
   return config;
 });
-console.log(process.env.NEXT_PUBLIC_REST_API_ENDPOINT)
+
 // Change response data/error here
 Axios.interceptors.response.use(
   (response) => response,
@@ -67,7 +67,6 @@ export class HttpClient {
   }
 
   static async post<T>(url: string, data: unknown, options?: any) {
-    console.log(data,url)
     const response = await Axios.post<T>(url, data, options);
     return response.data;
   }

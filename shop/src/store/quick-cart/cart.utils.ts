@@ -18,11 +18,11 @@ export function addItemWithQuantity(
   const existingItemIndex = items.findIndex(
     (existingItem) => existingItem.id === item.id
   );
-   console.log(items,item,quantity,existingItemIndex, 0 > -1)
+
   if (existingItemIndex > -1) {
     const newItems = [...items];
     newItems[existingItemIndex].quantity! += quantity;
-    console.log(newItems,"newItems")
+    
     return newItems;
   }
   return [...items, { ...item, quantity }];

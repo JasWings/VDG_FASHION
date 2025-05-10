@@ -93,9 +93,11 @@ export const updateSlider = async (req, res) => {
 
 export const deleteSlider = async (req, res) => {
     try {
-        const { _id } = req.params;
-        const deletedSlider = await Sliders.findByIdAndDelete(_id);
-        if (!deletedSlider) return res.status(404).json({ error: 'Slider not found.' });
+        const { id } = req.params; // This is your UUID string
+        const deletedSlider = await Sliders.findOneAndDelete({ uuid: id }); // Use 'uuid' instead of '_id'
+        if (!deletedSlider) {
+            return res.status(404).json({ error: 'Slider not found.' });
+        }
         res.status(200).json({ message: 'Slider deleted successfully.' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete slider.', details: error.message });

@@ -25,7 +25,7 @@ Sliderrouter.get('/:id', getSliderById);
 
 Sliderrouter.put('/:id', updateSlider);
 
-Sliderrouter.delete('/:_id', deleteSlider);
+Sliderrouter.delete('/:id', deleteSlider);
 
 Sliderrouter.get('/', getAllSliders);
 

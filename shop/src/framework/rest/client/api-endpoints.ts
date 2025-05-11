@@ -25,7 +25,7 @@ export const API_ENDPOINTS = {
   MANUFACTURERS: '/manufacturers',
   MANUFACTURERS_TOP: '/top-manufacturers',
   COUPONS: '/coupons',
-  COUPONS_VERIFY: '/coupons/verify',
+  COUPONS_VERIFY: '/coupons/apply-coupon',
   GET_ADDRESS:'/commerce/customer-address/',
   PLACE_ORDER:'/commerce/cart/place_order/',
   ORDERS: '/orders/',

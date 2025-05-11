@@ -94,7 +94,7 @@ export const updateSlider = async (req, res) => {
 export const deleteSlider = async (req, res) => {
     try {
         const { _id } = req.params;
-        const deletedSlider = await Sliders.findByIdAndDelete(_id);
+        const deletedSlider = await Sliders.findOneAndDelete({ uuid: _id});
         if (!deletedSlider) return res.status(404).json({ error: 'Slider not found.' });
         res.status(200).json({ message: 'Slider deleted successfully.' });
     } catch (error) {

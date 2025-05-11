@@ -69,7 +69,7 @@ const SettingsSchema = new mongoose.Schema({
   freeShipping: Boolean,
   useGoogleMap: Boolean,
   guestCheckout: Boolean,
-  shippingClass: Number,
+  shippingClass: { type: mongoose.Types.ObjectId,ref: "Shipping"},
   StripeCardOnly: Boolean,
   contactDetails: ContactSchema,
   paymentGateway: [PaymentGatewaySchema],

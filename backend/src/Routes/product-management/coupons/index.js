@@ -1,6 +1,6 @@
 import express from "express";
 import multer from 'multer';
-import { createCoupon, deleteCoupon, getCouponByCode, getCoupons, updateCoupon } from "../../../Controllers/commerce/coupons/index.js";
+import { ApplyCoupons, createCoupon, deleteCoupon, getCouponByCode, getCoupons, updateCoupon } from "../../../Controllers/commerce/coupons/index.js";
 
 
 const couponrouter = express.Router();
@@ -14,5 +14,6 @@ couponrouter.get('/', getCoupons);
 couponrouter.get('/:code', getCouponByCode);
 couponrouter.put('/:id', updateCoupon);
 couponrouter.delete('/:id', deleteCoupon);
+couponrouter.post("/apply-coupon",ApplyCoupons)
 
 export  default couponrouter;

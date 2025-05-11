@@ -10,6 +10,7 @@ import { couponAtom } from '@/store/checkout';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { useCart } from '@/store/quick-cart/cart.context';
 
 export function useSettings() {
   const { locale } = useRouter();
@@ -77,12 +78,14 @@ export function useSubscription() {
 export function useVerifyCoupon() {
   const { t } = useTranslation();
   const [_, applyCoupon] = useAtom(couponAtom);
+  const { fetchCart } = useCart()
   let [formError, setFormError] = useState<any>(null);
   const { mutate, isLoading } = useMutation(client.coupons.verify, {
-    onSuccess: (data: any) => {
+    onSuccess:async  (data: any) => {
       if (!data.is_valid) {
+        fetchCart()
         setFormError({
-          code: t(`common:${data?.message}`),
+          code: `${data?.message}`,
         });
       }
       applyCoupon(data?.coupon);

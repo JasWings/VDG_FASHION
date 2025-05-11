@@ -423,7 +423,7 @@ export default function SettingsForm({
         // useEnableGateway: values?.useEnableGateway,
         // guestCheckout: values?.guestCheckout,
         // taxClass: values?.taxClass?.id,
-        shippingClass: values?.shippingClass?.id,
+        shippingClass: values?.shippingClass?._id,
         logo: values?.logo,
         // smsEvent,
         // emailEvent,
@@ -611,7 +611,7 @@ export default function SettingsForm({
               name="shippingClass"
               control={control}
               getOptionLabel={(option: any) => option.name}
-              getOptionValue={(option: any) => option.id}
+              getOptionValue={(option: any) => option._id}
               options={shippingClasses!}
               disabled={isNotDefaultSettingsPage}
             />

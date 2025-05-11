@@ -4,68 +4,161 @@ import Order from "../../../Models/product-management/orders/index.js";
 import ProductModel from "../../../Models/product-management/product/index.js";
 import Address from "../../../Models/user-management/administration/address.js";
 import mongoose from "mongoose";
+import Settings from "../../../Models/settings/index.js";
+import Shipping from "../../../Models/order-management/shpping.js";
 
-
-export const AddItemsToCart = async (req, res) => {
-    try {
-      const user = req.user;
-      const { product, quantity } = req.body;
+// export const AddItemsToCart = async (req, res) => {
+//     try {
+//       const user = req.user;
+//       const { product, quantity } = req.body;
   
-      const product_details = await ProductModel.findOne({ uuid: product });
+//       const product_details = await ProductModel.findOne({ uuid: product });
   
-      if (!product_details) {
-        return res.status(404).json({ status: "failed", message: "Product not found" });
-      }
+//       if (!product_details) {
+//         return res.status(404).json({ status: "failed", message: "Product not found" });
+//       }
   
-      let cart = await Cart.findOne({ user: user?._id, is_active: true });
+//       let cart = await Cart.findOne({ user: user?._id, is_active: true });
   
-      if (!cart) {
-        cart = new Cart({
-          user: user?._id,
-          items: [],
-          price_details: {
-            total_actual_price: 0,
-            total_current_price: 0,
-            total_quantity: 0,
-          },
-        });
-      }
+//       if (!cart) {
+//         cart = new Cart({
+//           user: user?._id,
+//           items: [],
+//           price_details: {
+//             total_actual_price: 0,
+//             total_current_price: 0,
+//             total_quantity: 0,
+//           },
+//         });
+//       }
   
-      const existingItemIndex = cart.items.findIndex(
-        (item) => item.product.toString() === product_details?._id.toString()
-      );
+//       const existingItemIndex = cart.items.findIndex(
+//         (item) => item.product.toString() === product_details?._id.toString()
+//       );
   
-      if (existingItemIndex >= 0) {
-        cart.items[existingItemIndex].quantity = quantity;
-      } else {
-        cart.items.push({
-          product: product_details?._id,
-          quantity,
-          price: product_details?.price,
-          sale_price: product_details?.sale_price,
-        });
-      }
+//       if (existingItemIndex >= 0) {
+//         cart.items[existingItemIndex].quantity = quantity;
+//       } else {
+//         cart.items.push({
+//           product: product_details?._id,
+//           quantity,
+//           price: product_details?.price,
+//           sale_price: product_details?.sale_price,
+//         });
+//       }
   
       
-      cart.items = cart.items.filter((item) => item.quantity > 0);
+//       cart.items = cart.items.filter((item) => item.quantity > 0);
   
-      const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-      const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
-      const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+//       const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+//       const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
+//       const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
   
-      cart.price_details.total_actual_price = totalActualPrice;
-      cart.price_details.total_current_price = totalCurrentPrice;
-      cart.price_details.total_quantity = totalQuantity;
+//       cart.price_details.total_actual_price = totalActualPrice;
+//       cart.price_details.total_current_price = totalCurrentPrice;
+//       cart.price_details.total_quantity = totalQuantity;
   
-      await cart.save();
+//       await cart.save();
   
-      res.status(200).json({ status: "success", message: "Item add to cart successfully", data : cart });
-    } catch (error) {
-      console.error(error, "error");
-      res.status(500).json({ status: "failed", message: error.message });
+//       res.status(200).json({ status: "success", message: "Item add to cart successfully", data : cart });
+//     } catch (error) {
+//       console.error(error, "error");
+//       res.status(500).json({ status: "failed", message: error.message });
+//     }
+//   };
+  
+
+export const AddItemsToCart = async (req, res) => {
+  try {
+    const user = req.user;
+    const { product, quantity } = req.body;
+
+    const product_details = await ProductModel.findOne({ uuid: product });
+    if (!product_details) {
+      return res.status(404).json({ status: "failed", message: "Product not found" });
     }
-  };
-  
+
+    let cart = await Cart.findOne({ user: user?._id, is_active: true });
+    if (!cart) {
+      cart = new Cart({
+        user: user?._id,
+        items: [],
+        price_details: {
+          total_actual_price: 0,
+          total_current_price: 0,
+          total_quantity: 0,
+        },
+        selected_shipping: null,
+      });
+    }
+
+    const existingItemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === product_details._id.toString()
+    );
+
+    if (existingItemIndex >= 0) {
+      cart.items[existingItemIndex].quantity = quantity;
+    } else {
+      cart.items.push({
+        product: product_details._id,
+        quantity,
+        price: product_details.price,
+        sale_price: product_details.sale_price,
+      });
+    }
+
+    cart.items = cart.items.filter((item) => item.quantity > 0);
+
+    const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
+    const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+
+    cart.price_details.total_actual_price = totalActualPrice;
+    cart.price_details.total_current_price = totalCurrentPrice;
+    cart.price_details.total_quantity = totalQuantity;
+
+    const settings = await Settings.findOne();
+    if (settings) {
+      let shippingCost = 0;
+      let selectedShipping = null;
+
+      if (settings.freeShipping && settings.freeShippingAmount != null && totalCurrentPrice >= settings.freeShippingAmount) {
+        shippingCost = 0;
+      } else if (settings.shippingClass) {
+        const shippingClass = await Shipping.findById(settings.shippingClass._id); // Ensure it's fetched from the database
+        if (shippingClass && !shippingClass.is_deleted) {
+          if (shippingClass.type === "fixed") {
+            shippingCost = shippingClass.amount;
+          } else if (shippingClass.type === "percentage") {
+            shippingCost = (totalCurrentPrice * shippingClass.amount) / 100;
+          }
+
+          selectedShipping = {
+            id: shippingClass._id,
+            name: shippingClass.name,
+            cost: shippingCost,
+          };
+        }
+      }
+
+      cart.selected_shipping = selectedShipping;
+      cart.price_details.total_current_price += shippingCost;
+    }
+
+    await cart.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Item added to cart successfully",
+      data: cart,
+    });
+  } catch (error) {
+    console.error(error, "error");
+    res.status(500).json({ status: "failed", message: error.message });
+  }
+};
+
+
 
 
 export const getCartDetails = async (req, res) => {
@@ -79,7 +172,7 @@ export const getCartDetails = async (req, res) => {
             path: "product",
             model: "products",
           },
-        }).populate('billing_address').populate('shipping_address')
+        }).populate('billing_address').populate('shipping_address').populate('applied_coupon').populate({ path: "selected_shipping"})
   
       if (!cart_details) {
         return res.status(404).json({ status: "failed", message: "Cart not found." });
@@ -158,7 +251,7 @@ export const placeonorder = async (req, res) => {
 
     await Cart.updateOne(
       { user: user?._id },
-      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null } },
+      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null, applied_coupon:null,selected_shipping:null } },
       { session }
     );
 

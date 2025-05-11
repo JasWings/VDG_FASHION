@@ -12,7 +12,7 @@ type FormTypes = {
   code: string;
 };
 
-const Coupon = ({ theme, subtotal }: { theme?: 'dark'; subtotal: number }) => {
+const Coupon = ({ theme, subtotal,Cart }: { theme?: 'dark'; subtotal: number,Cart:any }) => {
   const { t } = useTranslation('common');
   const [hasCoupon, setHasCoupon] = useState(false);
   const [coupon, applyCoupon] = useAtom(couponAtom);
@@ -38,31 +38,32 @@ const Coupon = ({ theme, subtotal }: { theme?: 'dark'; subtotal: number }) => {
       </p>
     );
   }
-  function onSubmit(code: FormTypes) {
-    // verifyCoupon(
-    //   {
-    //     code,
-    //   }
-    //   // {
-    //   //   onSuccess: (data) => {
-    //   //     if (data.is_valid) {
-    //   //       applyCoupon(data.coupon);
-    //   //       setHasCoupon(false);
-    //   //     } else {
-    //   //       setError('code', {
-    //   //         type: 'manual',
-    //   //         message: 'error-invalid-coupon',
-    //   //       });
-    //   //     }
-    //   //   },
-    //   // }
-    // );
-    verifyCoupon({
-      code: code?.code,
-      sub_total: subtotal,
-    });
+  function onSubmit(code: any) {
+    verifyCoupon(
+      {
+        couponCode:code?.code,
+        cartId: Cart?.uuid
+      },
+      {
+        onSuccess: (data) => {
+          if (data.is_valid) {
+            applyCoupon(data.coupon);
+            setHasCoupon(false);
+          } else {
+            setError('code', {
+              type: 'manual',
+              message: 'error-invalid-coupon',
+            });
+          }
+        },
+      }
+    );
+    // verifyCoupon({
+    //   code: code?.code,
+    //   sub_total: subtotal,
+    // });
   }
-
+  console.log(Cart,"cart")
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

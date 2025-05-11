@@ -60,6 +60,8 @@ export interface State {
     country: number
 
   },
+  selected_shipping: any,
+  applied_coupon: any,
   shipping_address:{
     id:string,
     uuid:string,            
@@ -83,6 +85,8 @@ export interface State {
 export const initialState: State = {
   items: [],
   totalUniqueItems: 0, 
+  applied_coupon: null,
+  selected_shipping:null,
   total : 0,
   price_details:{
     total_actual_price: 0,
@@ -147,6 +151,8 @@ export function cartReducer(state: State, action: Action): State {
           //    max_weight_kg:cartData.country.max_weight_kg,
           //    max_weight_per_product_kg:cartData.country.max_weight_per_product_kg
           // },
+          applied_coupon: cartData?.applied_coupon,
+          selected_shipping: cartData?.selected_shipping,
           price_details:{
             total_actual_price:cartData?.price_details?.total_actual_price,
             total_current_price:cartData?.price_details?.total_current_price,

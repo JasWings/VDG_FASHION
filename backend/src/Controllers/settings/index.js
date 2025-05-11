@@ -13,7 +13,7 @@ export const createSettingsController = async (req,res) => {
 
 export const getSettingsController = async (req,res) => {
     try {
-    const find_settings = await Settings.find()
+    const find_settings = await Settings.find().populate({ path: "shippingClass", model: "Shipping"})
     const settings_data = find_settings?.[0]
   res.status(200).json({id: 1, options: settings_data})
     } catch (error) {

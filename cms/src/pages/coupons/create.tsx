@@ -18,6 +18,7 @@ export default function CreateCouponPage() {
 }
 CreateCouponPage.Layout = Layout;
 
+
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
     ...(await serverSideTranslations(locale, ['form', 'common'])),

@@ -11,7 +11,6 @@ const createOrder = async (req, res) => {
         await order.save();
         res.status(201).send(order);
     } catch (err) {
-        console.log(err)
         res.status(500).send({ error: err.message });
     }
 };

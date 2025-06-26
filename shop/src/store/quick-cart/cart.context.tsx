@@ -23,7 +23,8 @@ interface CartProviderState extends State {
   getCurrentCart:()=>void,
   Cart:State,
   getCurrentLimit:(item:State)=>void,
-  fetchCart:()=>void
+  fetchCart:()=>void,
+  syncLocalCartToBackend:() => void
 }
 
 export const cartContext = React.createContext<CartProviderState | undefined>(
@@ -96,6 +97,30 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
         return response
   }
 
+  const syncLocalCartToBackend = async () => {
+  try {
+    if (!state?.items?.length) return;
+
+    // Add each item to backend cart
+    for (const item of state?.items) {
+      const cartObject = {
+        product: item.uuid,
+        quantity: item.quantity,
+      };
+      await client.cart.update(cartObject);
+    }
+
+    // Clear local storage
+    localStorage.removeItem(CART_KEY);
+
+    // Fetch updated cart from backend
+    await fetchCart();
+  } catch (error) {
+    console.error("Failed to sync cart:", error);
+  }
+};
+
+
 
   const clearItemFromCart = (id: Item['id']) =>
     dispatch({ type: 'REMOVE_ITEM', id });
@@ -155,7 +180,8 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
       getCurrentCart,
       getCurrentLimit,
       fetchCart,
-      removesItemFromCart
+      removesItemFromCart,
+      syncLocalCartToBackend
     }),
     [getItemFromCart, isInCart, isInStock, state]
   );

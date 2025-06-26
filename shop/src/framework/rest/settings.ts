@@ -101,3 +101,31 @@ export function useVerifyCoupon() {
 
   return { mutate, isLoading, formError, setFormError };
 }
+
+
+export function useRevokeCoupon() {
+  const { t } = useTranslation();
+  const [_, applyCoupon] = useAtom(couponAtom);
+  const { fetchCart } = useCart()
+  let [formError, setFormError] = useState<any>(null);
+  const { mutate, isLoading } = useMutation(client.coupons.rovoke, {
+    onSuccess:async  (data: any) => {
+      if (!data.is_valid) {
+        fetchCart()
+        setFormError({
+          code: `${data?.message}`,
+        });
+      }
+      applyCoupon(data?.coupon);
+    },
+    onError: (error) => {
+      const {
+        response: { data },
+      }: any = error ?? {};
+
+      toast.error(data?.message);
+    },
+  });
+
+  return { mutate, isLoading, formError, setFormError };
+}

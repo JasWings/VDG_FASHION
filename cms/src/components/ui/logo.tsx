@@ -10,7 +10,6 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
   ...props
 }) => {
   const { logo, siteTitle } = useSettings();
-  console.log(logo,siteTitle,"logo")
   return (
     <Link
       href={siteSettings.logo.href}

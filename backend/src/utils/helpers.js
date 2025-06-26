@@ -47,7 +47,7 @@ export const sentOtpEmail=async(receiver,otp) => {
 
 
 export const DefaultFilterQuerys = {
-     product : { categories: '', group: ""},
+     product : { categories: '', group: "",status:""},
      category : { type_id:""}
   };
   

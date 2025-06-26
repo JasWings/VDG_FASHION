@@ -48,7 +48,6 @@ export const useUpdateProductMutation = () => {
   const router = useRouter();
   return useMutation(productClient.update, {
     onSuccess: async (data) => {
-      console.log(data,"data")
       const generateRedirectUrl = router.query.shop
         ? `/${router.query.shop}${Routes.product.list}`
         : Routes.product.list;
@@ -105,7 +104,6 @@ export const useProductsQuery = (
   params: Partial<ProductQueryOptions>,
   options: any = {}
 ) => {
-  console.log(params,options)
   const { data, error, isLoading } = useQuery<ProductPaginator, Error>(
     [API_ENDPOINTS.PRODUCTS, params],
     ({ queryKey, pageParam }) =>

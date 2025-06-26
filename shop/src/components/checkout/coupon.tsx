@@ -7,6 +7,7 @@ import { couponAtom } from '@/store/checkout';
 import { useAtom } from 'jotai';
 import classNames from 'classnames';
 import { useVerifyCoupon } from '@/framework/settings';
+import { toast } from 'react-toastify';
 
 type FormTypes = {
   code: string;
@@ -44,7 +45,13 @@ const Coupon = ({ theme, subtotal,Cart }: { theme?: 'dark'; subtotal: number,Car
         couponCode:code?.code,
         cartId: Cart?.uuid
       },
-      {
+      { onError: (errors:any) => {
+        toast.error(errors?.response?.data?.error)
+         setError('code', {
+              type: 'manual',
+              message: errors?.response?.data?.error,
+            });
+      },
         onSuccess: (data) => {
           if (data.is_valid) {
             applyCoupon(data.coupon);
@@ -63,7 +70,7 @@ const Coupon = ({ theme, subtotal,Cart }: { theme?: 'dark'; subtotal: number,Car
     //   sub_total: subtotal,
     // });
   }
-  console.log(Cart,"cart")
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

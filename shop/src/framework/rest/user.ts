@@ -34,6 +34,7 @@ import { RegisterAtom } from '@/components/otp/registerAtom';
 import { getErrorMessage } from '@/lib/error';
 import Cookies from 'js-cookie';
 import { AUTH_TOKEN_KEY, EMAIL_VERIFIED } from '@/lib/constants';
+import { useCart } from '@/store/quick-cart/cart.context';
 
 
 
@@ -222,9 +223,10 @@ export function useLogin() {
   const { closeModal } = useModalAction();
   const { setToken } = useToken();
   let [serverError, setServerError] = useState<string | null>(null);
+  const { syncLocalCartToBackend } = useCart()
 
   const { mutate, isLoading } = useMutation(client.users.login, {
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       if (!data.data.token) {
         setServerError('error-credential-wrong');
         return;
@@ -232,11 +234,11 @@ export function useLogin() {
       setToken(data.data.token);
       setAuthorized(true);
       showToast("Login Successfully","success")
+      await syncLocalCartToBackend()
       closeModal();
       window.location.reload()
     },
     onError: (error: Error) => {
-      console.log(error.message);
       showToast(error?.response?.data?.message,"error")
     },
   });
@@ -383,13 +385,15 @@ export function useRegister() {
     null
   );
   const [RegisterState,setRegisterState]=useAtom(RegisterAtom)
+  const { syncLocalCartToBackend } = useCart()
 
   const { mutate, isLoading } = useMutation(client.users.register, {
-    onSuccess: (data:any) => {
+    onSuccess: async (data:any) => {
       if (data.data.new_token) {
         setToken(data.data.new_token)
         Cookies.set(AUTH_TOKEN_KEY, data.data.new_token);
         showToast(data.message,"success")
+        await syncLocalCartToBackend()
         // setAuthorized(true);
         // setRegisterState({step:"OtpForm"})
         window.location.reload()

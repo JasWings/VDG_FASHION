@@ -23,7 +23,7 @@ export const getAllShippings = async (req, res) => {
 
 export const getShippingById = async (req, res) => {
   try {
-    const shipping = await Shipping.findById(req.params.id);
+    const shipping = await Shipping.findOne({ id: req.params.id});
     if (!shipping) {
       return res.status(404).json({ message: 'Shipping record not found' });
     }

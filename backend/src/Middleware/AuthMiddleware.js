@@ -11,11 +11,10 @@ export const requireSignIn = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-    console.log(token,"tokennnn")
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        console.log(decoded, "des")
+
         req.user = {
             ...decoded,
             _id: decoded._id

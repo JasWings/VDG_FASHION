@@ -147,7 +147,6 @@ export const razorpayWebhook = async (req, res) => {
 
   if (event === "payment.captured") {
     const razorpayOrderId = payload.payment.entity.order_id;
-   console.log(razorpayOrderId,"orderId")
    const order = await Order.updateOne(
       { razorpayOrderId : razorpayOrderId },
       {

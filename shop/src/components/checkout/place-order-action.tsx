@@ -121,7 +121,11 @@ export const PlaceOrderAction: React.FC<{
     try {
 
       const response:any=await client.orders.create({uuid:Cart.uuid})
-     
+      if(Cart.payment_method === 'COD'){
+         showToast("order placed successfully!","success")
+         router.push("/orders")
+         return;
+      }
       router.push(`/orders/${response?.data?.uuid}/payment/`)
       // router.push(`/orders/payment/${response?.data?.uuid}/`)      
     } catch (error:any) {
@@ -161,7 +165,7 @@ export const PlaceOrderAction: React.FC<{
         loading={isLoading}
         className={classNames('mt-5 w-full', props.className)}
         onClick={handlePlaceOrder}
-        disabled={Cart.shipping_address.id===undefined||Cart.billing_address.id===undefined || !!isLoading}
+        disabled={Cart.shipping_address.id===undefined||Cart.billing_address.id===undefined || !["Online","COD"].includes(Cart.payment_method) || !!isLoading}
         {...props}
       />
       {errorMessage && (

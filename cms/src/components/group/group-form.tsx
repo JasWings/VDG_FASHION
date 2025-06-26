@@ -165,7 +165,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
   const { mutate: updateType, isLoading: updating } = useUpdateTypeMutation();
   const slugAutoSuggest = formatSlug(watch('name'));
   const onSubmit = (values: FormValues) => {
-    console.log(values,"values")
+    
     const input = {
       language: router.locale,
       name: values.name!,
@@ -191,7 +191,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       //   },
       // })),
     };
-   console.log(input,"input",values)
+   
     if (
       !initialValues 
       // ||
@@ -210,7 +210,7 @@ export default function CreateOrUpdateTypeForm({ initialValues }: IProps) {
       });
     }
   };
-  console.log(errors,"errors",initialValues)
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap sm:my-8">

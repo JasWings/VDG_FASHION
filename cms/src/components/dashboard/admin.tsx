@@ -42,7 +42,7 @@ export default function Dashboard() {
     limit: 10,
     page: 1,
   });
-  console.log(orderData?.data)
+  
   // const {
   //   data: popularProductData,
   //   isLoading: popularProductLoading,

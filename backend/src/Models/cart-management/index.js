@@ -13,31 +13,38 @@ const CartSchema = new Schema(
       total_actual_price: { type: Number, required: true, default: 0 },
       total_current_price: { type: Number, required: true, default: 0 },
       total_quantity: { type: Number, required: true, default: 0 },
+      discount_amount: { type: Number, default: 0 }
     },
     items: [
       {
         product: { type: mongoose.Types.ObjectId, ref: "products", required: true },
         quantity: { type: Number, required: true },
         price: { type: Number, required: true },
-        sale_price : { type: Number, required: true }
+        sale_price: { type: Number, required: true },
       },
     ],
     applied_coupon: { type: mongoose.Types.ObjectId, ref: "Coupons" },
     selected_shipping: {
       type: {
-        id: { type: mongoose.Schema.Types.ObjectId, ref: 'Shipping' },
+        id: { type: mongoose.Schema.Types.ObjectId, ref: "Shipping" },
         name: { type: String },
         cost: { type: Number },
       },
       default: null,
     },
     shipping_address: { type: mongoose.Types.ObjectId, ref: "Address" },
-    billing_address : { type: mongoose.Types.ObjectId, ref: "Address"},
+    billing_address: { type: mongoose.Types.ObjectId, ref: "Address" },
+    payment_method: {
+      type: String,
+      enum: ["Online", "COD"],
+      default: "Online",
+    },
     is_active: { type: Boolean, default: true },
     is_deleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
+
 
 CartSchema.pre("save", async function (next) {
   try {

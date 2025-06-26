@@ -164,8 +164,7 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
 
     try {
       if (
-        !initialValues ||
-        !initialValues.translated_languages.includes(router.locale!)
+        !initialValues
       ) {
         createCoupon({
           ...input,
@@ -176,7 +175,7 @@ export default function CreateOrUpdateCouponForm({ initialValues }: IProps) {
         updateCoupon({
           ...input,
           ...(initialValues.code !== values.code && { code: values.code }),
-          id: initialValues.id!,
+          id: initialValues._id!,
         });
       }
     } catch (error) {

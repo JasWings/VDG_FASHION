@@ -149,7 +149,8 @@ class Client {
     all:()=>HttpClient.get(API_ENDPOINTS.GET_CART),
     update:(data:any)=>HttpClient.Update(API_ENDPOINTS.ADD_CART,data),
     updateAddress:(data:any)=>HttpClient.Update(API_ENDPOINTS.ADD_ADDRESS_TO_CART,data),
-    addNote:(data:any,uuid:any)=>HttpClient.Update(`${API_ENDPOINTS.NOTE}`,data)
+    addNote:(data:any,uuid:any)=>HttpClient.Update(`${API_ENDPOINTS.NOTE}`,data),
+    updatePayment : (data:any) => HttpClient.Update(API_ENDPOINTS.UPDATE_PAYMENT_METHOD,data)
   }
   myQuestions = {
     all: (params: MyQuestionQueryOptions) =>
@@ -288,6 +289,11 @@ class Client {
     verify: (input: VerifyCouponInputType) =>
       HttpClient.post<VerifyCouponResponse>(
         API_ENDPOINTS.COUPONS_VERIFY,
+        input
+      ),
+    rovoke: (input: VerifyCouponInputType) =>
+      HttpClient.post<VerifyCouponResponse>(
+        API_ENDPOINTS.REVOKE_COUPON,
         input
       ),
   };

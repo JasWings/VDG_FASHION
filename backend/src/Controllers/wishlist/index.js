@@ -7,7 +7,6 @@ import Wishlist from '../../Models/wishlist/index.js';
 export const addToWishlist = async (req, res) => {
     const { productId } = req.body;
     const userId = req.user._id; 
-    console.log(userId,"user")
     try {
         // Validate user
         const userExists = await User.findById(userId);

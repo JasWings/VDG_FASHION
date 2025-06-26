@@ -64,13 +64,11 @@ export default function CreateOrUpdateSliderForm({ initialValues }: IProps) {
       // endDate: initialValues?.endDate || '',
     },
   });
-  console.log(errors,"errrrr")
 
   const { mutate: createType, isLoading: creating } = useCreateSliderMutation();
   const { mutate: updateType, isLoading: updating } = useUpdateSliderMutation();
 
   const onSubmit = (values: FormValues) => {
-    console.log(values,"values")
     const input = {
       language: router.locale,
       name: values.name!,

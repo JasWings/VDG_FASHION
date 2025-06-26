@@ -30,6 +30,7 @@ type Action =
 export interface State {
   items: Item[];
   uuid:string,
+  payment_method:string,
   price_details:{
     total_actual_price: number | null,
     total_current_price: number | null,
@@ -84,6 +85,7 @@ export interface State {
 
 export const initialState: State = {
   items: [],
+  payment_method: null,
   totalUniqueItems: 0, 
   applied_coupon: null,
   selected_shipping:null,
@@ -153,6 +155,7 @@ export function cartReducer(state: State, action: Action): State {
           // },
           applied_coupon: cartData?.applied_coupon,
           selected_shipping: cartData?.selected_shipping,
+          payment_method: cartData?.payment_method,
           price_details:{
             total_actual_price:cartData?.price_details?.total_actual_price,
             total_current_price:cartData?.price_details?.total_current_price,

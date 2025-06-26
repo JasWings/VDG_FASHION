@@ -26,7 +26,6 @@ export default function SlidersPage() {
     orderBy,
     sortedBy,
   });
-  console.log(types,"data")
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

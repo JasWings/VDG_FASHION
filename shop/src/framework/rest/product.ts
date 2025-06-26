@@ -34,9 +34,10 @@ export function useProducts(pageSize: number, category?: string, group?: string,
   };
 
   const { max_price, min_price} = price ?  handlePriceFilter(price) : { max_price: null, min_price: null}
-  const formattedOptions = {
+  const formattedOptions:any = {
     limit: newPageSize,
     language: locale,
+    status: "publish",
     categories : category,  
     group,  min_price,max_price,orderBy,sortBy,parent,text
   };
@@ -59,7 +60,7 @@ export function useProducts(pageSize: number, category?: string, group?: string,
     setNewPageSize(pageSize + newPageSize);
   }
 
-  const pagination = data?.pages[0]?.pagination;
+  const pagination:any = data?.pages[0]?.pagination;
 
   const load = pagination?.page < pagination?.totalPages && newPageSize <= pagination?.total;  
 

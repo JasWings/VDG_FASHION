@@ -42,7 +42,6 @@ export const productValidationSchema = yup.object().shape({
     then: yup
       .number()
       .typeError('form:error-quantity-must-number')
-      .positive('form:error-quantity-must-positive')
       .integer('form:error-quantity-must-integer')
       .required('form:error-quantity-required'),
   }),

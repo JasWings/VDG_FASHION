@@ -9,7 +9,7 @@ export const fileUplaodController = async (req, res) => {
     if (!file) {
       return res.status(400).json({ status: 'failed', message: 'No file uploaded' });
     }
-    console.log(file,"file")
+
     const uuid = await Helpers.generateUUID();
     const file_name = uuid + "." + file.originalname.split(".").slice(-1)[0];
     const params = {
@@ -19,13 +19,13 @@ export const fileUplaodController = async (req, res) => {
       ContentType: "Mimetype",
     };
     const data = await s3Client.send(new PutObjectCommand(params));
-    console.log(data,"data")
+    
     const uuid1 = await Helpers.generateUUID();
     const save_file_name = new Upload({ file: params.Key, uuid: uuid1 });
     await save_file_name.save();
     res.status(200).json({ status: "success", message: "file upload successfully", data: save_file_name });
   } catch (error) {
-    console.log(error,"error")
+
     res.status(500).json({ status: "failed", message: error.message, data: null });
   }
 };

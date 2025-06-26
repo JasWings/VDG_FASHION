@@ -224,7 +224,7 @@ export default function CreateOrUpdateCategoriesForm({
       : defaultValues,
     resolver: yupResolver(categoryValidationSchema),
   });
-  console.log(initialValues)
+  
   const { openModal } = useModalAction();
   const slugAutoSuggest = formatSlug(watch('name'));
   const { locale } = router;
@@ -256,7 +256,7 @@ export default function CreateOrUpdateCategoriesForm({
     useUpdateCategoryMutation();
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values,"values",control)
+    
     const input = {
       name: values.name,
       slug: values.slug,
@@ -292,12 +292,11 @@ export default function CreateOrUpdateCategoriesForm({
         type_id : values?.type?._id,
         parent: values?.parent?._id ? values?.parent?._id : null
       }
-      console.log(input)
       
       updateCategory(data);
     }
   };
-  console.log(defaultValues)
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">

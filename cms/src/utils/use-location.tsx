@@ -58,7 +58,6 @@ function getLocation(placeOrResult: any) {
         null;
     }
   }
-  console.log('location', location)
   // Return the location object
   return location;
 }

@@ -483,6 +483,8 @@ export interface Refund {
 
 export enum PaymentGateway {
   STRIPE = 'STRIPE',
+  RAZORPAY="RAZORPAY",
+  COD="COD"
 }
 
 export enum OrderStatus {

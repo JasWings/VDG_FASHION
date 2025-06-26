@@ -39,7 +39,6 @@ export const uploadImageToDrive = async (fileBuffer, originalname, mimeType, fol
         } catch (error) {
             if (error.code === 429) {
                 const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
-                console.log(`Rate limited. Waiting for ${waitTime} ms before retrying...`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             } else {
                 console.error('Error uploading image:', error.message);
@@ -64,12 +63,10 @@ export const deleteImageFromDrive = async (imageUrl) => {
                 fileId,
                 auth,
             });
-            console.log('Image deleted successfully.');
             return;
         } catch (error) {
             if (error.code === 429) {
                 const waitTime = Math.pow(2, attempt) * 1000; // Exponential backoff
-                console.log(`Rate limited. Waiting for ${waitTime} ms before retrying...`);
                 await new Promise(resolve => setTimeout(resolve, waitTime));
             } else {
                 console.error('Error deleting image:', error.message);

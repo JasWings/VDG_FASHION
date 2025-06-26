@@ -68,7 +68,6 @@ export const createProduct = async (req, res) => {
             if (!variation_options || variation_options.upsert?.length === 0) {
                 return res.status(400).json({ message: "Variation options are required for variable products." });
             }
-            console.log(req.body)
             
             const variants = await Promise.all(
                 (variations || []).map(async (variant, index) => {
@@ -78,7 +77,6 @@ export const createProduct = async (req, res) => {
                             o.options.find((i) => i.name === attributes.identity)
                         );
                                                 
-                        console.log(attributes,"attribute",variant?.attribute_id,variantfind)
                         const uuid = await generateUUID();
                         
                         return {
@@ -116,7 +114,6 @@ export const createProduct = async (req, res) => {
                 };
             });
 
-            console.log(variants,"variant",transformed)
             
             const variantData = variation_options.upsert?.map((option) => {
                 return {
@@ -307,7 +304,6 @@ export const getProducts = async (req, res) => {
 //       textFilter.name = { $regex: regex };
 //     }
 
-//     console.log(req.query, filterQuerys, categoryFilter);
 
 //     const pageNumber = parseInt(page, 10);
 //     const pageSize = parseInt(limit, 10);
@@ -367,7 +363,8 @@ export const getProductWithUUID = async (req,res) => {
 import Joi from "joi";
 
 const updateProductSchema = Joi.object({
-   id : Joi.string().required(),
+   id : Joi.string().optional(),
+   _id: Joi.any().optional(),
    variations : Joi.any().optional(),
     name: Joi.string().optional(),
     description: Joi.string().optional().allow("",null),

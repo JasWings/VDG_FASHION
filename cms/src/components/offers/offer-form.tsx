@@ -71,7 +71,7 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
       createOffer(transformedValues);
     }
   };
-console.log(errors,"errors")
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="my-5 flex flex-wrap border-b border-dashed border-border-base pb-8 sm:my-8">

@@ -20,6 +20,7 @@ const defaultValues = {
   amount: 0,
   is_global: true,
   type: ShippingType.Fixed,
+  payment_method: 'online', // Default to 'online'
 };
 
 type IProps = {
@@ -46,7 +47,7 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
 
   const onSubmit = async (values: ShippingInput) => {
     if (initialValues) {
-      updateShippingClass({ id: initialValues.id!, ...values });
+      updateShippingClass({ id: initialValues._id!, ...values });
     } else {
       createShippingClass({ ...values });
     }
@@ -108,6 +109,28 @@ export default function CreateOrUpdateShippingForm({ initialValues }: IProps) {
               className="mb-5"
             />
           )}
+
+          <div className="mb-5">
+            <Label>{t('form:input-label-payment-method')}</Label>
+            <Radio
+              label={t('Online')}
+              {...register('payment_method', { required: true })}
+              id="ONLINE"
+              value="online"
+              className="mb-2"
+            />
+            <Radio
+              label={t('Cash on delivery')}
+              {...register('payment_method', { required: true })}
+              id="COD"
+              value="cod"
+            />
+            {errors.payment_method && (
+              <p className="text-red-500 text-sm">
+                {t(errors.payment_method.message!)}
+              </p>
+            )}
+          </div>
         </Card>
       </div>
 

@@ -23,7 +23,6 @@ const getAllCategories = async (req, res) => {
     const categories = await Category.find({...filters, is_deleted: false })
     .populate({ path: "type_id", model: "Group" }).skip((page-1) * limit).skip(limit)
     const categoryMap = new Map();
-    console.log(filters,req.query,categories.length)
 
     categories.forEach((category) => {
       const parentId = category.parent ? category.parent.toString() : null;

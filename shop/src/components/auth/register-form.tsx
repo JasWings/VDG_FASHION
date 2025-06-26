@@ -107,7 +107,6 @@ function RegisterForm() {
             enableSearch={false}
             disableDropdown={true}
             // isValid={(value,country)=>{
-            //   console.log(value,country)
             // }}
           />
           </div>

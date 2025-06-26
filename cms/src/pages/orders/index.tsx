@@ -79,7 +79,7 @@ export default function Orders() {
       a.click();
     }
   }
-   console.log(orders,"orders",paginatorInfo)
+
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">

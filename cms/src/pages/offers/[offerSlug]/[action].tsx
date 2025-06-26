@@ -12,7 +12,6 @@ import CreateOrUpdateOfferForm from '@/components/offers/offer-form';
 
 export default function UpdateOfferPage() {
   const { query, locale } = useRouter();
-  console.log(query)
   const { t } = useTranslation();
   const {
     offer,
@@ -26,7 +25,7 @@ export default function UpdateOfferPage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  console.log(offer)
+  
   return (
     <>
       <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">

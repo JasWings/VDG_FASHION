@@ -134,7 +134,6 @@ export const forgotPassword = async (req, res) => {
   try {
     const value = await Validations.validateForgotPassword(req.body);
     const { email } = value
-    console.log(email,"email",value)
     const user = await User.findOne({ email });
 
     if (!user) {

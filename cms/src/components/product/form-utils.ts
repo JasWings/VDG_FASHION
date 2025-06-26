@@ -183,7 +183,7 @@ export function getProductDefaultValues(
 export function filterAttributes(attributes: any, variations: any) {
   let res = [];
   res = attributes?.filter((el: any) => {
-    console.log(attributes)
+    
     return !variations?.find((element: any) => {
       return element?.attribute?.slug === el?.identity.toLowerCase();
     });
@@ -192,7 +192,6 @@ export function filterAttributes(attributes: any, variations: any) {
 }
 
 export function getCartesianProduct(values: any) {
-  console.log(values,"values")
   const formattedValues = values
     ?.map((v: any) =>
       v?.value?.map((a: any) => ({ name: v?.attribute?.identity, value: a?.value }))
@@ -204,11 +203,10 @@ export function getCartesianProduct(values: any) {
 }
 
 export function getEditCartesianProduct(values: any) {
-  console.log(values,"values")
   const formattedValues = values
     ?.map((v: any) => ({ name: v?.attributes.identity, value: v?.value }))
     .filter((i: any) => i !== undefined);
-    console.log(formattedValues,"formatted_values")
+  
   if (isEmpty(formattedValues)) return [];
   return formattedValues
 }

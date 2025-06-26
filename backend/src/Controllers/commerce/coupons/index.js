@@ -23,7 +23,8 @@ export const  createCoupon = async (req, res) => {
 
         const couponData = {
             ...value,
-            active_form : value?.active_from,
+            active_from : value?.active_from,
+            is_active: true,
             file: fileUploadData ? fileUploadData.data.file : null,
         };
 
@@ -60,20 +61,41 @@ export const getCouponByCode = async (req, res) => {
 
 
 export const updateCoupon = async (req, res) => {
-    try {
-        const coupon = await Coupons.findById(req.params.id);
-        if (!coupon) {
-            return res.status(404).json({ error: 'Coupon not found' });
-        }
+  try {
+    const coupon = await Coupons.findById(req.params.id);
 
-        coupon.is_active = req.body.is_active;
-
-        await coupon.save();
-        res.status(200).json(coupon);
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+    if (!coupon) {
+      return res.status(404).json({ error: 'Coupon not found' });
     }
+
+    // Update only fields that are allowed to be modified
+    const allowedFields = [
+      'code',
+      'type',
+      'description',
+      'amount',
+      'minimum_cart_amount',
+      'image',
+      'active_from',
+      'expire_at',
+      'is_active',
+    ];
+
+    allowedFields.forEach((field) => {
+      if (req.body[field] !== undefined) {
+        coupon[field] = req.body[field];
+      }
+    });
+
+    await coupon.save();
+
+    res.status(200).json(coupon);
+  } catch (err) {
+    console.error('Coupon update error:', err);
+    res.status(400).json({ error: err.message });
+  }
 };
+
 
 
 export const deleteCoupon = async (req, res) => {
@@ -90,69 +112,103 @@ export const deleteCoupon = async (req, res) => {
     }
 };
 
-
-
 export const ApplyCoupons = async (req, res) => {
   const { cartId, couponCode } = req.body;
 
-  try {
-    // Validate input
-    if (!cartId || !couponCode) {
-      return res.status(400).json({ error: "Cart ID and coupon code are required." });
-    }
+  if (!cartId || !couponCode) {
+    return res.status(400).json({ error: "Cart ID and coupon code are required." });
+  }
 
-    // Check if coupon exists and is active
+  try {
+    const now = new Date();
+
     const coupon = await Coupons.findOne({
       code: couponCode,
       is_active: true,
-      active_from: { $lte: new Date() },
-      expire_at: { $gte: new Date() },
+      active_from: { $lte: now },
+      expire_at: { $gte: now },
     });
 
     if (!coupon) {
       return res.status(404).json({ error: "Invalid or expired coupon code." });
     }
 
-    // Check if cart exists
     const cart = await Cart.findOne({ uuid: cartId });
     if (!cart) {
       return res.status(404).json({ error: "Cart not found." });
     }
 
-    // Check if cart meets the minimum amount required for the coupon
     const cartTotal = cart.price_details.total_current_price;
+
     if (cartTotal < coupon.minimum_cart_amount) {
       return res.status(400).json({
         error: `Cart total must be at least ${coupon.minimum_cart_amount} to apply this coupon.`,
       });
     }
 
-    // Calculate the discount based on coupon type
-    const discount =
-      coupon.type === "percentage"
-        ? (cartTotal * coupon.amount) / 100
-        : coupon.amount;
+    let discount = 0;
 
-    // Ensure the discount does not exceed the cart total
-    const finalDiscount = Math.min(discount, cartTotal);
+    if (coupon.type === "percentage") {
+      discount = (cartTotal * coupon.amount) / 100;
+    } else if (coupon.type === "fixed") {
+      discount = coupon.amount;
+    }
 
-    // Update cart with discount and coupon
-    cart.price_details.discount_amount = finalDiscount;
+    const discountedTotal = cartTotal - discount;
+
+    cart.price_details.total_current_price = discountedTotal;
+    cart.price_details.discount_amount = discount;
     cart.applied_coupon = coupon._id;
-    cart.price_details.total_current_price = cartTotal - finalDiscount;
 
-    // Save the updated cart
     await cart.save();
 
-    // Respond with updated cart details
-    res.status(200).json({
+    return res.status(200).json({
       message: "Coupon applied successfully.",
       cart,
-      applied_coupon: coupon.code,
-      discount_amount: finalDiscount,
+      applied_coupon_code: coupon.code,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: error.message });
   }
 };
+
+export const RevokeCoupon = async (req, res) => {
+  const { cartId } = req.body;
+
+  try {
+    if (!cartId) {
+      return res.status(400).json({ error: "Cart ID is required." });
+    }
+
+    const cart = await Cart.findOne({ uuid: cartId });
+    if (!cart) {
+      return res.status(404).json({ error: "Cart not found." });
+    }
+
+    const coupon = await Coupons.findOne({ _id: cart.applied_coupon })
+    
+    if (!cart.applied_coupon) {
+      return res.status(400).json({ error: "No coupon applied to revoke." });
+    }
+
+    cart.price_details.total_current_price += coupon.amount;
+    cart.price_details.discount_amount = 0;
+    cart.applied_coupon = null;
+
+    await cart.save();
+
+    return res.status(200).json({
+      message: "Coupon revoked successfully.",
+      cart,
+    });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
+
+
+
+
+
 

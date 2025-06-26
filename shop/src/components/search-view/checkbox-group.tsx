@@ -15,7 +15,6 @@ const CheckboxGroup: React.FC<Props> = ({ children, value, onChange }) => {
   const onChangeHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const newValue = e.target.value; // Get the current checkbox value
-      console.log("Clicked value:", newValue,children);
       if (value !== newValue) {
         onChange(newValue); // Update only if the value changes
       }
@@ -30,12 +29,6 @@ const CheckboxGroup: React.FC<Props> = ({ children, value, onChange }) => {
           return child;
         }
         const isChecked = value === child.props.value;
-        // console.log(
-        //   "Rendering child:",
-        //   child.props.value,
-        //   "Checked:",
-        //   isChecked
-        // );
         return React.cloneElement(child, {
           onChange: onChangeHandler,
           checked: isChecked,

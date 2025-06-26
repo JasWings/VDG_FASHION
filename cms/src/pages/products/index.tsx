@@ -109,7 +109,6 @@ export default function ProductsPage() {
               className="w-full"
               type={type}
               onCategoryFilter={(category: Category) => {
-                console.log(category)
                 setCategory(category?._id!);
                 setPage(1);
               }}

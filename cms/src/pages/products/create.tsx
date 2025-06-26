@@ -33,7 +33,7 @@ export default function CreateProductPage() {
   ) {
     // router.replace(Routes.dashboard);
   }
-  console.log("This page render here")
+  
   return (
     <>
       <div className="flex py-5 border-b border-dashed border-border-base sm:py-8">

@@ -126,7 +126,7 @@ export default function OrderDetailsPage() {
 
   const { price: amountDue } = usePrice({ amount: amountPayable,    currencyCode: "INR"
   });
-  console.log(order,"order")
+
   // const totalItem = order?.products.reduce(
   //   // @ts-ignore
   //   (initial = 0, p) => initial + parseInt(p?.pivot?.order_quantity!),
@@ -193,7 +193,7 @@ export default function OrderDetailsPage() {
       },
     },
   ];
-  console.log(order,"order")
+  
   return (
     <>
       <Card className="relative overflow-hidden">

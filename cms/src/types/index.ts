@@ -1098,6 +1098,7 @@ export interface ShippingInput {
   amount: number;
   is_global?: boolean;
   type: ShippingType;
+  payment_method: string;
 }
 
 export interface ShippingUpdateInput {

@@ -50,7 +50,7 @@ export default function CreateOrUpdateAttributeForm({ initialValues }: IProps) {
     defaultValues: initialValues ? initialValues : { name: '', values: [] },
     resolver: yupResolver(attributeValidationSchema),
   });
-  console.log(initialValues,"inita")
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'values',

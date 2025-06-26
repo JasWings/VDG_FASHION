@@ -101,7 +101,6 @@ export default function Uploader({
   
   const handleDelete = (image: string) => {
     const images = files.filter((file) => file.uuid !== image);
-    console.log(files,"files",image,images)
     setFiles(images);
     if (onChange) {
       if(multiple){

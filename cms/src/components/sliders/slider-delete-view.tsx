@@ -18,7 +18,6 @@ const SliderDeleteView = () => {
     closeModal();
   }
 
-  console.log(data,"sliderdata")
 
   return (
     <ConfirmationCard

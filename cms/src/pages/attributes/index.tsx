@@ -27,7 +27,7 @@ export default function AttributePage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  console.log(attributes)
+
   return (
     <>
       <Card className="mb-8 flex flex-col items-center justify-between md:flex-row">

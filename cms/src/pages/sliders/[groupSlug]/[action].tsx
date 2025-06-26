@@ -23,7 +23,7 @@ export default function UpdateTypePage() {
   });
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
-  console.log(data,"data")
+  
   return (
     <>
       <div className="flex border-b border-dashed border-border-base py-5 sm:py-8">

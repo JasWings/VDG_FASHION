@@ -400,7 +400,7 @@ export default function SettingsForm({
     };
     // const smsEvent = formatEventOptions(values.smsEvent);
     // const emailEvent = formatEventOptions(values.emailEvent);
-    console.log(values,contactDetails)
+
     updateSettingsMutation({
         ...values,
         _id : options?._id,
@@ -441,7 +441,7 @@ export default function SettingsForm({
       // },
     });
   }
-  console.log(options,serverInfo)
+  
   // let paymentGateway = watch('paymentGateway');
   // let defaultPaymentGateway = watch('defaultPaymentGateway');
   // let useEnableGateway = watch('useEnableGateway');
@@ -450,7 +450,6 @@ export default function SettingsForm({
   const upload_max_filesize = options?.server_info?.upload_max_filesize! / 1024;
   const max_fileSize = options?.server_info?.upload_max_filesize! * 1000;
 
-  // console.log('upload_max_filesize', upload_max_filesize)
 
   const logoInformation = (
     <span>

@@ -83,12 +83,12 @@ export const AddItemsToCart = async (req, res) => {
       cart = new Cart({
         user: user?._id,
         items: [],
+        payment_method: null,
         price_details: {
           total_actual_price: 0,
           total_current_price: 0,
           total_quantity: 0,
         },
-        selected_shipping: null,
       });
     }
 
@@ -117,32 +117,9 @@ export const AddItemsToCart = async (req, res) => {
     cart.price_details.total_current_price = totalCurrentPrice;
     cart.price_details.total_quantity = totalQuantity;
 
-    const settings = await Settings.findOne();
-    if (settings) {
-      let shippingCost = 0;
-      let selectedShipping = null;
-
-      if (settings.freeShipping && settings.freeShippingAmount != null && totalCurrentPrice >= settings.freeShippingAmount) {
-        shippingCost = 0;
-      } else if (settings.shippingClass) {
-        const shippingClass = await Shipping.findById(settings.shippingClass._id); // Ensure it's fetched from the database
-        if (shippingClass && !shippingClass.is_deleted) {
-          if (shippingClass.type === "fixed") {
-            shippingCost = shippingClass.amount;
-          } else if (shippingClass.type === "percentage") {
-            shippingCost = (totalCurrentPrice * shippingClass.amount) / 100;
-          }
-
-          selectedShipping = {
-            id: shippingClass._id,
-            name: shippingClass.name,
-            cost: shippingCost,
-          };
-        }
-      }
-
-      cart.selected_shipping = selectedShipping;
-      cart.price_details.total_current_price += shippingCost;
+    if(cart.items.length === 0 && cart.price_details.total_quantity === 0 ){
+      cart.selected_shipping = null;
+      cart.applied_coupon = null;
     }
 
     await cart.save();
@@ -157,6 +134,7 @@ export const AddItemsToCart = async (req, res) => {
     res.status(500).json({ status: "failed", message: error.message });
   }
 };
+
 
 
 
@@ -251,7 +229,7 @@ export const placeonorder = async (req, res) => {
 
     await Cart.updateOne(
       { user: user?._id },
-      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null, applied_coupon:null,selected_shipping:null } },
+      { $set: { items: [], price_details: {}, billing_address: null, shipping_address: null, applied_coupon:null,selected_shipping:null,payment_method: null } },
       { session }
     );
 
@@ -276,9 +254,6 @@ export const placeonorder = async (req, res) => {
 export const verifyPayment = async (req, res) => {
     try {
         
-        console.log('Request body:', req.body);
-
-        
         const {
             razorpay_order_id,
             razorpay_payment_id,
@@ -302,9 +277,6 @@ export const verifyPayment = async (req, res) => {
             .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
             .update(`${razorpay_order_id}|${razorpay_payment_id}`)
             .digest('hex');
-
-        console.log('Generated Signature:', generatedSignature);
-        console.log('Received Signature:', razorpay_signature);
 
         // Check if the generated signature matches the one sent by Razorpay
         if (generatedSignature !== razorpay_signature) {
@@ -353,3 +325,88 @@ export const verifyPayment = async (req, res) => {
         });
     }
 };
+
+
+export const UpdatePaymentMethod = async (req, res) => {
+  try {
+    const user = req.user;
+    const { payment_method } = req.body;
+
+    const Methods = {
+      "cod":"COD",
+      "online":"Online"
+    }
+
+    if (!["online", "cod"].includes(payment_method)) {
+      return res.status(400).json({ status: "failed", message: "Invalid payment method" });
+    }
+
+    const cart = await Cart.findOne({ user: user?._id, is_active: true });
+    if (!cart) {
+      return res.status(404).json({ status: "failed", message: "Cart not found" });
+    }
+
+    const settings = await Settings.findOne();
+    if (!settings || !settings.shippingClass) {
+      return res.status(500).json({ status: "failed", message: "Shipping settings not configured" });
+    }
+
+    const globalShipping = await Shipping.findById(settings.shippingClass._id);
+    if (!globalShipping || globalShipping.is_deleted) {
+      return res.status(404).json({ status: "failed", message: "Shipping class not found or deleted" });
+    }
+
+    const previousShippingCost = cart.selected_shipping?.cost || 0;
+
+    // Remove old shipping cost from total_current_price
+    cart.price_details.total_current_price -= previousShippingCost;
+
+    let newShippingCost = 0;
+    if (payment_method === "cod") {
+      if (globalShipping.type === "fixed") {
+        newShippingCost = globalShipping.amount || 0;
+      } else if (globalShipping.type === "percentage") {
+        // Calculate based on price before shipping cost
+        const basePrice = cart.price_details.total_current_price;
+        newShippingCost = (basePrice * globalShipping.amount) / 100;
+      }
+      // If free, cost remains 0
+    }
+
+    // Add new shipping cost to total_current_price
+    cart.price_details.total_current_price += newShippingCost;
+
+    // Update shipping info or clear it
+    cart.selected_shipping = payment_method === "cod"
+      ? {
+          id: globalShipping._id,
+          name: globalShipping.name,
+          cost: newShippingCost,
+        }
+      : null;
+
+    // Update payment method
+    cart.payment_method = Methods[payment_method];
+
+    await cart.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Payment method and shipping updated successfully",
+      data: cart,
+    });
+  } catch (error) {
+    console.error("Error updating payment method:", error);
+    res.status(500).json({ status: "failed", message: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+

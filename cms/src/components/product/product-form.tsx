@@ -159,7 +159,6 @@ export default function CreateOrUpdateProductForm({
     useUpdateProductMutation();
 
   const onSubmit = async (values: ProductFormValues) => {
-    console.log(values,"values")
     const inputValues = {
       language: router.locale,
       ...getProductInputValues(values, initialValues),
@@ -177,14 +176,13 @@ export default function CreateOrUpdateProductForm({
           shop_id: shopId || initialValues?.shop_id,
         });
       } else {
-        console.log("update true",initialValues,inputValues,initialValues?._id)
         //@ts-ignore
         
         updateProduct({
           ...inputValues,
           group : inputValues?.type_id,
           _id: initialValues._id!,
-          id : initialValues?.id,
+          id : initialValues?._id,
           variants : initialValues?.variants,
           variation_options : initialValues?.variation_options,
           shop_id: initialValues.shop_id!,
@@ -222,7 +220,6 @@ export default function CreateOrUpdateProductForm({
       suggestion: autoSuggestionList as ItemProps[],
     });
   }, [productName]);
-  console.log(initialValues)
   const slugAutoSuggest = formatSlug(watch('name'));
   if (Boolean(options?.isProductReview)) {
     if (permission) {

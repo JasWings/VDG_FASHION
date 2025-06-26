@@ -150,7 +150,6 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
   const isSlugEditable =
     router?.query?.action === 'edit' &&
     router?.locale === Config.defaultLanguage;
-  console.log(initialValues)
   const {
     register,
     handleSubmit,
@@ -226,7 +225,6 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
         !initialValues ||
         !initialValues.translated_languages.includes(router.locale)
       ) {
-        console.log(input,slugAutoSuggest)
         const data = {
           identity : input?.name,
           slug : slugAutoSuggest,
@@ -249,7 +247,7 @@ export default function CreateOrUpdateTagForm({ initialValues }: IProps) {
       getErrorMessage(err);
     }
   };
-  console.log(defaultValues,"defaultValues")
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {/* <div className="my-5 flex flex-wrap border-b border-dashed border-gray-300 pb-8 sm:my-8">

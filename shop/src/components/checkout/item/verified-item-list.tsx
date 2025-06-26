@@ -13,6 +13,8 @@ import { ItemInfoRow } from '@/components/checkout/item/item-info-row';
 import PaymentGrid from '@/components/checkout/payment/payment-grid';
 import { PlaceOrderAction } from '@/components/checkout/place-order-action';
 import Wallet from '@/components/checkout/wallet/wallet';
+import { useRevokeCoupon, useVerifyCoupon } from '@/framework/settings';
+import { toast } from 'react-toastify';
 
 interface Props {
   className?: string;
@@ -20,13 +22,26 @@ interface Props {
 
 const VerifiedItemList: React.FC<Props> = ({ className }) => {
   const { t } = useTranslation('common');
-  const { items, isEmpty: isEmptyCart, Cart } = useCart();
+  const { items, isEmpty: isEmptyCart, Cart,fetchCart } = useCart();
   const [verifiedResponse] = useAtom(verifiedResponseAtom);
   const [coupon, setCoupon] = useAtom(couponAtom);
+  const {   mutate: revokeCoupon ,
+    isLoading: loading,
+    formError } = useRevokeCoupon()
 
   const appliedCoupon = Cart?.applied_coupon;
   const shippingDetails = Cart?.selected_shipping;
-  console.log(Cart,shippingDetails)
+
+  const handleCouponRevoke = async () => {
+    try {
+     await  revokeCoupon({cartId: Cart?.uuid})
+     setCoupon(null)
+     toast.success("Coupon removed successfully")
+    } catch (error) {
+      toast.error(error.message)
+    }
+  };
+  
   return (
     <div className={className}>
       <div className="flex flex-col pb-2 border-b border-border-200">
@@ -65,9 +80,9 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
             </p>
               
               <span className="text-sm text-body">{'₹' +"-"+ appliedCoupon?.amount}</span>
-            {/* <button onClick={() => setCoupon(null)} className="text-red-500">
+            <button  onClick={() => handleCouponRevoke()} className="text-red-500">
               <CloseIcon className="w-3 h-3 ml-2" />
-            </button> */}
+            </button>
           </div>
         ) : (
           <div className="mt-5 !mb-4">
@@ -84,7 +99,7 @@ const VerifiedItemList: React.FC<Props> = ({ className }) => {
           </span>
         </div>
       </div>
-
+      <PaymentGrid cart={Cart} className={""} theme={{}} refetchCart={fetchCart} />
       {verifiedResponse && (
         <Wallet
           totalPrice={Cart.price_details.total_current_price}

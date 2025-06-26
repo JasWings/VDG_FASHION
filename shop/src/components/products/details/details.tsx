@@ -359,7 +359,7 @@ const Details: React.FC<Props> = ({
                   data={ product}
                   variant="big"
                   variation={selectedVariation}
-                  disabled={selectedVariation?.is_disable || !isSelected}
+                  disabled={selectedVariation?.is_disable || Number(quantity) === 0}
                 />
               </div>
               </div>
@@ -369,7 +369,7 @@ const Details: React.FC<Props> = ({
                     <>
                       {Number(quantity) > 0 ? (
                         <span className="whitespace-nowrap text-base text-body ltr:lg:ml-7 rtl:lg:mr-7">
-                          {/* {stock} {t('text-pieces-available')} */}
+                          {quantity} {t('text-pieces-available')}
                         </span>
                       ) : (
                         <div className="whitespace-nowrap text-base text-red-500 ltr:lg:ml-7 rtl:lg:mr-7">

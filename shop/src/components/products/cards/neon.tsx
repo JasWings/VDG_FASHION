@@ -149,6 +149,13 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
               <div className=' mb-4'>
               {/* <span className=' text-[#6B7280] font-normal text-sm leading-5'>{weight_in_grams}gm</span> */}
               </div>
+
+              {Number(quantity) > 0 && Number(quantity) <= 5 && (
+  <div className="mt-2 mb-2 text-sm text-yellow-600 font-medium">
+    Only {quantity} left in stock!
+  </div>
+)}
+
               {/* End of product title */}
       
               {product_type.toLowerCase() === 'variable' ? (
@@ -179,7 +186,7 @@ const Neon: React.FC<NeonProps> = ({ product, className }) => {
       
               {Number(quantity) <= 0 && (
                 <div className="rounded bg-red-500 px-2 py-1.5 text-center text-xs text-light sm:py-2.5">
-                  {t('text-out-quantity')}
+                  Out Of Stock
                 </div>
               )}
               {/* End of add to cart */}

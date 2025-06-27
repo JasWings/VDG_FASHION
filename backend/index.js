@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./src/Config/db.js"
 import morgan from "morgan";
 import cors from "cors";
+import { unexpectedBehaviorHandler } from "./src/utils/helpers.js";
 import bodyParser from "body-parser";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { razorpayWebhook } from "./src/Controllers/payment/index.js";
@@ -22,6 +23,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: false }))
 app.use(cors());
+app.use(unexpectedBehaviorHandler)
 app.use(express.json());
 app.use(morgan("dev"));
   

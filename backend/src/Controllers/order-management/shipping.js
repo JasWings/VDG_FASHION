@@ -47,7 +47,7 @@ export const updateShipping = async (req, res) => {
 
 export const deleteShipping = async (req, res) => {
   try {
-    const shipping = await Shipping.findOneAndUpdate({ _id: req.params.id},{ is_deleted:true})
+    const shipping = await Shipping.findOneAndUpdate({ id: req.params.id},{ is_deleted:true})
     if (!shipping) {
       return res.status(404).json({ message: 'Shipping record not found' });
     }

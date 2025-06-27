@@ -172,6 +172,11 @@ export const ApplyCoupons = async (req, res) => {
   }
 };
 
+const roundToTwoDecimals = (value) => {
+  return Math.round((value + Number.EPSILON) * 100) / 100;
+};
+
+
 export const RevokeCoupon = async (req, res) => {
   const { cartId } = req.body;
 
@@ -185,16 +190,46 @@ export const RevokeCoupon = async (req, res) => {
       return res.status(404).json({ error: "Cart not found." });
     }
 
-    const coupon = await Coupons.findOne({ _id: cart.applied_coupon })
-    
     if (!cart.applied_coupon) {
       return res.status(400).json({ error: "No coupon applied to revoke." });
     }
 
-    cart.price_details.total_current_price += coupon.amount;
+    const coupon = await Coupons.findOne({ _id: cart.applied_coupon });
+    console.log(coupon, cart.applied_coupon, "applied");
+    if (!coupon) {
+      return res.status(404).json({ error: "Coupon not found." });
+    }
+
+    const { type, amount } = coupon;
+
+    let { total_actual_price, total_current_price, discount_amount } = cart.price_details;
+    total_actual_price = total_actual_price ?? 0;
+    total_current_price = total_current_price ?? 0;
+    discount_amount = discount_amount ?? 0;
+
+    if (typeof total_actual_price !== "number" || typeof total_current_price !== "number") {
+      throw new Error("Invalid price details in cart.");
+    }
+
+    if (type === "fixed") {
+      total_current_price += amount;
+    } else if (type === "percentage") {
+      const discount = (total_actual_price * amount) / 100;
+      if (isNaN(discount) || discount < 0) {
+        throw new Error("Invalid discount calculation.");
+      }
+
+      total_current_price += cart.price_details.discount_amount;
+    }
+
+    // Round values to two decimal places
+    cart.price_details.total_current_price = roundToTwoDecimals(total_current_price);
     cart.price_details.discount_amount = 0;
+
+    // Remove applied coupon
     cart.applied_coupon = null;
 
+    console.log(cart, "cart");
     await cart.save();
 
     return res.status(200).json({
@@ -202,9 +237,12 @@ export const RevokeCoupon = async (req, res) => {
       cart,
     });
   } catch (error) {
+    console.error("Error during coupon revocation:", error);
     return res.status(500).json({ error: error.message });
   }
 };
+
+
 
 
 

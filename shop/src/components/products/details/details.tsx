@@ -260,12 +260,12 @@ const Details: React.FC<Props> = ({
               >
                 {name}
               </h1>
-              <div>
+              {/* <div>
                 <FavoriteButton
                   productId={id}
                   className={classNames({ 'mr-1': isModal })}
                 />
-              </div>
+              </div> */}
               {/* <ShareButton message={identity} imageUrl={getImageURL(product.image.file)} /> */}
             </div>
             <div className=' flex w-full items-start justify-start space-x-8 rtl:space-x-reverse'>

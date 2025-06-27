@@ -5,6 +5,7 @@ const shippingValidation = Joi.object({
     name: Joi.string().required(),
     is_global: Joi.boolean().optional(),
     type: Joi.string().required(),
+    payment_method: Joi.string().required()
 });
 
 export const validateShipping = (data) => {

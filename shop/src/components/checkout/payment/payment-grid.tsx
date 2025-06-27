@@ -13,13 +13,13 @@ import { RazorPayIcon } from '@/components/icons/payment-gateways/razorpay';
 import axios from 'axios';
 import client from '@/framework/client';
 
-const PaymentGroupOption = ({ payment: { name, value, icon }, theme }) => (
-  <RadioGroup.Option value={value} key={value}>
-    {({ checked }) => (
+const PaymentGroupOption = ({ payment: { name, value, icon, }, theme, cart }) => (
+  <RadioGroup.Option  value={value} key={value}>
+    {({ checked  }) => (
       <div
         className={cn(
           'relative flex h-full w-full cursor-pointer items-center justify-center rounded border border-gray-200 bg-light p-3 text-center',
-          checked && '!border-accent bg-light shadow-600',
+          checked ? checked : value === cart && '!border-accent bg-light shadow-600',
           {
             '!border-gray-800 bg-light shadow-600': theme === 'bw' && checked,
           }
@@ -126,8 +126,8 @@ const PaymentGrid = ({ className, theme, cart, refetchCart }:any) => {
 
         <div className="mb-8 grid grid-cols-2 gap-4">
           {Object.values(AVAILABLE_PAYMENT_METHODS_MAP).map((payment) => (
-            <Fragment key={payment.value}>
-              <PaymentGroupOption theme={theme} payment={payment} />
+            <Fragment key={payment.value} >
+              <PaymentGroupOption theme={theme} payment={payment} cart={cart.payment_method} />
             </Fragment>
           ))}
         </div>

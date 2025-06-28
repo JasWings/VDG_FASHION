@@ -6,75 +6,83 @@ import Address from "../../../Models/user-management/administration/address.js";
 import mongoose from "mongoose";
 import Settings from "../../../Models/settings/index.js";
 import Shipping from "../../../Models/order-management/shpping.js";
+// import Offer from "../../../Models/product-management/offers/index.js"
+import Offer from "../../../Models/mark-&-promotions/offer.js";
 
 // export const AddItemsToCart = async (req, res) => {
-//     try {
-//       const user = req.user;
-//       const { product, quantity } = req.body;
-  
-//       const product_details = await ProductModel.findOne({ uuid: product });
-  
-//       if (!product_details) {
-//         return res.status(404).json({ status: "failed", message: "Product not found" });
-//       }
-  
-//       let cart = await Cart.findOne({ user: user?._id, is_active: true });
-  
-//       if (!cart) {
-//         cart = new Cart({
-//           user: user?._id,
-//           items: [],
-//           price_details: {
-//             total_actual_price: 0,
-//             total_current_price: 0,
-//             total_quantity: 0,
-//           },
-//         });
-//       }
-  
-//       const existingItemIndex = cart.items.findIndex(
-//         (item) => item.product.toString() === product_details?._id.toString()
-//       );
-  
-//       if (existingItemIndex >= 0) {
-//         cart.items[existingItemIndex].quantity = quantity;
-//       } else {
-//         cart.items.push({
-//           product: product_details?._id,
-//           quantity,
-//           price: product_details?.price,
-//           sale_price: product_details?.sale_price,
-//         });
-//       }
-  
-      
-//       cart.items = cart.items.filter((item) => item.quantity > 0);
-  
-//       const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-//       const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
-//       const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
-  
-//       cart.price_details.total_actual_price = totalActualPrice;
-//       cart.price_details.total_current_price = totalCurrentPrice;
-//       cart.price_details.total_quantity = totalQuantity;
-  
-//       await cart.save();
-  
-//       res.status(200).json({ status: "success", message: "Item add to cart successfully", data : cart });
-//     } catch (error) {
-//       console.error(error, "error");
-//       res.status(500).json({ status: "failed", message: error.message });
+//   try {
+//     const user = req.user;
+//     const { product, quantity } = req.body;
+
+//     const product_details = await ProductModel.findOne({ uuid: product });
+//     if (!product_details) {
+//       return res.status(404).json({ status: "failed", message: "Product not found" });
 //     }
-//   };
-  
+
+//     let cart = await Cart.findOne({ user: user?._id, is_active: true });
+//     if (!cart) {
+//       cart = new Cart({
+//         user: user?._id,
+//         items: [],
+//         payment_method: null,
+//         price_details: {
+//           total_actual_price: 0,
+//           total_current_price: 0,
+//           total_quantity: 0,
+//         },
+//       });
+//     }
+
+//     const existingItemIndex = cart.items.findIndex(
+//       (item) => item.product.toString() === product_details._id.toString()
+//     );
+
+//     if (existingItemIndex >= 0) {
+//       cart.items[existingItemIndex].quantity = quantity;
+//     } else {
+//       cart.items.push({
+//         product: product_details._id,
+//         quantity,
+//         price: product_details.price,
+//         sale_price: product_details.sale_price,
+//       });
+//     }
+
+//     cart.items = cart.items.filter((item) => item.quantity > 0);
+
+//     const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+//     const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
+//     const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+
+//     cart.price_details.total_actual_price = totalActualPrice;
+//     cart.price_details.total_current_price = totalCurrentPrice;
+//     cart.price_details.total_quantity = totalQuantity;
+
+//     if(cart.items.length === 0 && cart.price_details.total_quantity === 0 ){
+//       cart.selected_shipping = null;
+//       cart.applied_coupon = null;
+//     }
+
+//     await cart.save();
+
+//     res.status(200).json({
+//       status: "success",
+//       message: "Item added to cart successfully",
+//       data: cart,
+//     });
+//   } catch (error) {
+//     console.error(error, "error");
+//     res.status(500).json({ status: "failed", message: error.message });
+//   }
+// };
 
 export const AddItemsToCart = async (req, res) => {
   try {
     const user = req.user;
-    const { product, quantity } = req.body;
+    const { product, quantity, offerId } = req.body;
 
     const product_details = await ProductModel.findOne({ uuid: product });
-    if (!product_details) {
+    if (!product_details && !offerId) {
       return res.status(404).json({ status: "failed", message: "Product not found" });
     }
 
@@ -92,23 +100,81 @@ export const AddItemsToCart = async (req, res) => {
       });
     }
 
+    let offer = null;
+    if (offerId) {
+      offer = await Offer.findOne({ _id: offerId, isActive: true });
+      if (!offer) {
+        return res.status(400).json({ status: "failed", message: "Invalid or inactive offer" });
+      }
+
+      const isWithinDateRange =
+        new Date() >= new Date(offer.startDate) && new Date() <= new Date(offer.endDate);
+      if (!isWithinDateRange) {
+        return res.status(400).json({ status: "failed", message: "Offer is not valid at this time" });
+      }
+
+      const isEligible = offer.eligibleProducts.includes(product_details._id);
+      if (!isEligible) {
+        return res.status(400).json({ status: "failed", message: "Product is not eligible for the offer" });
+      }
+    }
+
     const existingItemIndex = cart.items.findIndex(
       (item) => item.product.toString() === product_details._id.toString()
     );
 
-    if (existingItemIndex >= 0) {
-      cart.items[existingItemIndex].quantity = quantity;
+    if (quantity > 0) {
+      if (existingItemIndex >= 0) {
+        cart.items[existingItemIndex].quantity = quantity;
+      } else {
+        cart.items.push({
+          product: product_details._id,
+          quantity,
+          price: product_details.price,
+          sale_price: product_details.sale_price,
+        });
+      }
     } else {
-      cart.items.push({
-        product: product_details._id,
-        quantity,
-        price: product_details.price,
-        sale_price: product_details.sale_price,
+      if (existingItemIndex >= 0) {
+        cart.items.splice(existingItemIndex, 1);
+      }
+    }
+
+    if (offer) {
+      const eligibleQuantity = Math.floor(quantity / offer.buyQuantity);
+      const freeProducts = offer.freeProducts.map((freeProduct) => ({
+        product: freeProduct,
+        quantity: eligibleQuantity * offer.getQuantity,
+        price: 0,
+        sale_price: 0,
+      }));
+
+      cart.items = cart.items.filter(
+        (item) => !offer.freeProducts.includes(item.product.toString())
+      );
+
+      freeProducts.forEach((freeProduct) => {
+        if (freeProduct.quantity > 0) {
+          const freeProductIndex = cart.items.findIndex(
+            (item) => item.product.toString() === freeProduct.product.toString()
+          );
+          if (freeProductIndex >= 0) {
+            cart.items[freeProductIndex].quantity = freeProduct.quantity;
+          } else {
+            cart.items.push(freeProduct);
+          }
+        }
       });
+
+      cart.price_details.applied_offer = offer._id;
+    } else {
+      cart.price_details.applied_offer = null;
+      cart.items = cart.items.filter(
+        (item) => item.price > 0 || item.sale_price > 0
+      );
     }
 
     cart.items = cart.items.filter((item) => item.quantity > 0);
-
     const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
     const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
     const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
@@ -117,16 +183,17 @@ export const AddItemsToCart = async (req, res) => {
     cart.price_details.total_current_price = totalCurrentPrice;
     cart.price_details.total_quantity = totalQuantity;
 
-    if(cart.items.length === 0 && cart.price_details.total_quantity === 0 ){
+    if (cart.items.length === 0) {
       cart.selected_shipping = null;
       cart.applied_coupon = null;
+      cart.price_details.applied_offer = null;
     }
 
     await cart.save();
 
     res.status(200).json({
       status: "success",
-      message: "Item added to cart successfully",
+      message: "Cart updated successfully",
       data: cart,
     });
   } catch (error) {
@@ -134,9 +201,6 @@ export const AddItemsToCart = async (req, res) => {
     res.status(500).json({ status: "failed", message: error.message });
   }
 };
-
-
-
 
 
 export const getCartDetails = async (req, res) => {
@@ -400,13 +464,3 @@ export const UpdatePaymentMethod = async (req, res) => {
     res.status(500).json({ status: "failed", message: error.message });
   }
 };
-
-
-
-
-
-
-
-
-
-

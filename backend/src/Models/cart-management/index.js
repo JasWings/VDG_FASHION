@@ -13,7 +13,8 @@ const CartSchema = new Schema(
       total_actual_price: { type: Number, required: true, default: 0 },
       total_current_price: { type: Number, required: true, default: 0 },
       total_quantity: { type: Number, required: true, default: 0 },
-      discount_amount: { type: Number, default: 0 }
+      discount_amount: { type: Number, default: 0 },
+      applied_offer: { type: mongoose.Types.ObjectId, ref: "Offer" }
     },
     items: [
       {

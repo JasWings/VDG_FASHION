@@ -53,7 +53,7 @@ export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
     resolver: yupResolver(offerValidationSchema),
   });
 
-  const { products, isLoading: loadingProducts } = useProductsQuery();
+  const { products, isLoading: loadingProducts } = useProductsQuery({ limit: 100000});
   const { mutate: createOffer, isLoading: creating } = useCreateOfferMutation();
   const { mutate: updateOffer, isLoading: updating } = useUpdateOfferMutation();
 

@@ -9,8 +9,8 @@ const offerSchema = new mongoose.Schema({
     discountType: { type: String, enum: ['Buy X Get Y', 'Buy X Get X'], required: true },
     buyQuantity: { type: Number, required: true },
     getQuantity: { type: Number, required: true },
-    eligibleProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }], // Products needed to activate the offer
-    freeProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }], // New field for free products
+    eligibleProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }],
+    freeProducts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'products' }],
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     applyConditions: { type: Array, default: [] },

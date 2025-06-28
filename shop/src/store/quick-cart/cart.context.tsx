@@ -12,7 +12,7 @@ import { CART_KEY } from '@/lib/constants';
 
 interface CartProviderState extends State {
   addItemsToCart: (items: Item[]) => void;
-  addItemToCart: (id: string, quantity: number) => void;
+  addItemToCart: (id: string, quantity: number,offer?:any) => void;
   removeItemFromCart: (id: Item['id'],quantity:number) => void;
   clearItemFromCart: (id: Item['id']) => void;
   getItemFromCart: (id: Item['id']) => any | undefined;
@@ -79,9 +79,9 @@ export const CartProvider: React.FC<{ children?: React.ReactNode }> = (
   const addItemsToCart = (item: Item, quantity: number) =>
     dispatch({ type: 'ADD_ITEM_WITH_QUANTITY', item, quantity });
 
-  const addItemToCart = async(id: string, quantity: number) =>{
+  const addItemToCart = async(id: string, quantity: number,offer?:any) =>{
     try {
-      const cartObject={product:id,quantity:quantity}
+      const cartObject={product:id,quantity:quantity,offerId:offer}
       const response=await client.cart.update(cartObject)
       fetchCart()
       return response

@@ -35,7 +35,8 @@ export interface State {
     total_actual_price: number | null,
     total_current_price: number | null,
     total_quantity: number | null,
-    total_weight_in_grams: number | null
+    total_weight_in_grams?: number | null
+    applied_offer: any
   };
   country:{
     currency_symbol:string;
@@ -94,7 +95,8 @@ export const initialState: State = {
     total_actual_price: 0,
     total_current_price: 0,
     total_quantity: 0,
-    total_weight_in_grams: 0
+    total_weight_in_grams: 0,
+    applied_offer:null
 },
 country:{
   currency_symbol:"$",
@@ -160,6 +162,7 @@ export function cartReducer(state: State, action: Action): State {
             total_actual_price:cartData?.price_details?.total_actual_price,
             total_current_price:cartData?.price_details?.total_current_price,
             total_quantity:cartData?.price_details?.total_quantity,
+            applied_offer: cartData?.price_details?.applied_offer
             // total_weight_in_grams:cartData?.price_details?.total_weight_in_grams
           },
           shipping_address:{

@@ -58,11 +58,7 @@ export const useUpdateOfferMutation = () => {
         ? `/${router.query.shop}${Routes.offer.list}`
         : Routes.offer.list;
       await router.push(
-        `${generateRedirectUrl}`,
-        undefined,
-        {
-          locale: Config.defaultLanguage,
-        }
+        `${Routes.offer.list}`
       );
       toast.success(t('common:successfully-updated'));
     },

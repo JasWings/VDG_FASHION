@@ -92,8 +92,8 @@ export const updateOffer = async (req, res) => {
             isActive
         } = req.body;
 
-        const updatedOffer = await Offer.findByIdAndUpdate(
-            id,
+        const updatedOffer = await Offer.findOneAndUpdate(
+            { id},
             {
                 offerTitle,
                 discountType,

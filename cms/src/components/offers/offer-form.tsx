@@ -35,13 +35,23 @@ type IProps = {
 
 export default function CreateOrUpdateOfferForm({ initialValues }: IProps) {
   const router = useRouter();
-  const initialFormValues = initialValues
-    ? {
-        ...initialValues,
-        startDate: initialValues.startDate ? new Date(initialValues.startDate) : new Date(),
-        endDate: initialValues.endDate ? new Date(initialValues.endDate) : new Date(),
-      }
-    : defaultValues;
+const initialFormValues = initialValues
+  ? {
+      ...initialValues,
+      eligibleProducts: initialValues.eligibleProducts.map((product: any) => ({
+        label: product.name || 'Unknown',
+        value: product._id || product,
+      })),
+      freeProducts: initialValues.freeProducts.map((product: any) => ({
+        label: product.name || 'Unknown',
+        value: product._id || product,
+      })),
+      discountType: { label: initialValues.discountType, value: initialValues.discountType },
+      startDate: new Date(initialValues.startDate),
+      endDate: new Date(initialValues.endDate),
+    }
+  : defaultValues;
+
 
   const {
     register,

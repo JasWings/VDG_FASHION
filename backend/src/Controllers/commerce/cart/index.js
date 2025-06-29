@@ -109,18 +109,29 @@ export const AddItemsToCart = async (req, res) => {
 
       const isWithinDateRange =
         new Date() >= new Date(offer.startDate) && new Date() <= new Date(offer.endDate);
+      
       if (!isWithinDateRange) {
         return res.status(400).json({ status: "failed", message: "Offer is not valid at this time" });
       }
+     console.log(cart,"cart",offer)
+     const isEligible = offer.eligibleProducts.some((eligibleProductId) =>
+       cart.items.some((cartItem) => cartItem.product.toString() === eligibleProductId.toString())
+     );
 
-      const isEligible = offer.eligibleProducts.includes(product_details._id);
       if (!isEligible) {
         return res.status(400).json({ status: "failed", message: "Product is not eligible for the offer" });
       }
     }
 
+    const eligibleProductDetails = cart.items.find((cartItem) =>
+  offer.eligibleProducts.some(
+    (eligibleProductId) => cartItem.product.toString() === eligibleProductId.toString()
+  )
+);
+console.log(eligibleProductDetails,"products")
+
     const existingItemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === product_details._id.toString()
+      (item) => item.product.toString() === eligibleProductDetails.product.toString()
     );
 
     if (quantity > 0) {
@@ -214,7 +225,7 @@ export const getCartDetails = async (req, res) => {
             path: "product",
             model: "products",
           },
-        }).populate('billing_address').populate('shipping_address').populate('applied_coupon').populate({ path: "selected_shipping"})
+        }).populate('billing_address').populate('shipping_address').populate('applied_coupon').populate({ path: "selected_shipping"}).populate({ path: "price_details", populate: { path: "applied_offer" , populate:["eligibleProducts","freeProducts"]}})
   
       if (!cart_details) {
         return res.status(404).json({ status: "failed", message: "Cart not found." });

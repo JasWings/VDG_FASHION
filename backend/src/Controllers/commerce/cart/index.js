@@ -79,10 +79,10 @@ import Offer from "../../../Models/mark-&-promotions/offer.js";
 export const AddItemsToCart = async (req, res) => {
   try {
     const user = req.user;
-    const { product, quantity, offerId } = req.body;
+    const { product, quantity, offerId, removeOffer  } = req.body;
 
     const product_details = await ProductModel.findOne({ uuid: product });
-    if (!product_details && !offerId) {
+    if (!product_details && !offerId && !removeOffer) {
       return res.status(404).json({ status: "failed", message: "Product not found" });
     }
 
@@ -93,13 +93,47 @@ export const AddItemsToCart = async (req, res) => {
         items: [],
         payment_method: null,
         price_details: {
+          discount_amount: 0,
           total_actual_price: 0,
           total_current_price: 0,
           total_quantity: 0,
+          applied_offer: null
         },
       });
     }
+    if (removeOffer) {
+      
+      if (cart.price_details.applied_offer) {
+        const appliedOffer = await Offer.findById(cart.price_details.applied_offer);
 
+        if (appliedOffer) {
+          cart.items = cart.items.filter(
+            (item) => !appliedOffer.freeProducts.includes(item.product.toString())
+          );
+        }
+
+        cart.price_details.applied_offer = null;
+      }
+
+      // Update cart after removing offer
+      cart.items = cart.items.filter((item) => item.quantity > 0);
+      const totalActualPrice = cart.items.reduce((acc, item) => acc + item.price * item.quantity, 0);
+      const totalCurrentPrice = cart.items.reduce((acc, item) => acc + item.sale_price * item.quantity, 0);
+      const totalQuantity = cart.items.reduce((acc, item) => acc + item.quantity, 0);
+
+      cart.price_details.total_actual_price = totalActualPrice;
+      cart.price_details.total_current_price = totalCurrentPrice;
+      cart.price_details.total_quantity = totalQuantity;
+
+      await cart.save();
+
+      return res.status(200).json({
+        status: "success",
+        message: "Offer removed successfully",
+        data: cart,
+      });
+    }
+    let existingItemIndex;
     let offer = null;
     if (offerId) {
       offer = await Offer.findOne({ _id: offerId, isActive: true });
@@ -118,22 +152,105 @@ export const AddItemsToCart = async (req, res) => {
        cart.items.some((cartItem) => cartItem.product.toString() === eligibleProductId.toString())
      );
 
-      if (!isEligible) {
-        return res.status(400).json({ status: "failed", message: "Product is not eligible for the offer" });
-      }
+if (!isEligible) {
+  const eligibleProducts = await ProductModel.find({
+    _id: { $in: offer.eligibleProducts },
+  }).select("name");
+
+  const eligibleProductNames = eligibleProducts.map((product) => product.name).join(", ");
+
+  return res.status(400).json({
+    status: "failed",
+    message: `Your current cart products are not eligible for this offer. To qualify, add one of the following products to your cart: ${eligibleProductNames}.`,
+  });
+}
+
+
+
+        const eligibleItemsCount = cart.items.reduce((acc, item) => {
+    if (offer.eligibleProducts.includes(item.product.toString())) {
+      return acc + item.quantity;
+    }
+    return acc;
+  }, 0);
+
+  if (eligibleItemsCount < offer.buyQuantity) {
+    return res.status(400).json({
+      status: "failed",
+      message: `You need to buy at least ${offer.buyQuantity} items to apply this offer.`,
+    });
+  }
+
+  const totalCurrentPrice = cart.items.reduce(
+    (acc, item) => acc + item.sale_price * item.quantity,
+    0
+  );
+
+  if (totalCurrentPrice < offer.minimumPurchaseAmount) {
+    return res.status(400).json({
+      status: "failed",
+      message: `A minimum purchase of ₹${offer.minimumPurchaseAmount} is required to apply this offer.`,
+    });
+  }
+
+  // Validate usage restrictions
+  if (offer.usageRestrictions) {
+    // Check per user usage limit
+    const userOfferUsage = await Cart.countDocuments({
+      "price_details.applied_offer": offer._id,
+      user: user._id,
+    });
+
+    if (
+      offer.usageRestrictions.perUser !== null &&
+      userOfferUsage >= offer.usageRestrictions.perUser
+    ) {
+      return res.status(400).json({
+        status: "failed",
+        message: `You have already used this offer the maximum allowed ${offer.usageRestrictions.perUser} times.`,
+      });
+    }
+
+    // Check global usage limit
+    const globalOfferUsage = await Cart.countDocuments({
+      "price_details.applied_offer": offer._id,
+    });
+
+    if (
+      offer.usageRestrictions.globalLimit !== null &&
+      globalOfferUsage >= offer.usageRestrictions.globalLimit
+    ) {
+      return res.status(400).json({
+        status: "failed",
+        message: "This offer has reached its global usage limit.",
+      });
+    }
+  }
+
+ 
+
     }
 
     const eligibleProductDetails = cart.items.find((cartItem) =>
-  offer.eligibleProducts.some(
+  offer?.eligibleProducts.some(
     (eligibleProductId) => cartItem.product.toString() === eligibleProductId.toString()
   )
 );
+
+   if(offer){
+         existingItemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === eligibleProductDetails?.product?.toString()
+    );
+   }else {
+   existingItemIndex = cart.items.findIndex(
+      (item) => item.product.toString() === product_details._id.toString()
+    );
+   }
+ 
+
 console.log(eligibleProductDetails,"products")
 
-    const existingItemIndex = cart.items.findIndex(
-      (item) => item.product.toString() === eligibleProductDetails.product.toString()
-    );
-
+    
     if (quantity > 0) {
       if (existingItemIndex >= 0) {
         cart.items[existingItemIndex].quantity = quantity;
@@ -198,6 +315,7 @@ console.log(eligibleProductDetails,"products")
       cart.selected_shipping = null;
       cart.applied_coupon = null;
       cart.price_details.applied_offer = null;
+      cart.price_details.discount_amount = 0;
     }
 
     await cart.save();

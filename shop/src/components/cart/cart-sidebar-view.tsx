@@ -46,7 +46,7 @@ const CartSidebarView = () => {
     currencyCode: "INR"
   }); 
   
-
+console.log(Cart,"cart")
   return (
     <section className="relative flex h-full flex-col">
       <header className="fixed top-0 z-10 flex w-full max-w-md flex-col justify-between border-b border-border-200 border-opacity-75 bg-light px-6 py-4">
@@ -75,7 +75,7 @@ const CartSidebarView = () => {
       <motion.div layout className="grow pt-[80px] pb-20">
         {
         items.length > 0 ? (
-          items?.map((item) => <CartItem item={item} key={item.id} />)
+          items?.map((item) => <CartItem item={item} key={item.id} Cart={Cart} />)
         ) : (
           <motion.div
             layout

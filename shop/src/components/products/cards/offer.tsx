@@ -74,10 +74,28 @@ const Offer: React.FC<OfferProps> = ({ product, offers, cart, className }) => {
     }
   }
 
+  async function handleRemoveToCart() {
+    if (isAuthorize) {
+      try {
+        const response: any = await addItemToCart("", 1, '',offer?._id);
+        if (response.status === "failed") {
+          toast.error(response?.message);
+        } else {
+          toast.success(response.message);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      toast.warn("Login to continue");
+      openModal("LOGIN_VIEW");
+    }
+  }
+
   function handleProductQuickView() {
     return openModal("PRODUCT_DETAILS", product);
   }
-console.log(appliedOffer,offer,Cart)
+
   return (
     <article
       className={cn(
@@ -129,15 +147,14 @@ console.log(appliedOffer,offer,Cart)
           </p>
         </div>
 
-        {/* Applied Offer Details */}
 {appliedOffer?._id === offer?._id ? (
   <div className="applied-offer relative bg-green-100 p-3 text-sm text-green-700 rounded-lg mb-4 flex items-center justify-between">
     <span className="flex items-center">
       🎉 Offer Applied: Buy {appliedOffer.buyQuantity} Get {appliedOffer.getQuantity}!
     </span>
-<div className="relative group">
+    <div className="relative group">
   <span className="cursor-pointer text-blue-500 underline ml-2">Details</span>
-  <div className="absolute left-0 mt-2 hidden w-64 p-3 z-[1000] bg-white border border-gray-200 shadow-lg rounded-lg group-hover:block">
+  <div className="absolute top-full left-0 mt-2 hidden w-64 p-3 z-10000 bg-white border border-gray-200 shadow-lg rounded-lg group-hover:block">
     <div className="text-gray-800 font-medium mb-2">Free Items Added:</div>
     {appliedOffer.freeProducts.map((freeProduct, index) => (
       <div key={index} className="text-sm text-gray-700">
@@ -147,18 +164,26 @@ console.log(appliedOffer,offer,Cart)
   </div>
 </div>
 
+    <button
+      onClick={handleRemoveToCart} // Adjust with your remove logic
+      className="ml-4 text-red-500 hover:text-red-600"
+      aria-label="Remove Offer"
+    >
+      &times;
+    </button>
   </div>
 ) : (
-          <button
-            onClick={handleAddToCart}
-            className="group flex h-7 w-full items-center justify-between rounded bg-gray-100 text-xs text-body-dark transition-colors hover:border-accent hover:bg-accent hover:text-light focus:border-accent focus:bg-accent focus:text-light focus:outline-0 md:h-9 md:text-sm"
-          >
-            <span className="flex-1">{t("text-add")}</span>
-            <span className="grid h-7 w-7 place-items-center bg-gray-200 transition-colors duration-200 group-hover:bg-accent-600 group-focus:bg-accent-600 ltr:rounded-tr ltr:rounded-br rtl:rounded-tl rtl:rounded-bl md:h-9 md:w-9">
-              <PlusIcon className="h-4 w-4 stroke-2" />
-            </span>
-          </button>
-        )}
+  <button
+    onClick={handleAddToCart}
+    className="group flex h-7 w-full items-center justify-between rounded bg-gray-100 text-xs text-body-dark transition-colors hover:border-accent hover:bg-accent hover:text-light focus:border-accent focus:bg-accent focus:text-light focus:outline-0 md:h-9 md:text-sm"
+  >
+    <span className="flex-1">{t("text-add")}</span>
+    <span className="grid h-7 w-7 place-items-center bg-gray-200 transition-colors duration-200 group-hover:bg-accent-600 group-focus:bg-accent-600 ltr:rounded-tr ltr:rounded-br rtl:rounded-tl rtl:rounded-bl md:h-9 md:w-9">
+      <PlusIcon className="h-4 w-4 stroke-2" />
+    </span>
+  </button>
+)}
+
 
         {Number(quantity) <= 0 && (
           <div className="rounded bg-red-500 px-2 py-1.5 text-center text-xs text-light sm:py-2.5">

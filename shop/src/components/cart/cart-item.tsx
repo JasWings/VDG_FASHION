@@ -15,7 +15,21 @@ import { getImageURL } from '@/lib/image';
 
 interface CartItemProps {
   item: any;
+  Cart?:any;
 }
+
+const isOfferProduct = (item:any, appliedOffer:any) => {
+  if (!appliedOffer) return false;
+
+  const { freeProducts } = appliedOffer;
+
+  const isFreeProduct = freeProducts.some(
+    (freeProduct:any) => freeProduct._id === item.product._id
+  );
+ 
+  console.log(isFreeProduct,item,appliedOffer,freeProducts)
+  return isFreeProduct
+};
 
 const CartItem = ({ item }: CartItemProps) => {
   const { t } = useTranslation('common');
@@ -31,11 +45,13 @@ const CartItem = ({ item }: CartItemProps) => {
   const [isLoading,setIsLoading]=useState(false)
   const [itemLoading,setItemLoading]=useState(false)
   // const {selectedCountry}=useCountry()
+  const appliedOffer = Cart?.price_details?.applied_offer;
+const hideAddToCart = isOfferProduct(item, appliedOffer);
 
   const clearLoading=()=>{
     setIsLoading(false)
   }
-
+console.log(hideAddToCart,"hide")
   useEffect(()=>{
     if(isLoading){
        const intervalId=setInterval(clearLoading,750)
@@ -92,7 +108,6 @@ const CartItem = ({ item }: CartItemProps) => {
 
   }
 
-  
   return (
     <>
     {
@@ -126,20 +141,27 @@ const CartItem = ({ item }: CartItemProps) => {
         <p className="font-light md:font-bold text-heading ">{item.product.identity} </p>
         {/* <p className="my-2.5 font-semibold text-accent">{price}</p> */}
         <p className=" text-[10px] leading-[10px] md:text-xs text-body w-[132px] md:w-auto">
-          {item?.product.weight_in_grams}gm | &#8377; {item.product.sale_price}
+          &#8377; {item.product.sale_price}
         </p>
       </div>
-      <div className="flex-shrink-0">
-        <Counter
-          value={item.quantity}
-          limit={getCurrentLimit(item)}
-          onDecrement={handleRemoveClick}
-          onIncrement={handleIncrement}
-          variant='helium'
-          disabled={outOfStock}
-          isLoading={isLoading}
-        />
-      </div>
+ {!hideAddToCart ? (
+  <div className="flex-shrink-0">
+    <Counter
+      value={item.quantity}
+      limit={getCurrentLimit(item)}
+      onDecrement={handleRemoveClick}
+      onIncrement={handleIncrement}
+      variant="helium"
+      disabled={outOfStock}
+      isLoading={isLoading}
+    />
+  </div>
+) : (
+    <div className="flex items-center justify-center rounded bg-blue-100 px-3 py-1 text-xs font-medium text-blue-700">
+    🎉 Offer
+  </div>
+)}
+
       </div>
       <div className='flex w-full h-full flex-row justify-evenly items-center'>
         <div>
@@ -148,13 +170,13 @@ const CartItem = ({ item }: CartItemProps) => {
       </span>
         </div>
         <div>
-        <button
+        {!hideAddToCart &&<button
         className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted transition-all duration-200 hover:bg-gray-100 hover:text-red-600 focus:bg-gray-100 focus:text-red-600 focus:outline-0 ltr:ml-3 ltr:-mr-2 rtl:mr-3 rtl:-ml-2"
         onClick={() => handleRemoveProduct(item)}
         >
         <span className="sr-only">{t('text-close')}</span>
         <CloseIcon className="h-3 w-3" />
-        </button>
+        </button>}
         </div>
       </div>
     </motion.div>

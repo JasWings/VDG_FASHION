@@ -81,12 +81,12 @@ export function Grid({
           gridClassName
         )}
       >
-        {
+        {/* {
          !isLoading && offers && !category && !group && !text && !parent && offers?.map((offer:any) => (
             offer.eligibleProducts.map((product:any) => (
               <OfferCard key={product.uuid} product={product} offers={offer} />
             ))))
-        }
+        } */}
         {isLoading && !products?.length || filterLoading
           ? rangeMap(limit, (i) => (
               <ProductLoader key={i} uniqueKey={`product-${i}`} />

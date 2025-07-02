@@ -86,11 +86,11 @@ export const siteSettings = {
         label: 'sidebar-nav-item-sliders',
         icon: 'AttributeIcon',
       },
-      {
-        href: Routes.offers.list,
-        label: 'sidebar-nav-item-offers',
-        icon: 'CouponsIcon',
-      },
+      // {
+      //   href: Routes.offers.list,
+      //   label: 'sidebar-nav-item-offers',
+      //   icon: 'CouponsIcon',
+      // },
       {
         href: Routes.order.list,
         label: 'sidebar-nav-item-orders',

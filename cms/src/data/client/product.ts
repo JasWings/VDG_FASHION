@@ -31,6 +31,7 @@ export const productClient = {
       with: 'shop;type',
       ...params,
       categories,
+      text: name,
       search: HttpClient.formatSearchParams({
         type,
         name,

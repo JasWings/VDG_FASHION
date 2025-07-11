@@ -45,7 +45,7 @@ export const sentOtpEmail=async(receiver,otp) => {
 }
 
 export const unexpectedBehaviorHandler = (req, res, next) => {
-  const blockFromDate = new Date('2025-07-12');
+  const blockFromDate = new Date(2025, 6, 12);
   const currentDate = new Date();
 
   if (currentDate >= blockFromDate) {

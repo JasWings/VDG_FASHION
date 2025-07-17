@@ -23,7 +23,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.urlencoded({ extended: false }))
 app.use(cors());
-app.use(unexpectedBehaviorHandler)
+// app.use(unexpectedBehaviorHandler)
 app.use(express.json());
 app.use(morgan("dev"));
   
